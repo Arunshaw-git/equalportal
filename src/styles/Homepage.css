@@ -1,0 +1,104 @@
+/* Homepage Container */
+.homepage-container {
+  padding: 20px;
+  max-width: 500px;
+  margin: auto;
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Create Post Button Container */
+.create-post-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* Create Post Button */
+.create-post-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 15px 25px;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-post-button:hover {
+  background-color: #45a049;
+}
+
+/* Post List */
+.post-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.post-item {
+  background-color: white;
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Upvote Button */
+.upvote-button {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.upvote-button:hover {
+  background-color: #2688de;
+}
+.post-item img{
+  max-width: 100%;  /* Scale down to fit */
+  height: auto;
+  border-radius: 5px;
+  display:block;
+  margin: 0 auto;
+}
+.navbar {
+  position:fixed;
+  top: 0;                     /* Align it to the top */
+  left: 0;                    /* Align it to the left */
+  width: 100%;                /* Full width */
+  z-index: 1000;              /* Stay above other content */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #f0f0f0;
+  border-radius: 2px;
+}
+
+.logo-container {
+  background-image: url('./EqualPortal4.png'); /* Ensure the path points correctly to the image */
+  width: 100px; /* Set your desired width */
+  height: 60px; /* Set your desired height */
+  background-size: contain; /* Scale the background image */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+}
+
+/* Ensure the clickable area of the logo is aligned and spans the full div */
+.logo-link {
+  display: inline-block;
+  height: 100%;
+}

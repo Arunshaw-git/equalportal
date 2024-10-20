@@ -1,0 +1,32 @@
+.container{
+  
+    padding:100px;
+    max-width: 250px;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+
+
+}
+.button{
+    color:white;
+    background-color: #4caf50;
+    border:none;
+    padding:10px 20px;
+    font-size: 16px;
+    border-radius: 2px;
+    transition: background-color 0.3s ease;
+
+} 
+.button:hover{
+    background-color: #47a74b;
+}
+.input,
+.textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+}

@@ -1,0 +1,21 @@
+.footer{
+    background-color: #f0f0f0;
+    padding:2px;
+    margin:0;
+    text-align:center;
+    position:relative;
+    bottom:0;
+}
+.footer-content{
+    max-width: 800px; /* Limit the width for better readability */
+    margin: auto; /* Center the content */
+    
+    
+}
+.footer h3 {
+    margin-bottom: 5px;
+  }
+  
+  .footer p {
+    margin: 5px 0;
+  }

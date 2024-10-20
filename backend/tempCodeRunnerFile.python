@@ -1,0 +1,22 @@
+class Solution:
+    def max(self, text: str) -> int:
+        word = "balloon"
+        words = list(word)
+        count = 0 
+        k = 0
+        dup =""
+        print(words)
+        for c in text:
+            print(f"char: {c}")
+            if c in words:
+                words.remove(c)
+            if (not words):
+                count +=1 
+                words = list(word)
+
+        return count
+
+
+s =Solution()
+n = s.max("nlaebolko")
+print(f"count:{n}")

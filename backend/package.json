@@ -1,0 +1,23 @@
+{
+  "name": "equalportal-backend",
+  "version": "1.0.0",
+  "description": "social media for sharing injustice",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.21.0",
+    "express-validator": "^7.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.6.3",
+    "react-router-dom": "^6.27.0"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.7",
+    "nodemon": "^3.1.7"
+  }
+}
