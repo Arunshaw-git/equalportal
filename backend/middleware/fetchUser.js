@@ -2,12 +2,14 @@ var jwt = require("jsonwebtoken")
 const JWT_SECRET = "equalport_secert_code"
 
 const fetchUser = (req,res,next)=>{ 
+    console.log('Authorization Header:', req.header('Authorization'));
+
     const token = req.header('Authorization') 
 
     if(!token){
         res.status(401).json({error:"Token not provided"})
     }
-    const actualToken = token.split(' ')[1];
+    const actualToken = token ? token.split(' ')[1]: null;
     //now, token verification 
     try {
         const data = jwt.verify(actualToken,JWT_SECRET);
@@ -20,4 +22,4 @@ const fetchUser = (req,res,next)=>{
     }
     
 };
-module.exports = fetchUser;``
+module.exports = fetchUser;
