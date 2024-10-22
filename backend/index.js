@@ -5,7 +5,10 @@ const cors = require('cors');
 const multer = require('multer');
 const app = express()
 const port = process.env.PORT || 5000;
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5000/', // Specify your frontend URL here
+  credentials: true,
+}));
 app.use(express.json())
 
 // Call both connection functions

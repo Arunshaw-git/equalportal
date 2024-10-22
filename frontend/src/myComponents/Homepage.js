@@ -25,7 +25,7 @@ const Homepage = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Use token from localStorage
+          Authorization: `Bearer ${token}`, // Use token from localStorage
         },
       });
 
