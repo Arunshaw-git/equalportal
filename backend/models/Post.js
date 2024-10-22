@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
+const postsConnection = mongoose.createConnection(process.env.MONGODB_POSTS_URI)
 const { Schema } = mongoose;
-
 const PostSchema = new Schema({
     title :{
       type: String,
@@ -33,5 +33,5 @@ const PostSchema = new Schema({
     },
     
 });
-const Post = mongoose.model('Post',PostSchema);
+const Post = postsConnection.model('Post',PostSchema);
 module.exports = Post 

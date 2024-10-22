@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
-const { Schema } = mongoose;
+//A dedicated connection for the users database
+const usersConnection = mongoose.createConnection(process.env.MONGODB_USERS_URI);
 
+const { Schema } = mongoose;
+  
 const UserSchema = new Schema({
     userName:{
         unique:true,
@@ -26,6 +29,6 @@ const UserSchema = new Schema({
     },
     
 })
-const User = mongoose.model('User',UserSchema);
+const User = usersConnection.model('User',UserSchema);
   
-module.exports = User 
+module.exports = User;

@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
   
   const upload = multer({ storage: storage });
   
- //chatgpt 
+//chatgpt 
 // Route to get all posts
 router.get('/', fetchUser, async (req, res) => {
     try {
