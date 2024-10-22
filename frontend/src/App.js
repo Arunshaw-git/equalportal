@@ -11,8 +11,8 @@ function App() {
     <Router>
       <div className="app-container"> 
         <Routes>
-          <Route path="/login" element={<Login />} />
           <Route path="/" element={<Homepage />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/create" element={<CreatePost />} />
         </Routes>
         <Footer/>

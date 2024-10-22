@@ -2,12 +2,10 @@ var jwt = require("jsonwebtoken")
 const JWT_SECRET = "equalport_secert_code"
 
 const fetchUser = (req,res,next)=>{ 
-    console.log('Authorization Header:', req.header('Authorization'));
-
     const token = req.header('Authorization') 
 
     if(!token){
-        res.status(401).json({error:"Token not provided"})
+        return res.status(401).json({error:"Token not provided"})
     }
     const actualToken = token ? token.split(' ')[1]: null;
     //now, token verification 
@@ -16,10 +14,9 @@ const fetchUser = (req,res,next)=>{
         req.user = data.user
         console.log('Decoded user ID in fetch:', req.user);
         //if everything is fine, call next() to pass control to the next middleware or route handler
-        next();
+        next();// call next middleware
     } catch (error) {
-        res.status(401).send({error:"Token invalid"})
-    }
-    
+        return res.status(401).send({error:"Token invalid"})
+    }   
 };
 module.exports = fetchUser;
