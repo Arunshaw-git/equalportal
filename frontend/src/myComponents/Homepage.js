@@ -20,6 +20,7 @@ const Homepage = () => {
 
   // Function to fetch posts from the backend
   const fetchPosts = async () => {
+    const token = localStorage.getItem("token");
     try {
       const response = await fetch("http://localhost:5000/", {
         method: "GET",

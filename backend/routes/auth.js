@@ -78,11 +78,11 @@ router.post('/login',[
 
         const passComp = await bcrypt.compare(password,user.password)
         if(!passComp){
-            return res.status(404).json({error:"Please try to login with correct creditentials"})
+            return res.status(401).json({error:"Please try to login with correct creditentials"})
         }
         //Giving a token the user 
         const payload = { user: { id: user.id } }; // Store user.id in the token
-        const token = jwt.sign(payload,JWT_SECRET)
+        const token = jwt.sign(payload,JWT_SECRET,{ expiresIn: '1h' })
         res.json({token});
     } catch (error) {
         console.error(error.message)

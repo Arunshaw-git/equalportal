@@ -25,7 +25,7 @@ const Login = () => {
       if (!response.ok) {
         throw new Error(data.error || 'Login failed');
       }
-
+      
       // Store the token in localStorage and navigate to homepage
       localStorage.setItem('token', data.token);
       navigate('/');
@@ -41,7 +41,7 @@ const Login = () => {
          <div className="logo-container"></div>
        </nav>
       <div className='container'>
-        <p>Website still under development, i forgot add createUser component oops. But i did make some accounts using Testing tools. </p>
+        <p style={{color :"green"}}>Website still under development, i still have add createUser component. But i did make some accounts using Testing tools. </p>
         <p>Please use :New1@mail.com password:qwerty</p>
         <h1>Login</h1>
         {error && <p style={{ color: 'red' }}>{error}</p>}
