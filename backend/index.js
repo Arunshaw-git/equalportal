@@ -5,13 +5,42 @@ const cors = require('cors');
 const multer = require('multer');
 const app = express()
 const port = process.env.PORT || 5000;
+const fs = require('fs');
+const helmet = require('helmet');
+
 app.use(cors({
   origin: 'http://localhost:3000', // Specify your frontend URL here
   credentials: true,
 }));
 app.use(express.json())
 
-// Call both connection functions
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+// Security middleware
+app.use(helmet());
+// Custom CSP configuration
+app.use((req, res, next) => {
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; " +
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' chrome-extension: https:; " +
+    "style-src 'self' 'unsafe-inline' https:; " +
+    "img-src 'self' data: blob: https:; " +
+    "media-src 'self' blob: https:; " +
+    "connect-src 'self' https:; " +
+    "font-src 'self' https:; " +
+    "object-src 'none'; " +
+    "frame-src 'self' https:; " +
+    "worker-src 'self' blob:;"
+  );
+  next();
+});
+
+
+// Call both connection functions from db
 connectToUsersDB();
 connectToPostsDB();
 
