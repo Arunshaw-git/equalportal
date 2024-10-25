@@ -1,0 +1,53 @@
+services:
+  # Backend API service
+  - type: web
+    name: backend
+    env: node
+    plan: free  # or starter/standard/pro based on your needs
+    buildCommand: npm install
+    startCommand: node index.js  # Adjust this path based on your server file location
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI  # If you're using MongoDB
+        sync: false       # Indicates this is a secret value
+      - key: JWT_SECRET   # If you're using JWT
+        sync: false
+      - key: FRONTEND_URL
+        value: https://equalportal.onrender.com  # Replace with your frontend URL
+    headers:
+      - path: /*
+        name: Content-Security-Policy
+        value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' chrome-extension: https:; script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' chrome-extension: https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https:; media-src 'self' blob: https:; connect-src 'self' https:; font-src 'self' https:; object-src 'none'; frame-src 'self' https:; worker-src 'self' blob:;"
+
+  # Frontend static site (if you're deploying frontend on Render too)
+  - type: web
+    name: frontend
+    env: static
+    buildCommand: cd client && npm install && npm run build  # Adjust based on your build setup
+    staticPublishPath: ./client/build  # Adjust this path based on your build output directory
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+# Define environment groups if needed
+envVarGroups:
+  - name: development
+    envVars:
+      - key: NODE_ENV
+        value: development
+  - name: production
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+# Auto-deploy on push to main branch
+autoDeploy: true
+Last edited just now
