@@ -8,10 +8,22 @@ const port = process.env.PORT || 5000;
 
 const helmet = require('helmet');
 
+const allowedOrigins = [
+  'https://localhost:3000', // Local development frontend
+  'https://equalportal.onrender.com', // Deployed frontend URL
+];
+
 app.use(cors({
-  origin: 'http://localhost:3000', // Specify your frontend URL here
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
+
 app.use(express.json())
 
 // Ensure uploads directory exists
@@ -20,21 +32,10 @@ app.use(express.json())
 app.use(helmet());
 // Custom CSP configuration
 app.use((req, res, next) => {
-  res.setHeader(
-    'Content-Security-Policy',
-    "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' chrome-extension: https:; " +
-    "style-src 'self' 'unsafe-inline' https:; " +
-    "img-src 'self' data: blob: https:; " +
-    "media-src 'self' blob: https:; " +
-    "connect-src 'self' https:; " +
-    "font-src 'self' https:; " +
-    "object-src 'none'; " +
-    "frame-src 'self' https:; " +
-    "worker-src 'self' blob:;"
-  );
+  res.setHeader("Content-Security-Policy", "script-src 'self' 'unsafe-inline' 'unsafe-eval'");
   next();
 });
+
 
 
 // Call both connection functions from db

@@ -19,7 +19,7 @@ function CreatePost() {
     try {
         // Get the token from localStorage
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:5000/create', {
+        const response = await fetch('https://equalportal.onrender.com/create', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`, // If token is needed
