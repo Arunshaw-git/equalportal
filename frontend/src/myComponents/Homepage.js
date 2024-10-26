@@ -14,6 +14,7 @@ const Homepage = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
+      console.warn("No token found, redirecting to login");
       navigate("/login"); // Redirect to login page if no token is found
     }
   }, [navigate]);
@@ -21,6 +22,10 @@ const Homepage = () => {
   // Function to fetch posts from the backend
   const fetchPosts = async () => {
     const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("Token not provided while fetching posts"); 
+      return; // Prevent fetching posts without a token
+    }
     try {
       const response = await fetch("https://equalportal.onrender.com/", {
         method: "GET",
