@@ -10,7 +10,7 @@ const helmet = require('helmet');
 
 const allowedOrigins = [
   'https://localhost:3000', // Local development frontend
-  'https://equalportal.onrender.com', // Deployed frontend URL
+  'https://equalportal.netlify.app', // Deployed frontend URL
 ];
 
 app.use(cors({
