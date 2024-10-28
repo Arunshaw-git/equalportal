@@ -39,18 +39,38 @@
 }
 
 /* Post List */
-.post-list {
+/* .post-list {
   list-style-type: none;
   padding: 0;
+} */
+.post-list{
+  width: 100%;
+  height: auto;
+  background: #fff;
+  border: 1px solid #dfdfdf;
+  margin-top: 40px;
+}
+.description{
+  margin: 10px 0;
+  font-size: 14px;
+  line-height: 20px;
 }
 
-.post-item {
+/* .post-item {
   background-color: white;
   margin-bottom: 15px;
   padding: 15px;
   border-radius: 2px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+} */
+.post-item{
+  width: 100%;
+  height: auto;
+  background: #fff;
+  border: 1px solid #dfdfdf;
+  margin-top: 40px;
 }
+
 
 /* Upvote Button */
 .upvote-button {
@@ -67,12 +87,17 @@
 .upvote-button:hover {
   background-color: #2688de;
 }
-.post-item img{
-  max-width: 100%;  /* Scale down to fit */
+/* .post-item img{
+  max-width: 100%; 
   height: auto;
   border-radius: 5px;
   display:block;
   margin: 0 auto;
+} */
+.post-image{
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
 }
 .navbar {
   position:fixed;

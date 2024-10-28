@@ -82,11 +82,11 @@ const Homepage = () => {
             posts.map((post) => (
               <li key={post._id} className="post-item">
                 <h2>{post.title}</h2>
-                <p>{post.desc}</p>
+                <p className="description">{post.desc}</p>
                 {post.media ? (
                   <img
                   src={`https://equalportal.onrender.com/uploads/${post.media}`}
-                    alt={post.title}
+                  className="post-image" alt={post.title}
                   />
                 ) : null}
                 <p>{new Date(post.creation_date).toLocaleString()}</p>
