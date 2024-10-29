@@ -16,7 +16,7 @@ const allowedOrigins = [
 app.use(cors({
   origin:"https://equalportal.netlify.app",
   credentials: true,
-  methods: ['GET', 'POST', 'DELETE'], // Allowed HTTP methods
+  methods: ['GET', 'POST', 'DELETE','PUT'], // Allowed HTTP methods
 }));
 
 app.use(express.json())
