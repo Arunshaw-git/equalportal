@@ -14,13 +14,7 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin:"https://equalportal.netlify.app",
   credentials: true,
   methods: ['GET', 'POST', 'DELETE'], // Allowed HTTP methods
 }));
@@ -84,7 +78,7 @@ app.post('/create', upload.single('media'), (req, res) => {
       post: {
         title,
         desc,
-        media: `/uploads/${media.filename}`, // Return correct relative path
+        media: `https://equalportal.onrender.com/uploads/${media.filename}`, // Return correct relative path
       },
     });
   } catch (error) {
