@@ -78,7 +78,7 @@ app.post('/create', upload.single('media'), (req, res) => {
       post: {
         title,
         desc,
-        media: `https://equalportal.onrender.com/uploads/${media.filename}`, // Return correct relative path
+        media: `https://equalportal.onrender.com/uploads/${post.media}`, // Return correct relative path
       },
     });
   } catch (error) {
