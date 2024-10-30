@@ -85,7 +85,8 @@ const Homepage = () => {
                 <p className="description">{post.desc}</p>
                 {post.media ? (
                   <img
-                  src={`https://equalportal.onrender.com${post.media}`}
+                  src={`https://equalportal.onrender.com/${post.media}`}
+
                   className="post-image" alt={post.title}
                   />
                 ) : null}

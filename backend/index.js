@@ -50,35 +50,30 @@ const storage = multer.diskStorage({
   },
 });
 // File filter to only allow images
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = /jpeg|jpg|png|gif/; // Allowed image file types
-  const extname = allowedTypes.test(file.mimetype); // Check mimetype
-  const mimetype = allowedTypes.test(file.originalname.split('.').pop().toLowerCase()); // Check extension
 
-  if (extname && mimetype) {
-    return cb(null, true); // Accept file
-  } else {
-    cb(new Error('Only .png, .jpg, .jpeg, and .gif files are allowed!'), false); // Reject file
-  }
-};
 
 const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } });
 app.use('/auth',require('./routes/auth'))
 app.use('/', require('./routes/home'));
 
 // POST route for creating posts with file uploads
-app.post('/create', upload.single('media'), (req, res) => {
+app.post('/create', upload.single('media'), async (req, res) => {
   try {
-    const { title, desc } = req.body;
-    const media = req.file;
-
+    const { title, desc } = req.body; // Extract title and description from body
+    const media = req.file; // Get the uploaded file
+    const newPost = new Post({
+      title,
+      desc,
+      media: `/uploads/${media.filename}`, // Store the relative path in DB
+    });
+    await newPost.save();
     // Send back media file's path
     res.status(201).json({
       message: 'Post created successfully',
       post: {
         title,
         desc,
-        media: `https://equalportal.onrender.com/uploads/${post.media}`, // Return correct relative path
+        media: `/uploads/${media.filename}`, // Return correct relative path
       },
     });
   } catch (error) {
