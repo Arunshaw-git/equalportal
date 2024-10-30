@@ -14,7 +14,13 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-  origin:"https://equalportal.netlify.app",
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'DELETE','PUT'], // Allowed HTTP methods
 }));
@@ -83,7 +89,7 @@ app.post('/create', upload.single('media'), async (req, res) => {
 });
 
 
-app.use('/uploads', express.static(__dirname + '/uploads'));
+app.use('/uploads',cors(), express.static(__dirname + '/uploads'));
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
