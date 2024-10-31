@@ -70,18 +70,11 @@ app.post('/create', upload.single('media'), async (req, res) => {
     const newPost = new Post({
       title,
       desc,
-      media: `/uploads/${media.filename}`, // Store the relative path in DB
+      media: media.filename, // Store the relative path in DB
     });
-    await newPost.save();
+    const savedPost = await newPost.save();
     // Send back media file's path
-    res.status(201).json({
-      message: 'Post created successfully',
-      post: {
-        title,
-        desc,
-        media: `/uploads/${media.filename}`, // Return correct relative path
-      },
-    });
+    res.status(201).json( savedPost);
   } catch (error) {
     console.error('Error creating post:', error);
     res.status(500).json({ error: 'Failed to create post' });

@@ -82,7 +82,7 @@ router.post('/login',[
         }
         //Giving a token the user 
         const payload = { user: { id: user.id } }; // Store user.id in the token
-        const token = jwt.sign(payload,JWT_SECRET,{ expiresIn: '1h' })
+        const token = jwt.sign(payload,JWT_SECRET,{ expiresIn: '2d' })
         res.json({token});
     } catch (error) {
         console.error(error.message)
