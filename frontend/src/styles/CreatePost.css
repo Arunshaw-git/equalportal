@@ -1,12 +1,9 @@
 .container{
-  
     padding:100px;
     max-width: 250px;
     display:flex;
     flex-direction: column;
     justify-content: center;
-
-
 }
 .button{
     color:white;
@@ -29,4 +26,13 @@
   border-radius: 5px;
   font-size: 16px;
   box-sizing: border-box;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+  
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
