@@ -54,7 +54,7 @@ function CreatePost() {
     const formData = new FormData(); // Create FormData object
     formData.append("title", title);
     formData.append("desc", desc);
-    if (media) formData.append("media", media.files[0]);
+    if (media) formData.append("media", FileInput.files[0]);
 
     try {
       setIsLoading(true);
@@ -133,7 +133,7 @@ function CreatePost() {
               <label htmlFor="media">Media (Optional)</label>
               <input
                 type="file"
-                id="media"
+                id="fileInput"
                 onChange={handleFileChange}
                 accept="image/jpeg,image/png,image/gif"
               />
