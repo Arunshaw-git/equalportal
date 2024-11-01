@@ -50,11 +50,16 @@ function CreatePost() {
       setError("Please enter a title");
       return;
     }
+    
+    const fileInput = document.getElementById('fileInput'); // Get the file input
+    submitButton.addEventListener('click', async () => {
+      const selectedFile = fileInput.files[0]; // Access the first file
+    });
 
     const formData = new FormData(); // Create FormData object
     formData.append("title", title);
     formData.append("desc", desc);
-    if (media) formData.append("media", fileInput.files[0]);
+    if (media) formData.append("media", selectedFile);
 
     try {
       setIsLoading(true);
