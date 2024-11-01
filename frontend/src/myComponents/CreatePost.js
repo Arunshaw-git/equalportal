@@ -54,7 +54,7 @@ function CreatePost() {
     const formData = new FormData(); // Create FormData object
     formData.append("title", title);
     formData.append("desc", desc);
-    if (media) formData.append("media", fileInput.files[0]);
+    if (media) formData.append("media", media.files[0]);
 
     try {
       setIsLoading(true);
