@@ -4,8 +4,8 @@ const express = require('express')
 const cors = require('cors');
 const multer = require('multer');
 const app = express()
+const path = require("path");
 const port = process.env.PORT || 5000;
-
 const helmet = require('helmet');
 
 const allowedOrigins = [
