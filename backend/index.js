@@ -58,7 +58,8 @@ const storage = multer.diskStorage({
     cb(null, uniqueSuffix + path.extname(file.originalname));
   },
 });
-const upload = multer({ storage });
+// Initialize multer with the defined storage configuration
+const upload = multer({ storage: storage });
 
 app.use('/uploads',cors(), express.static(path.join(__dirname, 'uploads')));
 
@@ -82,6 +83,9 @@ app.post('/create', upload.single('media'), async (req, res) => {
     res.status(201).json(savedPost);
   } catch (error) {
     console.error('Error creating post:', error);
+    if (error instanceof multer.MulterError) {
+      return res.status(400).json({ error: error.message });
+    }
     res.status(500).json({ error: 'Failed to create post' });
   }
 });
