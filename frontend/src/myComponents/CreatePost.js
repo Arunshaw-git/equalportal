@@ -50,11 +50,11 @@ function CreatePost() {
       setError("Please enter a title");
       return;
     }
-    
+
     const fileInput = document.getElementById('fileInput'); // Get the file input
-    submitButton.addEventListener('click', async () => {
-      const selectedFile = fileInput.files[0]; // Access the first file
-    });
+    
+    const selectedFile = fileInput.files[0]; // Access the first file
+    
 
     const formData = new FormData(); // Create FormData object
     formData.append("title", title);
