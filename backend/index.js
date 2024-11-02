@@ -57,7 +57,7 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 // Set up multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Specify the directory to save uploaded files
+    cb(null, 'uploads'); // Specify the directory to save uploaded files
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -71,10 +71,17 @@ app.use('/uploads',cors(), express.static(path.join(__dirname, 'uploads')));
 
 // POST route for creating posts with file uploads
 app.post('/create', upload.single('media'), async (req, res) => {
+  console.log('File received:', req.file); // Log file info
+  console.log('Destination path:', path.join(__dirname, 'uploads'));
+
   try {
     const { title, desc} = req.body;
-    const media = req.file ? path.basename(req.file.path) : null; // Get the media file path if available
- 
+    const media = req.file ? req.file.filename : null; // Ensure only the filename is saved
+    
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+    
     const newPost = new Post({
       title,
       desc,

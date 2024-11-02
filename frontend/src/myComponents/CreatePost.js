@@ -52,7 +52,6 @@ function CreatePost() {
     }
 
     const fileInput = document.getElementById('fileInput'); // Get the file input
-    
     const selectedFile = fileInput.files[0]; // Access the first file
     
 
