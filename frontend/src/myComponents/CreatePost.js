@@ -51,14 +51,10 @@ function CreatePost() {
       return;
     }
 
-    const fileInput = document.getElementById('fileInput'); // Get the file input
-    const selectedFile = fileInput.files[0]; // Access the first file
-    
-
     const formData = new FormData(); // Create FormData object
     formData.append("title", title);
     formData.append("desc", desc);
-    if (media) formData.append("media", selectedFile);
+    if (media) formData.append("media", media);
 
     try {
       setIsLoading(true);
