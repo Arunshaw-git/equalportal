@@ -100,7 +100,7 @@ function CreatePost() {
           <div className="logo-container"></div>
         </nav>
         <div className="container">
-          <form onSubmit={handleSubmit} className="form">
+          <form onSubmit={handleSubmit} className="form" encType="multipart/form-data">
             <h1 className="header">Create a Post</h1>
 
             <div className="form-group">
