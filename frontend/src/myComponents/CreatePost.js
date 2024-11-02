@@ -135,6 +135,7 @@ function CreatePost() {
                 type="file"
                 id="fileInput"
                 onChange={handleFileChange}
+                name="media" 
                 accept="image/jpeg,image/png,image/gif"
               />
               {/* Media Preview */}
