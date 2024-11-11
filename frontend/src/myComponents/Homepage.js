@@ -9,9 +9,10 @@ const Homepage = () => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
+  const apiUrl = process.env.REACT_APP_API_URL;
   // Check if user is logged in by verifying the token in localStorage
   useEffect(() => {
+    
     const token = localStorage.getItem("token");
     if (!token) {
       console.warn("No token found, redirecting to login");
@@ -27,7 +28,7 @@ const Homepage = () => {
       return; // Prevent fetching posts without a token
     }
     try {
-      const response = await fetch("https://equalportal.onrender.com/", {
+      const response = await fetch(`${apiUrl}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +86,7 @@ const Homepage = () => {
                 <p className="description">{post.desc}</p>
                 {post.media ? (
                   <img
-                  src={`https://equalportal.onrender.com/${post.media}`}
+                  src={`${apiUrl}/${post.media}`}
 
                   className="post-image" alt={post.title}
                   />

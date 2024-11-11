@@ -9,7 +9,7 @@ function CreatePost() {
   const [preview, setPreview] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
 
   const handleFileChange = (e) => {
@@ -62,7 +62,7 @@ function CreatePost() {
 
       // Get the token from localStorage
       const token = localStorage.getItem("token");
-      const response = await fetch("https://equalportal.onrender.com/create", {
+      const response = await fetch(`${apiUrl}/create`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`, // If token is needed

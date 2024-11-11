@@ -2,23 +2,37 @@ require('dotenv').config({ path: '../.env' }); // Load environment variables fro
 const { connectToUsersDB, connectToPostsDB } = require('./db');
 const express = require('express')
 const cors = require('cors');
+
 const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('./cloudinaryConfig');
+
 const app = express()
 const path = require("path");
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 const helmet = require('helmet');
 const fs = require('fs');
-const uploadsDir = path.join(__dirname, 'uploads');
+const uploadsDir = path.join(__dirname, 'uploads')
+;
+const equalPortal = 'equalPortal';
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params:{
+    folder:equalPortal,
+    allowed_formats:['jpg','png', 'gif']
+  }
+})
+const upload = multer({storage:storage})
 
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
 
 const allowedOrigins = [
-  'https://localhost:3000', // Local development frontend
-  'https://equalportal.netlify.app', // Deployed frontend URL
+  'http://localhost:3000', // Local development frontend
+  'https://equalportal.netlify.app', 
+  // Deployed frontend URL
 ];
-
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -54,22 +68,21 @@ app.use('/', require('./routes/home'));
 app.use(express.json({ limit: '10mb' })); // Adjust size as needed
 app.use(express.urlencoded({ limit: '10mb', extended: true })); 
 
-const upload = multer({ dest: 'uploads/' })
 
 app.use('/uploads',cors(), express.static(path.join(__dirname, 'uploads')));
 
 // POST route for creating posts with file uploads
-app.post('/create', upload.single('media'), async (req, res) => {
-  console.log('File received:', req.file); // Log file info
-  console.log('Destination path:', path.join(__dirname, 'uploads'));
-
+app.post('/create',upload.single("media"), async (req, res) => {
+ 
   try {
     const { title, desc} = req.body;
-    const media = req.file ? req.file.filename : null; // Ensure only the filename is saved
-    
-    console.log(req.file); // Log file info to console
-    console.log(req.body); 
+    if(req.file){
+    const result = await cloudinary.uploader.upload(req.file.path,{
+      folder:equalPortal,
+    }); // Upload to Cloudinary
+    }
 
+    res.json({ message: 'Image uploaded successfully'})
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }
@@ -77,11 +90,11 @@ app.post('/create', upload.single('media'), async (req, res) => {
     const newPost = new Post({
       title,
       desc,
-      media,
+      media: result.secure_url,
       upvotes: 0,
-      comments :[],
-      share:0,
-      creation_date : Date.now(),
+      comments: [],
+      share: 0,
+      creation_date: Date.now(),
     });
     const savedPost = await newPost.save();
     
