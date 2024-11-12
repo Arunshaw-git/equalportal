@@ -51,6 +51,7 @@ app.use((req, res, next) => {
 // JSON and URL-encoded parsers
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 // Use multer for handling multipart/form-data
 app.use(upload.single("media"));

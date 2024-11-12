@@ -6,7 +6,7 @@ const cloudinary = require("../config/cloudinary");
 const Post = require("../models/Post");
 const upload = require("../config/multer"); // multer configuration
 
-router.post('/create', fetchUser, upload.single("media"), async (req, res) => {
+router.post('/', fetchUser, upload.single("media"), async (req, res) => {
   try {
     const { title, desc } = req.body;
     let mediaUrl = null;
