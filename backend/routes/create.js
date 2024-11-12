@@ -15,15 +15,7 @@ router.post('/', fetchUser, upload.single("media"), async (req, res) => {
     }
 
     if (req.file) {
-      // Upload to Cloudinary
-      const result = await cloudinary.uploader.upload(req.file.path, {
-        folder: "equalPortal/posts",
-      });
-      mediaUrl = result.secure_url; 
-       // Remove the file from server after uploading to Cloudinary
-       fs.unlink(req.file.path, (err) => {
-        if (err) console.error("Failed to delete local file:", err);
-      });
+      mediaUrl = result.secure_url;
     }
 
     // Create a new post
