@@ -20,6 +20,7 @@ const Homepage = () => {
     }
   }, [navigate]);
 
+  useEffect(() => {
   // Function to fetch posts from the backend
   const fetchPosts = async () => {
     const token = localStorage.getItem("token");
@@ -49,9 +50,7 @@ const Homepage = () => {
       console.error("Fetch error:", error); // Log any errors encountered during fetch
     }
   };
-  // Use useEffect to fetch posts when component mounts
-  useEffect(() => {
-    fetchPosts();
+  fetchPosts();  
   }, []);
 
   return (
