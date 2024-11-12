@@ -82,12 +82,13 @@ function CreatePost() {
       setTitle("");
       setDesc("");
       clearMedia();
-
       navigate("/");
+      
     } catch (error) {
       console.error("Error creating post:", error);
       alert(error.message);
       setError(error.message);
+      clearMedia();
     } finally {
       setIsLoading(false);
     }
