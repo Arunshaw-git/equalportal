@@ -9,10 +9,13 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+
   const apiUrl = process.env.REACT_APP_API_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
       console.log("API URL:", apiUrl);
       const response = await fetch(`${apiUrl}/auth/login`, {
         method: 'POST',
@@ -32,6 +35,8 @@ const Login = () => {
       navigate('/');
     } catch (error) {
       setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -65,7 +70,9 @@ const Login = () => {
               required
             />
           </div>
-          <button type="submit" className='button'>Login</button>
+          <button type="submit" className='button'>Login
+          {isLoading ? "Creating Post..." : "Create Post"}
+          </button>
         </form>
       </div>
       
