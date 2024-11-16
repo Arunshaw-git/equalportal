@@ -56,8 +56,6 @@ router.post('/createuser',[
     // res.json({error:"please enter unique", message:err.message})})
 });
 
-
-
 //ROUTE 2:Authenticate a user using:post "/auth/login". No login required
 router.post('/login',[
     body('password','password cant be blank').exists(),

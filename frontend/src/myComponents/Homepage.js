@@ -51,7 +51,7 @@ const Homepage = () => {
     }
   };
   fetchPosts();  
-  });
+  },[apiUrl]);
 
   return (
     <>

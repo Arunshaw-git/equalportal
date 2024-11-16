@@ -3,7 +3,6 @@ const express = require('express')
 const cors = require('cors');
 const helmet = require('helmet');
 const fs = require('fs');
-const upload = require("./config/multer");
 const bodyParser = require("body-parser");
 const cloudinary = require('./config/cloudinary');
 const path = require("path");
@@ -51,10 +50,8 @@ app.use((req, res, next) => {
 // JSON and URL-encoded parsers
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.urlencoded({ extended: true }));
-
-// Use multer for handling multipart/form-data
-app.use(upload.single("media"));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Route handling
 app.use("/create", createRoutes);
