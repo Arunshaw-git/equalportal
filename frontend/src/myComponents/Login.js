@@ -70,8 +70,8 @@ const Login = () => {
               required
             />
           </div>
-          <button type="submit" className='button'>Login
-          {isLoading ? "Creating Post..." : "Create Post"}
+          <button type="submit" className='button'>
+          {isLoading ? "Logining..." : "Login"}
           </button>
         </form>
       </div>

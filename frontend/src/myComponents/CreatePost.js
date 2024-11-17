@@ -55,45 +55,49 @@ function CreatePost() {
     formData.append("title", title);
     formData.append("desc", desc);
 
+    //upload media to cloudinaryu first
+    if (media) {
+      const mediaFormData = new FormData();
+      mediaFormData.append("file", media); // The 'media' file being uploaded
+      mediaFormData.append("upload_preset", "equalportal"); // Your Cloudinary upload preset
+      mediaFormData.append("cloud_name", "djnkm0nfh");
+
+      const cloudinaryResponse = await fetch(
+        "https://api.cloudinary.com/v1_1/djnkm0nfh/image/upload",
+        {
+          method: "POST",
+          body: mediaFormData,
+        }
+      );
+
+      const cloudinaryResult = await cloudinaryResponse.json();
+      if (!cloudinaryResponse.ok) {
+        throw new Error(
+          cloudinaryResult.message || "failed to upload to cloudinary"
+        );
+      }
+      //get url from cloudinary
+      const mediaUrl = cloudinaryResult.secure_url;
+      formData.append("media", mediaUrl);
+    }
     try {
       setIsLoading(true);
       setError(null);
 
-      //upload media to cloudinaryu first
-      if (media) {
-        const mediaFormData = new FormData();
-        mediaFormData.append("file", media); // The 'media' file being uploaded
-        mediaFormData.append("upload_preset", "equalportal"); // Your Cloudinary upload preset
-        mediaFormData.append("cloud_name", "djnkm0nfh");
-
-        const cloudinaryResponse = await fetch(
-          "https://api.cloudinary.com/v1_1/djnkm0nfh/image/upload",
-          {
-            method: "POST",
-            body: mediaFormData,
-          }
-        );
-
-        const cloudinaryResult = await cloudinaryResponse.json();
-        if (!cloudinaryResponse.ok) {
-          throw new Error(
-            cloudinaryResult.message || "failed to upload to cloudinary"
-          );
-        }
-        //get url from cloudinary
-        const mediaUrl = cloudinaryResult.secure_url;
-        formData.append("media", mediaUrl);
-      }
-
       // Get the token from localStorage
       const token = localStorage.getItem("token");
+      
+      var object = {};
+      formData.forEach((value, key) => (object[key] = value));
+      var json = JSON.stringify(object);
+
       const response = await fetch(`${apiUrl}/create`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: formData, // Send form data with file
+        body: json, // Send form data with file
       });
 
       if (!response.ok) {

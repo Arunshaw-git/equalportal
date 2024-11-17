@@ -1,4 +1,3 @@
-// backend/routes/post.js
 const express = require("express");
 const router = express.Router();
 const fetchUser = require("../middleware/fetchUser");
@@ -8,7 +7,7 @@ const Post = require("../models/Post");
 router.post('/', fetchUser,  async (req, res) => {
   try {
     const { title, desc, media } = req.body;
-    
+   
     if (!title) {
       return res.status(400).json({ error: "Title is required" });
     }
