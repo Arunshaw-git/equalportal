@@ -87,7 +87,9 @@ function CreatePost() {
       // Get the token from localStorage
       const token = localStorage.getItem("token");
       
+      // WE NEED TO FIRST COVERT THE FORM DATA INTO JSON FIRST 
       var object = {};
+      //SO FIRST CONVERT THE FORMDATA INTO OBJECT THEN JSON
       formData.forEach((value, key) => (object[key] = value));
       var json = JSON.stringify(object);
 

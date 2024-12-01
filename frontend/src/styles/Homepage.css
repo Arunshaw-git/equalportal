@@ -2,6 +2,7 @@
 .homepage-container {
   padding: 20px;
   max-width: 500px;
+  padding: 0; /* Remove extra padding */
   margin: auto;
   font-family: 'Arial', sans-serif;
   background-color: #f9f9f9;
@@ -43,34 +44,32 @@
   list-style-type: none;
   padding: 0;
 } */
+ 
 .post-list{
   width: 100%;
   height: auto;
   background: #fff;
   border: 1px solid #dfdfdf;
   margin-top: 40px;
+  padding: 0; /* Reset padding */
 }
+
 .description{
   margin: 10px 0;
   font-size: 14px;
   line-height: 20px;
 }
 
-/* .post-item {
-  background-color: white;
-  margin-bottom: 15px;
-  padding: 15px;
-  border-radius: 2px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-} */
 .post-item{
+  list-style-type: none;
   width: 100%;
   height: auto;
   background: #fff;
   border: 1px solid #dfdfdf;
-  margin-top: 40px;
+  margin: 40px 0; /* Top and bottom margin */
+  padding: 5px; 
+  box-sizing: border-box;
 }
-
 
 /* Upvote Button */
 .upvote-button {
