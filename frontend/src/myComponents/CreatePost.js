@@ -132,7 +132,7 @@ function CreatePost() {
         </nav>
       
        
-        <div className="container">
+        <div className="create-post-container">
           <form
             onSubmit={handleSubmit}
             className="form"
