@@ -127,10 +127,11 @@ function CreatePost() {
 
   return (
     <>
-      <div className="homepage-container">
-        <nav className="navbar">
+     <nav className="navbar">
           <div className="logo-container"></div>
         </nav>
+      
+       
         <div className="container">
           <form
             onSubmit={handleSubmit}
@@ -197,7 +198,7 @@ function CreatePost() {
             </button>
           </form>
         </div>
-      </div>
+      
     </>
   );
 }

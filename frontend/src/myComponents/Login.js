@@ -42,10 +42,11 @@ const Login = () => {
 
   return (
     <>
-    <div className='homepage-container'>
-       <nav className="navbar">
+    <nav className="navbar">
          <div className="logo-container"></div>
        </nav>
+    <div className='homepage-container'>
+       
       <div className='container'>
         <p style={{color :"green"}}>Website still under development, i still have add createUser component. But i did make some accounts using Testing tools. </p>
         <p>Please use :New1@mail.com password:qwerty</p>

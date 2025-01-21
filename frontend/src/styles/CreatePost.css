@@ -1,38 +1,179 @@
-.container{
-    padding:100px;
-    max-width: 250px;
-    display:flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.button{
-    color:white;
-    background-color: #4caf50;
-    border:none;
-    padding:10px 20px;
-    font-size: 16px;
-    border-radius: 2px;
-    transition: background-color 0.3s ease;
-
-} 
-.button:hover{
-    background-color: #47a74b;
-}
-.input,
-.textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
+/* General reset for padding and margin */
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+  color: black;
 }
-.form-group {
-    margin-bottom: 15px;
-}
+
+/* Full viewport height container */
+
+
+/* Form container */
+/* Form container */
+.container {
+  height: 200px;
+  background: rgba(255, 255, 255, 0.1); /* Light semi-transparent background */
+  border-radius: 12px;
+  padding: 30px 40px;
+  max-width: 400px; /* Smaller width */
+  width: 100%;
+  backdrop-filter: blur(10px); /* Glassmorphism effect */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
+  /* Centering */
+  margin: auto auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* Header */
+.header {
+  font-size: 2rem;
+  color: #0a0909;
+  margin-bottom: 20px;
+  text-align: center;
   font-weight: bold;
+}
+
+/* Form elements */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Label styling */
+label {
+  font-size: 1.1rem;
+  color: #020202;
+  margin-bottom: 8px;
+  display: block;
+  font-weight: 600;
+}
+
+/* Input and Textarea styles */
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #000000;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+/* Focus effect for inputs */
+input[type="text"]:focus,
+textarea:focus {
+  border-color: #64b5f6;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Media upload button */
+input[type="file"] {
+  background: rgba(255, 255, 255, 0.1);
+  color: #000000;
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+/* Media preview styling */
+.media-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.preview-image {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  object-fit: cover;
+  max-height: 200px;
+}
+
+.clear-media-btn {
+  background: rgba(255, 255, 255, 0.3);
+  color: #000000;
+  border: none;
+  padding: 5px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.clear-media-btn:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Error message styling */
+.error-message {
+  background-color: rgba(255, 99, 71, 0.8);
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+/* Submit button */
+button[type="submit"] {
+  background-color: #64b5f6;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #1976d2;
+}
+
+button[type="submit"]:disabled {
+  background-color: rgba(100, 181, 246, 0.6);
+  cursor: not-allowed;
+}
+
+/* Button loading state */
+button[type="submit"]:disabled:after {
+  content: ' Creating Post...';
+  display: inline-block;
+  margin-left: 10px;
+}
+
+/* Add a subtle transition for form elements */
+input[type="text"],
+textarea,
+button {
+  transition: all 0.3s ease-in-out;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 20px 25px;
+    width: 100%;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  input[type="text"], textarea, button {
+    font-size: 1rem;
+  }
 }

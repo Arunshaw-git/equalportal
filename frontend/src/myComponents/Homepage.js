@@ -55,16 +55,16 @@ const Homepage = () => {
 
   return (
     <>
-      <div className="homepage-container">
-        <nav className="navbar">
+    <nav className="navbar">
           <Link to="/">
             <div className="logo-container"></div>
           </Link>
           <Logout />
         </nav>
+      <div className="homepage-container">
+        
 
         <div className="header">
-          <p>null</p>
           <h1>Posts</h1>
         </div>
         <div className="create-post-container">
