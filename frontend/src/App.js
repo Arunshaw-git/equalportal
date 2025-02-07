@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './myComponents/Login'; // Example import of your homepage
 import CreatePost from './myComponents/CreatePost'; 
 import Footer from './myComponents/Footer'; 
-import CreateUser from './myComponents/CreateUser';
+import CreateUser from '../src/myComponents/CreateUser';
 
 
 function App() {
