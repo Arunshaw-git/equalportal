@@ -11,7 +11,8 @@ function CreatePost() {
   const [isLoading, setIsLoading] = useState(false);
   const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
-
+  
+  //uploaded image handling 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
 

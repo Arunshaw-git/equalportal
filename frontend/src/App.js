@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './myComponents/Login'; // Example import of your homepage
 import CreatePost from './myComponents/CreatePost'; // Example import of your homepage
 import Footer from './myComponents/Footer'; // Import your Footer component
+import CreateUser from './myComponents/CreateUser';
 
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
     <Router>
       <div className="app-container"> 
         <Routes>
+          <Route path="/createuser" element={<CreateUser />}/>
           <Route path="/" element={<Homepage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/create" element={<CreatePost />} />

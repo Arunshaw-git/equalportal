@@ -3,7 +3,6 @@ const express = require('express')
 const cors = require('cors');
 const helmet = require('helmet');
 const fs = require('fs');
-const bodyParser = require("body-parser");
 const cloudinary = require('./config/cloudinary');
 const path = require("path");
 
@@ -53,10 +52,10 @@ app.use(express.json()); // Do not need this for FormData
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Route handling
-app.use("/create", createRoutes);
-app.use("/auth", authRoutes);
-app.use("/", homeRoutes);
-
+// Route handling with base URL prefixes
+app.use("/create", createRoutes); // Routes in create.js will be prefixed with /create
+app.use("/auth", authRoutes);    // Routes in auth.js will be prefixed with /auth
+app.use("/", homeRoutes);        // Routes in home.js will be accessible from /
 // Call both connection functions from db
 connectToUsersDB();
 connectToPostsDB();
