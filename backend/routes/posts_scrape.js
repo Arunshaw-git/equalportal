@@ -1,9 +1,8 @@
 const express = require("express");
 const Post = require("../models/Post");
-
 const router = express.Router();
 
-router.get("/posts\\scrape", async (req,res)=>{
+router.get("/postsscrape", async (req,res)=>{
     try {
 
         const posts = await Post.find({}, "title desc");
