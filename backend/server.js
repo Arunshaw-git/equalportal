@@ -11,6 +11,7 @@ const { connectToUsersDB, connectToPostsDB } = require('./db');
 const createRoutes = require("./routes/create");
 const authRoutes = require("./routes/auth");
 const homeRoutes = require("./routes/home");
+const posts_scrape = require("./routes/posts_scrape");
 
 const app = express()
 const port = process.env.PORT || 5001;
@@ -56,6 +57,8 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use("/create", createRoutes); // Routes in create.js will be prefixed with /create
 app.use("/auth", authRoutes);    // Routes in auth.js will be prefixed with /auth
 app.use("/", homeRoutes);        // Routes in home.js will be accessible from /
+app.use("/", posts_scrape);
+
 // Call both connection functions from db
 connectToUsersDB();
 connectToPostsDB();
