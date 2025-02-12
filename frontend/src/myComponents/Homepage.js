@@ -8,8 +8,10 @@ import Logout from "./Logout";
 const Homepage = () => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
+  const [results, setResults] =useState([])
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_URL;
+  
   // Check if user is logged in by verifying the token in localStorage
   useEffect(() => {
     
@@ -44,7 +46,8 @@ const Homepage = () => {
       }
 
       const data = await response.json();
-      setPosts(data); // Set posts into state
+      setResults(data.results || [])
+      setPosts(data.posts  || []); // Set posts into state
     } catch (error) {
       setError(error.message);
       console.error("Fetch error:", error); // Log any errors encountered during fetch
@@ -63,7 +66,6 @@ const Homepage = () => {
         </nav>
       <div className="homepage-container">
         
-
         <div className="header">
           <h1>Posts</h1>
         </div>
@@ -79,10 +81,25 @@ const Homepage = () => {
 
         <ul className="post-list">
           {posts.length > 0 ? (
-            posts.map((post) => (
+            posts.map((post, index) => (
               <li key={post._id} className="post-item">
                 <h2>{post.title}</h2>
                 <p className="description">{post.desc}</p>
+                {/* Display results if available, otherwise "No links found" */}
+                <p className="description">
+                  {results.length === 0 || !results[index] || results[index] === ""
+                    ?"No Links found"
+                    :"Related Link:"}
+                </p>
+
+                {results.length > 0 && results[index] &&(
+                  <p className="description">
+                    <a href={results[index]} target="_blank" rel="noopener noreferrer">
+                      {results[index]}
+                    </a>
+                 </p>
+                )}
+
                 {post.media ? (
                   <img
                   src={`${post.media}`}
