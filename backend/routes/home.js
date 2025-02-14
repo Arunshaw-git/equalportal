@@ -21,22 +21,24 @@ const upload = multer({ storage: storage });
 //chatgpt
 // Route to get all posts
 router.get("/", fetchUser, async (req, res) => {
-  let results = "";
   let success = false;
   let options = {
-    mode: "text",
-    pythonOptions: ["-u"], // Unbuffered output for real-time logging
+    mode: "text", pythonOptions: ["-u"], // Unbuffered output for real-time logging
   };
 
   try {
-    const messages = (PythonShell.run(
-      "./scraper/newsCrossCheck.py",
-      options
-    ).results = JSON.parse(messages.join(""))); // Convert Python output to JSON
-    success = true;
-
+   
     const posts = await Post.find(); // Fetch all posts from the database
-    res.json({ posts, success, results }); // Send the posts as a JSON response
+    let results = [];
+    try {
+      const messages = await PythonShell.run("./scraper/newsCrossCheck.py", options);
+      results = JSON.parse(messages.join("")); // Convert Python output to JSON
+    } catch (pyError) {
+      console.error("Python script error:", pyError.message);
+      results = new Array(posts.length).fill(""); // Fill results with empty values to match posts
+    }
+
+    res.json({ posts, success:true, results}); 
   } catch (error) {
     console.error("Error:", error.message);
     res.status(500).json({ success: false, error: "Internal Server Error" });
