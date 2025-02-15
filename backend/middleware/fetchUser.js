@@ -4,8 +4,7 @@ const JWT_SECRET = "equalport_secert_code"
 const fetchUser = (req,res,next)=>{ 
     const token = req.header('Authorization') 
     const actualToken = token ? token.split(' ')[1]: null;
-    console.log("Token:", actualToken);
-
+    
     if(!actualToken){
         return res.status(401).json({error:"Token not provided"})
     }

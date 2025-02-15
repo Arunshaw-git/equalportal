@@ -30,14 +30,17 @@ router.get("/", fetchUser, async (req, res) => {
    
     const posts = await Post.find(); // Fetch all posts from the database
     let results = [];
+
     try {
+      
       const messages = await PythonShell.run("./scraper/newsCrossCheck.py", options);
       results = JSON.parse(messages.join("")); // Convert Python output to JSON
+      console.log("results: xxxxxx",results)
     } catch (pyError) {
       console.error("Python script error:", pyError.message);
       results = new Array(posts.length).fill(""); // Fill results with empty values to match posts
     }
-
+     
     res.json({ posts, success:true, results}); 
   } catch (error) {
     console.error("Error:", error.message);
