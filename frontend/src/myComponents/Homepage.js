@@ -46,6 +46,7 @@ const Homepage = () => {
       }
 
       const data = await response.json();
+      console.log(data)
       setResults(data.results || [])
       setPosts(data.posts  || []); // Set posts into state
     } catch (error) {

@@ -16,7 +16,6 @@ const Login = () => {
     e.preventDefault();
     try {
       setIsLoading(true);
-      console.log("API URL:", apiUrl);
       const response = await fetch(`${apiUrl}/auth/login`, {
         method: 'POST',
         headers: {
