@@ -23,25 +23,27 @@ const upload = multer({ storage: storage });
 router.get("/", fetchUser, async (req, res) => {
   let success = false;
   let options = {
-    mode: "text", pythonOptions: ["-u"], // Unbuffered output for real-time logging
+    mode: "text",
+    pythonOptions: ["-u"], // Unbuffered output for real-time logging
   };
 
   try {
-   
     const posts = await Post.find(); // Fetch all posts from the database
-    let results = [];
+    var results = [];
 
     try {
-      
-      const messages = await PythonShell.run("./scraper/newsCrossCheck.py", options);
-      results = JSON.parse(messages.join("")); // Convert Python output to JSON
-      console.log("results: xxxxxx",results)
+      const messages = await PythonShell.run("./scraper/newsCrossCheck.py",options)
+      console.log("PythonShell Test Output:", messages); // ✅ Now messages is properly assigned
+
+      results = JSON.parse(messages[0]);
+      console.log("results:", results);
     } catch (pyError) {
       console.error("Python script error:", pyError.message);
       results = new Array(posts.length).fill(""); // Fill results with empty values to match posts
     }
-     
-    res.json({ posts, success:true, results}); 
+    console.log("results:", results);
+
+    res.json({ posts, success: true, results });
   } catch (error) {
     console.error("Error:", error.message);
     res.status(500).json({ success: false, error: "Internal Server Error" });

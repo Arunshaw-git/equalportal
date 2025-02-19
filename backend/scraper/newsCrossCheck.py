@@ -1,4 +1,6 @@
 import requests 
+import json
+
 from serpapi import GoogleSearch
 
 def matched_links():
@@ -7,7 +9,6 @@ def matched_links():
 
     if response.status_code == 200:
         posts= response.json()
-        print(posts)
     else:
         print("Failed to get post: ", response.status_code)
 
@@ -21,8 +22,6 @@ def matched_links():
 
             filtered_desc = ' '.join(word for word in desc_words if word not in words)
             trimmed_desc.append(filtered_desc)
-            print("#############")
-            print(trimmed_desc)
 
         return trimmed_desc
 
@@ -31,9 +30,13 @@ def matched_links():
             "q": trimmed_desc,
             "api_key": "701f2e32f2fea1813b49c367b06eb0b2bc0e0af823be49e4d6874cf1d2eb7734"
         }
-        search = GoogleSearch(params)
-        data = search.get_dict()
-        return data.get("organic_results", [])
+        try:
+            search = GoogleSearch(params)
+            data = search.get_dict()
+            return data.get("organic_results", [])
+        except Exception as e:
+            print(f"search error: {e}")
+            return []
 
     trimmed = trimming(posts)
 
@@ -45,5 +48,5 @@ def matched_links():
         
     return all_links
 
-
-print(matched_links())
+links = matched_links()
+print(json.dumps(links))
