@@ -1,6 +1,5 @@
 import requests 
 import json
-
 from serpapi import GoogleSearch
 
 def matched_links():
