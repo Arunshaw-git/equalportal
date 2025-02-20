@@ -18,7 +18,6 @@ def matched_links():
         for i in range(len(posts)):
             desc = posts[i]["desc"]
             desc_words = desc.split()
-
             filtered_desc = ' '.join(word for word in desc_words if word not in words)
             trimmed_desc.append(filtered_desc)
 

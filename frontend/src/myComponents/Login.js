@@ -12,6 +12,15 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const apiUrl = process.env.REACT_APP_API_URL;
+  
+  const handleSignUp = async (e) =>{
+    e.preventDefault();
+    navigate("/createUser")
+
+
+  }
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -47,14 +56,14 @@ const Login = () => {
     <div className='homepage-container'>
        
       <div className='container'>
-        <p style={{color :"green"}}>Website still under development, i still have add createUser component. But i did make some accounts using Testing tools. </p>
-        <p>Please use :New1@mail.com password:qwerty</p>
+        <p style={{color :"green"}}> Please reload the page if login takes too long and try again. </p>
         <h1>Login</h1>
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} >
           <div>
             <label>Email:</label>
             <input
+            
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -72,6 +81,9 @@ const Login = () => {
           </div>
           <button type="submit" className='button'>
           {isLoading ? "Logining..." : "Login"}
+          </button>
+          <button  className="signUp" onClick={handleSignUp}>
+            Sign Up
           </button>
         </form>
       </div>

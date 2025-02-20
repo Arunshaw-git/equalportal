@@ -1,0 +1,16 @@
+.signUp {
+    background-color: #f66464;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    border: none;
+    margin-top: 10px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+.signUp:hover{
+    background-color: #ce1c22;
+}

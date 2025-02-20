@@ -12,12 +12,11 @@
 /* Form container */
 /* Form container */
 .create-post-container {
-  height: 200px;
+  height: 50%;
   background: rgba(255, 255, 255, 0.1); /* Light semi-transparent background */
   border-radius: 12px;
   padding: 30px 40px;
-  max-width: 400px; /* Smaller width */
-  width: 100%;
+  max-width: 68%; /* Smaller width */
   backdrop-filter: blur(10px); /* Glassmorphism effect */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   
@@ -85,7 +84,17 @@ input[type="file"] {
   cursor: pointer;
   margin-top: 12px;
 }
-
+input{
+  background: rgba(255, 255, 255, 0.1);
+  color: #000000;
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 12px;
+}
 /* Media preview styling */
 .media-preview {
   display: flex;

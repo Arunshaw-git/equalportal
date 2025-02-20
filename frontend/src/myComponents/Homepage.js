@@ -86,15 +86,15 @@ const Homepage = () => {
               <li key={post._id} className="post-item">
                 <h2>{post.title}</h2>
                 <p className="description">{post.desc}</p>
+                
                 {/* Display results if available, otherwise "No links found" */}
-                <p className="description">
+                <p >
                   {results.length === 0 || !results[index] || results[index] === ""
                     ?"No Links found"
                     :"Related Link:"}
                 </p>
-
                 {results.length > 0 && results[index] &&(
-                  <p className="description">
+                  <p >
                     <a href={results[index]} target="_blank" rel="noopener noreferrer">
                       {results[index]}
                     </a>
