@@ -5,6 +5,9 @@ const Post = require("../models/Post");
 const multer = require("multer");
 const { PythonShell } = require("python-shell");
 
+let latestResults = null; // Store the latest results from Python script
+let waitingClients = [];  // Store waiting responses for long polling
+
 //chatgpt
 // Set up multer for file uploads
 const storage = multer.diskStorage({
@@ -18,36 +21,59 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-//chatgpt
+//chatgpt's help
 // Route to get all posts
 router.get("/", fetchUser, async (req, res) => {
-  let success = false;
-  let options = {
-    mode: "text",
-    pythonOptions: ["-u"], // Unbuffered output for real-time logging
-  };
+
 
   try {
     const posts = await Post.find(); // Fetch all posts from the database
-    var results = [];
-
-    try {
-      const messages = await PythonShell.run("./scraper/newsCrossCheck.py",options)
-      console.log("PythonShell Test Output:", messages); // ✅ Now messages is properly assigned
-
-      results = JSON.parse(messages[0]);
-      console.log("results:", results);
-    } catch (pyError) {
-      console.error("Python script error:", pyError.message);
-      results = new Array(posts.length).fill(""); // Fill results with empty values to match posts
-    }
-    console.log("results:", results);
-
-    res.json({ posts, success: true, results });
-  } catch (error) {
+    console.log(posts)
+    res.json(posts );
+  }catch (error) {
     console.error("Error:", error.message);
-    res.status(500).json({ success: false, error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
+
+// Long Polling Route for Results
+router.get("/results", async (req, res) => {
+  if (latestResults) {
+    res.json(latestResults); // Send results immediately if ready
+  } else {
+    waitingClients.push(res); // Store the response to be sent later
+
+    // Timeout to prevent infinite waiting
+    setTimeout(() => {
+      waitingClients = waitingClients.filter(r => r !== res);
+      res.json([]); // Send empty array if no results yet
+    }, 30000); // 30 seconds timeout
+  }
+});
+
+// Function to Run Python Script
+async function runPythonScript() {
+  let options = { mode: "text", pythonOptions: ["-u"] };
+
+  try {
+    const messages = await PythonShell.run("./scraper/newsCrossCheck.py", options);
+    console.log("PythonShell Output:", messages);
+
+    latestResults = JSON.parse(messages[0]); // Store results
+
+    // Respond to all waiting clients
+    waitingClients.forEach(res => res.json(latestResults));
+    waitingClients = []; // Clear stored requests
+  } catch (error) {
+    console.error("Python script error:", error.message);
+    
+    // Respond to waiting clients with an error
+    waitingClients.forEach(res => res.status(500).json({ error: "Failed to fetch results" }));
+    waitingClients = []; // Clear stored request
+  }
+}
+   
+// Run the Python script periodically
+setInterval(runPythonScript, 300000); // Every 60 seconds
 module.exports = router;
