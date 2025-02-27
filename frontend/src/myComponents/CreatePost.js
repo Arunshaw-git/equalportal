@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../styles/CreatePost.css";
+import Logout from "./Logout";
 
 function CreatePost() {
   const [title, setTitle] = useState("");
@@ -11,8 +12,8 @@ function CreatePost() {
   const [isLoading, setIsLoading] = useState(false);
   const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
-  
-  //uploaded image handling 
+
+  //uploaded image handling
   const handleFileChange = (e) => {
     const file = e.target.files[0];
 
@@ -87,8 +88,8 @@ function CreatePost() {
 
       // Get the token from localStorage
       const token = localStorage.getItem("token");
-      
-      // WE NEED TO FIRST COVERT THE FORM DATA INTO JSON FIRST 
+
+      // WE NEED TO FIRST COVERT THE FORM DATA INTO JSON FIRST
       var object = {};
       //SO FIRST CONVERT THE FORMDATA INTO OBJECT THEN JSON
       formData.forEach((value, key) => (object[key] = value));
@@ -128,78 +129,79 @@ function CreatePost() {
 
   return (
     <>
-     <nav className="navbar">
+      <nav className="navbar">
+        <Link to="/">
           <div className="logo-container"></div>
-        </nav>
-      
-       
-        <div className="create-post-container">
-          <form
-            onSubmit={handleSubmit}
-            className="form"
-            encType="multipart/form-data"
-          >
-            <h1 className="header">Create a Post</h1>
+        </Link>
+        <Logout />
+      </nav>
 
-            <div className="form-group">
-              <label htmlFor="title">Title</label>
-              <input
-                type="text"
-                id="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Enter post title"
-                required
-                maxLength={100}
-              />
-            </div>
+      <div className="create-post-container">
+        <form
+          onSubmit={handleSubmit}
+          className="form"
+          encType="multipart/form-data"
+        >
+          <h1 className="header">Create a Post</h1>
 
-            <div className="form-group">
-              <label htmlFor="description">Description</label>
-              <textarea
-                id="description"
-                value={desc}
-                onChange={(e) => setDesc(e.target.value)}
-                placeholder="Enter post description"
-                maxLength={500}
-                rows={4}
-              />
-            </div>
+          <div className="form-group">
+            <label htmlFor="title">Title</label>
+            <input
+              type="text"
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter post title"
+              required
+              maxLength={100}
+            />
+          </div>
 
-            {/* Media Upload */}
-            <div className="form-group">
-              <label htmlFor="media">Media (Optional)</label>
-              <input
-                type="file"
-                id="fileInput"
-                onChange={handleFileChange}
-                name="media"
-                accept="image/jpeg,image/png,image/gif"
-              />
-              {/* Media Preview */}
-              {preview && (
-                <div className="media-preview">
-                  <img src={preview} alt="Preview" className="preview-image" />
-                  <button
-                    type="button"
-                    onClick={clearMedia}
-                    className="clear-media-btn"
-                  >
-                    Remove Image
-                  </button>
-                </div>
-              )}
-            </div>
-            {/* Error Display */}
-            {error && <div className="error-message">{error}</div>}
+          <div className="form-group">
+            <label htmlFor="description">Description</label>
+            <textarea
+              id="description"
+              value={desc}
+              onChange={(e) => setDesc(e.target.value)}
+              placeholder="Enter post description"
+              maxLength={500}
+              rows={4}
+            />
+          </div>
 
-            {/* Submit Button */}
-            <button type="submit" disabled={isLoading} className="button">
-              {isLoading ? "Creating Post..." : "Create Post"}
-            </button>
-          </form>
-        </div>
-      
+          {/* Media Upload */}
+          <div className="form-group">
+            <label htmlFor="media">Media (Optional)</label>
+            <input
+              type="file"
+              id="fileInput"
+              onChange={handleFileChange}
+              name="media"
+              accept="image/jpeg,image/png,image/gif"
+            />
+            {/* Media Preview */}
+            {preview && (
+              <div className="media-preview">
+                <img src={preview} alt="Preview" className="preview-image" />
+                <button
+                  type="button"
+                  onClick={clearMedia}
+                  className="clear-media-btn"
+                >
+                  Remove Image
+                </button>
+              </div>
+            )}
+          </div>
+          {/* Error Display */}
+          {error && <div className="error-message">{error}</div>}
+
+          {/* Submit Button */}
+          <button type="submit" disabled={isLoading} className="button">
+            {isLoading ? "Creating Post..." : "Create Post"}
+          </button>
+        </form>
+      </div>
     </>
   );
 }

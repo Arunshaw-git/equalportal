@@ -152,22 +152,6 @@
   cursor: pointer;
 }
 
-/* Logout Button */
-.logout-button {
-  background-color: #f44336;
-  color: rgb(3, 2, 2);
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.logout-button:hover {
-  background-color: #d32f2f;
-}
-
 /* Error Message */
 .error-message {
   text-align: center;

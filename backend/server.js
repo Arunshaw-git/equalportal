@@ -12,6 +12,7 @@ const createRoutes = require("./routes/create");
 const authRoutes = require("./routes/auth");
 const homeRoutes = require("./routes/home");
 const posts_scrape = require("./routes/posts_scrape");
+const profile = require("./routes/profile");
 
 const app = express()
 const port = process.env.PORT || 5001;
@@ -58,6 +59,7 @@ app.use("/create", createRoutes); // Routes in create.js will be prefixed with /
 app.use("/auth", authRoutes);    // Routes in auth.js will be prefixed with /auth
 app.use("/", homeRoutes);        // Routes in home.js will be accessible from /
 app.use("/", posts_scrape);
+app.use("/", profile);
 
 // Call both connection functions from db
 connectToUsersDB();

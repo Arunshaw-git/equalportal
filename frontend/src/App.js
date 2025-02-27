@@ -5,6 +5,7 @@ import Login from './myComponents/Login'; // Example import of your homepage
 import CreatePost from './myComponents/CreatePost'; 
 import Footer from './myComponents/Footer'; 
 import CreateUser from './myComponents/CreateUser';
+import Profile from './myComponents/Profile';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<Homepage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/create" element={<CreatePost />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
         <Footer/>
       </div>

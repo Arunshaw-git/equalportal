@@ -18,10 +18,10 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + "-" + file.originalname); // Create a unique filename
   },
 });
-
 const upload = multer({ storage: storage });
 
-//chatgpt's help
+
+
 // Route to get all posts
 router.get("/", fetchUser, async (req, res) => {
 
@@ -35,7 +35,6 @@ router.get("/", fetchUser, async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 
 // Long Polling Route for Results
 router.get("/results", async (req, res) => {
@@ -75,5 +74,6 @@ async function runPythonScript() {
 }
    
 // Run the Python script periodically
-setInterval(runPythonScript, 300000); // Every 60 seconds
+setInterval(runPythonScript, 300000); // Every 5 mins
+
 module.exports = router;

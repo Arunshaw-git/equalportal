@@ -12,23 +12,16 @@ const Homepage = () => {
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_URL;
 
-  // Check if user is logged in by verifying the token in localStorage
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      console.warn("No token found, redirecting to login");
-      navigate("/login"); // Redirect to login page if no token is found
-    }
-  }, [navigate]);
-
   useEffect(() => {
     // Function to fetch posts from the backend
     const fetchPosts = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
         console.error("Token not provided while fetching posts");
+        navigate("/login"); // Redirect to login page if no token is found
         return; // Prevent fetching posts without a token
       }
+
       try {
         const response = await fetch(`${apiUrl}/`, {
           method: "GET",
@@ -59,7 +52,6 @@ const Homepage = () => {
     let isMounted = true; // To prevent memory leaks
 
     const fetchResults = async () => {
-      
       const token = localStorage.getItem("token"); // Move this inside the function
       if (!token) return;
 
@@ -106,6 +98,7 @@ const Homepage = () => {
         </Link>
         <Logout />
       </nav>
+      
       <div className="homepage-container">
         <div className="header">
           <h1>Posts</h1>

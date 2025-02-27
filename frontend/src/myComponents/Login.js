@@ -16,10 +16,7 @@ const Login = () => {
   const handleSignUp = async (e) =>{
     e.preventDefault();
     navigate("/createUser")
-
-
   }
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
