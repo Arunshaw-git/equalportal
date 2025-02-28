@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import Link from "react-router-dom";
 import Logout from "./Logout";
 const Profile = () => {
   const [user, setUser] = useState([]);
-  const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
@@ -12,7 +11,6 @@ const Profile = () => {
 
       if (!token) {
         console.log("Token not provided while fetching  ");
-        navigate("/login"); // Redirect to login
         return;
       }
 
@@ -35,7 +33,7 @@ const Profile = () => {
       }
     };
     fetchProfile();
-  }, [apiUrl,navigate]);
+  }, [apiUrl]);
 
   return (
     <>
