@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Link from "react-router-dom";
 import Logout from "./Logout";
 const Profile = () => {
   const [user, setUser] = useState([]);
@@ -38,9 +37,7 @@ const Profile = () => {
   return (
     <>
       <nav className="navbar">
-        <Link to="/">
           <div className="logo-container"></div>
-        </Link>
         <Logout />
       </nav>
 
