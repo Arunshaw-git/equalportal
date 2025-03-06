@@ -55,7 +55,7 @@ const Homepage = () => {
     };
 
     fetchPosts();
-  }, [apiUrl]);
+  }, [apiUrl,navigate]);
 
   useEffect(() => {
     let isMounted = true; // To prevent memory leaks
