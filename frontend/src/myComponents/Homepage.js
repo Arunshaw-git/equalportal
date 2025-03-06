@@ -11,6 +11,15 @@ const Homepage = () => {
   const [results, setResults] = useState([]);
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_URL;
+  
+    // Check if user is logged in by verifying the token in localStorage
+    useEffect(() => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.warn("No token found, redirecting to login");
+        navigate("/login"); // Redirect to login page if no token is found
+      }
+    }, [navigate]);
 
   useEffect(() => {
     // Function to fetch posts from the backend
