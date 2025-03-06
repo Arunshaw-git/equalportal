@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import "../styles/Homepage.css";
@@ -11,7 +11,7 @@ const Homepage = () => {
   const [results, setResults] = useState([]);
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_URL;
-  
+
     // Check if user is logged in by verifying the token in localStorage
     useEffect(() => {
       const token = localStorage.getItem("token");
@@ -102,9 +102,7 @@ const Homepage = () => {
   return (
     <>
       <nav className="navbar">
-        <Link to="/">
           <div className="logo-container"></div>
-        </Link>
         <Logout />
       </nav>
       
