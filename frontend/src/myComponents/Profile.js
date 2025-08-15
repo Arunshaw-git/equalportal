@@ -77,7 +77,7 @@ const Profile = () => {
       }
     };
     fetchProfile();
-  }, [apiUrl]);
+  }, [apiUrl,navigate]);
 
   return (
     <>
