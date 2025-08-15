@@ -7,7 +7,6 @@ import Footer from './myComponents/Footer';
 import CreateUser from './myComponents/CreateUser';
 import Profile from './myComponents/Profile';
 
-
 function App() {
   return (
     <Router>

@@ -6,11 +6,6 @@
   color: black;
 }
 
-/* Full viewport height container */
-
-
-/* Form container */
-/* Form container */
 .create-post-container {
   height: 50%;
   background: rgba(255, 255, 255, 0.1); /* Light semi-transparent background */
@@ -19,15 +14,13 @@
   max-width: 60%; /* Smaller width */
   backdrop-filter: blur(10px); /* Glassmorphism effect */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  
+
   /* Centering */
   margin: auto auto;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
-
 /* Header */
 .header {
   font-size: 2rem;
@@ -71,7 +64,18 @@ textarea:focus {
   border-color: #64b5f6;
   background: rgba(255, 255, 255, 0.3);
 }
-
+select{
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #000000;
+    outline: none;
+    transition: all 0.3s ease;
+}
 /* Media upload button */
 input[type="file"] {
   background: rgba(255, 255, 255, 0.1);
@@ -84,7 +88,7 @@ input[type="file"] {
   cursor: pointer;
   margin-top: 12px;
 }
-input{
+input {
   background: rgba(255, 255, 255, 0.1);
   color: #000000;
   padding: 10px;
@@ -160,7 +164,7 @@ button[type="submit"]:disabled {
 
 /* Button loading state */
 button[type="submit"]:disabled:after {
-  content: ' Creating Post...';
+  content: " Creating Post...";
   display: inline-block;
   margin-left: 10px;
 }
@@ -182,7 +186,9 @@ button {
     margin-bottom: 15px;
   }
 
-  input[type="text"], textarea, button {
+  input[type="text"],
+  textarea,
+  button {
     font-size: 1rem;
   }
 }

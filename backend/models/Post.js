@@ -1,37 +1,22 @@
-const mongoose = require('mongoose')
-const postsConnection = mongoose.createConnection(process.env.MONGODB_POSTS_URI)
-const { Schema } = mongoose;
-const PostSchema = new Schema({
-    title :{
-      type: String,
-      required:true
-    },
-    desc:{
-        type:String,
-        required:false
-    },
-    media:{
-        type: String,
-        required: false,
-    },
-    upvote:{
-        type: Number, // Use Number type instead of int
-        default: 0,
-    },
-    comments:{
-        type:[String],
-        default: [],  
+const mongoose = require("mongoose");
 
-    },
-    share:{
-        type: Number, // Use Number type instead of int
-        default: 0,
-    },
-    creation_date:{
-        type:Date,
-        default: Date.now,
-    },
+const PostSchema = new mongoose.Schema({
+    title :{type: String, required: true},
+    desc:{type:String, required: true},
+    media:{type: String, required: false},
+    author:{type:mongoose.Schema.Types.ObjectId, ref:"User", required:true},
+    upvotes:[{type:mongoose.Schema.Types.ObjectId, ref:"User" }],
+    downvotes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    comments:[{type:mongoose.Schema.Types.ObjectId,ref:"Comments"}],
     
+},{timestamps:true});
+
+PostSchema.pre('save', function(next) {
+    // If user is in both arrays, remove from the other one
+    const common = this.upvotes.filter(userId => this.downvotes.includes(userId));
+    if (common.length > 0) {
+        this.downvotes = this.downvotes.filter(userId => !common.includes(userId));
+    }
+    next();
 });
-const Post = postsConnection.model('Post',PostSchema);
-module.exports = Post 
+module.exports = mongoose.model("Post", PostSchema) 

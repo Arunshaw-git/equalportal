@@ -1,10 +1,7 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose")
 //A dedicated connection for the users database
-const usersConnection = mongoose.createConnection(process.env.MONGODB_USERS_URI);
 
-const { Schema } = mongoose;
-  
-const UserSchema = new Schema({
+const UserSchema = new mongoose.Schema({
     userName:{
         unique:true,
         type:String,
@@ -23,12 +20,22 @@ const UserSchema = new Schema({
         type:String,
         required:true
     },
-    CreationDate:{
-        type:Date,
-        default: Date.now
+    profilePicture:{
+        type:String,
+        required:false,
+        default:''
     },
+    gender:{
+        type:String,
+        enum:['Male','Female','Other'],
+        default:''
+    },
+    followers:[{type:mongoose.Schema.Types.ObjectId, ref:"User"}],
+    following:[{type:mongoose.Schema.Types.ObjectId, ref:"User"}],
+    posts:[{type:mongoose.Schema.Types.ObjectId, ref:"Post"}],
+   
     
-})
-const User = usersConnection.model('User',UserSchema);
+},{timestamps:true})
+const User = mongoose.model('User',UserSchema);
   
 module.exports = User;

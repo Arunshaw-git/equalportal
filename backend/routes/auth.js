@@ -4,7 +4,6 @@ const User = require("../models/User")
 const bcrypt = require("bcryptjs")
 var jwt = require("jsonwebtoken")
 const { body,validationResult } = require('express-validator');
-const fetchUser = require("../middleware/fetchUser"); 
 const JWT_SECRET = "equalport_secert_code"
 
 // ROUTE 1:CREATE a user using:post "/auth/createuser". No login required
@@ -32,6 +31,7 @@ router.post('/createuser',[
         if(userName){
             return res.status(400).json({error:"Username already exists"})
         }
+        const profilePicture = req.body.profilePicture;
         const salt = await bcrypt.genSalt(10);
         const secPass = await bcrypt.hash(req.body.password,salt);
         
@@ -41,19 +41,19 @@ router.post('/createuser',[
             password:secPass,
             email:req.body.email,
             userName:req.body.userName,
+            gender:req.body.gender,
+            profilePicture:profilePicture,
         }) 
         //tokenizing
         const token = jwt.sign({user:{id:user.id}},JWT_SECRET)
-        res.json({token})
+        res.json({token, user :{
+            id:user.id,
+        }})
 
     }catch(error){
         console.error(error.message)
         res.status(500).send("some error occured ")
     }
-    //these are commented out becuase they show the same res error for every error, specific res for specific error are above
-    // .then(user => res.json(user))
-    // .catch(err =>{ console.log(err)
-    // res.json({error:"please enter unique", message:err.message})})
 });
 
 //ROUTE 2:Authenticate a user using:post "/auth/login". No login required
@@ -81,30 +81,14 @@ router.post('/login',[
         //Giving a token the user 
         const payload = { user: { id: user.id } }; // Store user.id in the token
         const token = jwt.sign(payload,JWT_SECRET,{ expiresIn: '2d' })
-        res.json({token});
+        res.json({token,user: {
+            id: user.id,
+            // include other user fields you might need
+        }});
     } catch (error) {
         console.error(error.message)
         res.status(500).send("internal server error occured")
     }
-
-    
 });
-
-//ROUTE 3: Get logged in User Details using: POST "auth/getuser".(Login Required)
- router.post('/getuser',fetchUser, async (req,res)=>{
-    try{
-        console.log("User ID from Token:", req.user); // Log req.user before using it
-        console.log('User ID from token:', req.user.id);
-        // req.user will be set in the fetchUser middleware
-        var userId = req.user.id;
-        // Fetch the user details from the database
-        const user = await User.findById(userId).select('-password'); // Exclude the password field
-        // Return the user details
-        res.send(user);
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).send("Internal Server Error");
-    }
- });
 
 module.exports = router 

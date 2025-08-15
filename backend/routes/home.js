@@ -25,10 +25,8 @@ const upload = multer({ storage: storage });
 // Route to get all posts
 router.get("/", fetchUser, async (req, res) => {
 
-
   try {
     const posts = await Post.find(); // Fetch all posts from the database
-    console.log(posts)
     res.json(posts );
   }catch (error) {
     console.error("Error:", error.message);
@@ -52,28 +50,28 @@ router.get("/results", async (req, res) => {
 });
 
 // Function to Run Python Script
-async function runPythonScript() {
-  let options = { mode: "text", pythonOptions: ["-u"] };
+// async function runPythonScript() {
+//   let options = { mode: "text", pythonOptions: ["-u"] };
 
-  try {
-    const messages = await PythonShell.run("./scraper/newsCrossCheck.py", options);
-    console.log("PythonShell Output:", messages);
+//   try {
+//     const messages = await PythonShell.run("./scraper/newsCrossCheck.py", options);
+//     console.log("PythonShell Output:", messages);
 
-    latestResults = JSON.parse(messages[0]); // Store results
+//     latestResults = JSON.parse(messages[0]); // Store results
 
-    // Respond to all waiting clients
-    waitingClients.forEach(res => res.json(latestResults));
-    waitingClients = []; // Clear stored requests
-  } catch (error) {
-    console.error("Python script error:", error.message);
+//     // Respond to all waiting clients
+//     waitingClients.forEach(res => res.json(latestResults));
+//     waitingClients = []; // Clear stored requests
+//   } catch (error) {
+//     console.error("Python script error:", error.message);
     
-    // Respond to waiting clients with an error
-    waitingClients.forEach(res => res.status(500).json({ error: "Failed to fetch results" }));
-    waitingClients = []; // Clear stored request
-  }
-}
+//     // Respond to waiting clients with an error
+//     waitingClients.forEach(res => res.status(500).json({ error: "Failed to fetch results" }));
+//     waitingClients = []; // Clear stored request
+//   }
+// }
    
 // Run the Python script periodically
-setInterval(runPythonScript, 300000); // Every 5 mins
+//setInterval(runPythonScript, 300000); // Every 5 mins
 
 module.exports = router;

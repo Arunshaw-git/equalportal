@@ -1,0 +1,136 @@
+/* frontend/src/styles/Sidebar.css */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 80px; /* Height of your navbar */
+  bottom: 0;
+  width: 200px;
+  background-color: white;
+  border-right: 1px solid #dbdbdb;
+  padding: 15px 0;
+  z-index: 5;
+  overflow-y: auto;
+  transition: width 0.3s ease, padding 0.3s ease
+}
+
+.nav-text {
+  display: inline-block;
+  margin-left: 12px; /* Add space between icon and text */
+  font-size: 16px; /* Make text bigger */
+}
+.sidebar.open {
+  width: 200px; /* Full width */
+  padding: 15px 0;
+}
+
+.sidebar.closed {
+  width: 60px; /* Collapsed width */
+}
+.sidebar.closed .nav-text {
+  display: none; /* Hide text in collapsed version */
+}
+.nav-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: #262626;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 12px 0;
+  transition: background-color 0.2s;
+}
+
+.nav-item:hover {
+  background-color: #f5f5f5;
+}
+
+.nav-item.active {
+  font-weight: 600;
+  background-color: #f0f0f0;
+}
+
+.nav-icon {
+  margin-right: 0;
+}
+
+/* Rest of your existing styles */
+.sidebar-content {
+  padding: 0 12px;
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #262626;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.nav-item:hover {
+  background-color: #f5f5f5;
+}
+
+.nav-item.active {
+  font-weight: 600;
+  background-color: #f0f0f0;
+}
+
+.nav-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 60px; /* Smaller sidebar when collapsed */
+  }
+
+  .homepage-container {
+    margin-left: 60px; /* Adjust the margin for collapsed sidebar */
+  }
+ 
+  .nav-text {
+    display: none; /* Hide text in collapsed state */
+  }
+
+  .nav-item {
+    justify-content: center; /* Center items when collapsed */
+    padding: 12px 0;
+  }
+
+  .nav-icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* Mobile responsiveness: For very small screens (e.g., mobile devices) */
+@media (max-width: 640px) {
+  .sidebar {
+    transform: translateX(-100%); /* Sidebar hidden off-screen by default */
+  }
+
+  .sidebar.open {
+    transform: translateX(0); /* Sidebar comes into view when 'open' class is applied */
+  }
+
+  .homepage-container {
+    margin-left: 18px;
+    
+  }
+}

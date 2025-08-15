@@ -1,9 +1,6 @@
 .App {
   text-align: center;
 }
-
-
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -33,7 +30,6 @@
   flex-direction: column; /* Stack children vertically */
   min-height: 100vh; /* Take full height of the viewport */
 }
-
 
 .container {
   flex-grow: 1; /* Push the footer to the bottom if content is short */

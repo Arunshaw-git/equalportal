@@ -31,12 +31,15 @@ const Login = () => {
       });
 
       const data = await response.json();
+      console.log('Login response:', data); // Add this line
+
       if (!response.ok) {
         throw new Error(data.error || 'Login failed');
       }
       
       // Store the token in localStorage and navigate to homepage
       localStorage.setItem('token', data.token);
+      localStorage.setItem('userId', data.user?.id || '');
       navigate('/');
     } catch (error) {
       setError(error.message);

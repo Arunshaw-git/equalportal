@@ -6,14 +6,15 @@ const fs = require('fs');
 const cloudinary = require('./config/cloudinary');
 const path = require("path");
 
-const { connectToUsersDB, connectToPostsDB } = require('./db');
+
+const connectToDB = require('./db');
 
 const createRoutes = require("./routes/create");
 const authRoutes = require("./routes/auth");
 const homeRoutes = require("./routes/home");
 const posts_scrape = require("./routes/posts_scrape");
 const profile = require("./routes/profile");
-
+const votes = require("./routes/votes");
 const app = express()
 const port = process.env.PORT || 5001;
 
@@ -49,21 +50,20 @@ app.use((req, res, next) => {
   next();
 });
 
-
 app.use(express.json()); // Do not need this for FormData
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Route handling
 // Route handling with base URL prefixes
-app.use("/create", createRoutes); // Routes in create.js will be prefixed with /create
-app.use("/auth", authRoutes);    // Routes in auth.js will be prefixed with /auth
-app.use("/", homeRoutes);        // Routes in home.js will be accessible from /
+app.use("/create", createRoutes); 
+app.use("/auth", authRoutes);    
+app.use("/", homeRoutes);        
 app.use("/", posts_scrape);
 app.use("/", profile);
+app.use("/", votes);
 
 // Call both connection functions from db
-connectToUsersDB();
-connectToPostsDB();
+connectToDB();
 
 // Error handling middleware
 app.use((err, req, res, next) => {
