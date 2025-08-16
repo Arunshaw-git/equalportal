@@ -10,7 +10,7 @@ import Sidebar from "./Sidebar";
 const Homepage = () => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
-  const [results, setResults] = useState([]);
+  // const [results, setResults] = useState([]);
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_URL;
   const currentUserId = localStorage.getItem("userId");
@@ -163,15 +163,15 @@ const Homepage = () => {
                   {post.author ? (
                     <>
                       <Link to={`/profile/${post.author._id}`}>
-                      <img
-                        src={post.author.profilePicture}
-                        alt={post.author.name}
-                        className="author-img"
-                      />
+                        <img
+                          src={post.author.profilePicture}
+                          alt={post.author.name}
+                          className="author-img"
+                        />
                       </Link>
                       <div>
-                      <h3>{post.author.name}</h3>
-                      <p>@{post.author.userName}</p>
+                        <h3>{post.author.name}</h3>
+                        <p>@{post.author.userName}</p>
                       </div>
                     </>
                   ) : (
@@ -183,7 +183,7 @@ const Homepage = () => {
                 <p className="description">{post.desc}</p>
 
                 {/* Display results if available, otherwise "No links found" */}
-                <p>
+                {/* <p>
                   {results.length === 0 ||
                   !results[index] ||
                   results[index] === ""
@@ -200,7 +200,7 @@ const Homepage = () => {
                       {results[index]}
                     </a>
                   </p>
-                )}
+                )} */}
 
                 {post.media ? (
                   <img

@@ -41,7 +41,7 @@ const Profile = () => {
       console.error("Error voting:", error);
     }
   };
-  
+
   //fetch profile
   useEffect(() => {
     const fetchProfile = async () => {
@@ -81,7 +81,7 @@ const Profile = () => {
       }
     };
     fetchProfile();
-  }, [apiUrl, navigate]);
+  }, [apiUrl, navigate,userIdToFetch]);
 
   return (
     <>
