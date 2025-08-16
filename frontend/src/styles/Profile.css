@@ -118,7 +118,7 @@
   
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 768px) {
   .profile-container {
     margin-left: 0; /* Sidebar collapses or becomes overlay */
   }

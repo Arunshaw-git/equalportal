@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import "../styles/Homepage.css";
@@ -83,47 +83,47 @@ const Homepage = () => {
     fetchPosts();
   }, [apiUrl, navigate]);
 
-  useEffect(() => {
-    let isMounted = true; // To prevent memory leaks
+  // useEffect(() => {
+  //   let isMounted = true; // To prevent memory leaks
 
-    const fetchResults = async () => {
-      const token = localStorage.getItem("token"); // Move this inside the function
-      if (!token) return;
+  //   const fetchResults = async () => {
+  //     const token = localStorage.getItem("token"); // Move this inside the function
+  //     if (!token) return;
 
-      try {
-        const response = await fetch(`${apiUrl}/results`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  //     try {
+  //       const response = await fetch(`${apiUrl}/results`, {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
 
-        console.log("Response Status:", response.status);
-        console.log("Response Headers:", response.headers);
+  //       console.log("Response Status:", response.status);
+  //       console.log("Response Headers:", response.headers);
 
-        if (!response.ok) throw new Error("Failed to fetch results");
+  //       if (!response.ok) throw new Error("Failed to fetch results");
 
-        const data = await response.json();
-        console.log("Fetched results:", data);
-        setResults(data); // Update results in state
+  //       const data = await response.json();
+  //       console.log("Fetched results:", data);
+  //       setResults(data); // Update results in state
 
-        //start another request
-        if (isMounted) {
-          setResults(data);
-          setTimeout(fetchResults, 5000); // Retry every 5s
-        }
-      } catch (error) {
-        console.error("Error fetching results:", error);
-        if (isMounted) setTimeout(fetchResults, 5000);
-      }
-    };
+  //       //start another request
+  //       if (isMounted) {
+  //         setResults(data);
+  //         setTimeout(fetchResults, 5000); // Retry every 5s
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching results:", error);
+  //       if (isMounted) setTimeout(fetchResults, 5000);
+  //     }
+  //   };
 
-    fetchResults();
-    return () => {
-      isMounted = false; // Cleanup function
-    };
-  }, [apiUrl]);
+  //   fetchResults();
+  //   return () => {
+  //     isMounted = false; // Cleanup function
+  //   };
+  // }, [apiUrl]);
 
   return (
     <>
@@ -159,6 +159,26 @@ const Homepage = () => {
           {posts.length > 0 ? (
             posts.map((post, index) => (
               <li key={post._id} className="post-item">
+                <div className="post-author">
+                  {post.author ? (
+                    <>
+                      <Link to={`/profile/${post.author._id}`}>
+                      <img
+                        src={post.author.profilePicture}
+                        alt={post.author.name}
+                        className="author-img"
+                      />
+                      </Link>
+                      <div>
+                      <h3>{post.author.name}</h3>
+                      <p>@{post.author.userName}</p>
+                      </div>
+                    </>
+                  ) : (
+                    <p>unkown</p>
+                  )}
+                </div>
+                <p className="profile-line"></p>
                 <h2>{post.title}</h2>
                 <p className="description">{post.desc}</p>
 

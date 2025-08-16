@@ -2,17 +2,21 @@ import React, { useEffect, useState } from "react";
 import Logout from "./Logout";
 import "../styles/Profile.css";
 import Sidebar from "./Sidebar";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 const Profile = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const currentUserId = localStorage.getItem("userId");
+  const userIdToFetch = id || currentUserId;
 
   const [user, setUser] = useState([]);
   const [posts, setPosts] = useState([]);
   const apiUrl = process.env.REACT_APP_API_URL;
+
+  // vote handler
   const handleVote = async (postId, voteType) => {
     try {
       const token = localStorage.getItem("token");
@@ -37,10 +41,10 @@ const Profile = () => {
       console.error("Error voting:", error);
     }
   };
-
+  
+  //fetch profile
   useEffect(() => {
     const fetchProfile = async () => {
-      const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
 
       if (!token) {
@@ -50,7 +54,7 @@ const Profile = () => {
       }
 
       try {
-        const response = await fetch(`${apiUrl}/profile`, {
+        const response = await fetch(`${apiUrl}/profile/${userIdToFetch}`, {
           method: "GET",
           headers: {
             "content-type": "application/json",
@@ -62,7 +66,7 @@ const Profile = () => {
         const data = await response.json();
         setUser(data);
 
-        const postsResponse = await fetch(`${apiUrl}/posts/${userId}`, {
+        const postsResponse = await fetch(`${apiUrl}/posts/${userIdToFetch}`, {
           method: "GET",
           headers: {
             "content-type": "application/json",
@@ -77,7 +81,7 @@ const Profile = () => {
       }
     };
     fetchProfile();
-  }, [apiUrl,navigate]);
+  }, [apiUrl, navigate]);
 
   return (
     <>

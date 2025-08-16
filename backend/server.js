@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '../.env' }); // Load environment variables from .env file
+require('dotenv').config({ path: '../.env' }); 
 const express = require('express')
 const cors = require('cors');
 const helmet = require('helmet');
@@ -15,6 +15,7 @@ const homeRoutes = require("./routes/home");
 const posts_scrape = require("./routes/posts_scrape");
 const profile = require("./routes/profile");
 const votes = require("./routes/votes");
+const comments = require("./routes/comments");
 const app = express()
 const port = process.env.PORT || 5001;
 
@@ -61,6 +62,7 @@ app.use("/", homeRoutes);
 app.use("/", posts_scrape);
 app.use("/", profile);
 app.use("/", votes);
+app.use("/", comments);
 
 // Call both connection functions from db
 connectToDB();

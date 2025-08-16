@@ -4,10 +4,11 @@ const fetchUser = require("../middleware/fetchUser");
 const router = express.Router();
 const Post = require("../models/Post");
 
-router.get("/profile", fetchUser, async (req, res) => {
-    
+router.get("/profile/:id?", fetchUser, async (req, res) => {
+
   try {
-    let user = await User.findById(req.user.id).select("-password");
+    const userId = req.params.id || req.user.id
+    let user = await User.findById(userId).select("-password");
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -17,6 +18,8 @@ router.get("/profile", fetchUser, async (req, res) => {
     res.status(500).json("Internal error :", error);
   }
 });
+
+
 
 router.get("/posts/:id", fetchUser, async (req, res) => {
   const id = req.params.id;

@@ -46,5 +46,3 @@ def matched_links():
         
     return all_links
 
-links = matched_links()
-print(json.dumps(links))

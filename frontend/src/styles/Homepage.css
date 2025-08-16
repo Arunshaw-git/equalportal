@@ -189,12 +189,28 @@
   color: red;
   margin-top: 20px;
 }
+.post-author{
+  display:flex;
+  flex-direction: row;
+  
+}
+.post-author img{
+  max-width: 50px;
+  max-height: 50px;
+  width:50px;
+  height:50px;
+  border-radius: 50%;
+  overflow: hidden;
+  object-fit: cover;
+  margin-right: 20px;
 
+}
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
   .homepage-container {
     padding: 10px;
     max-width: 90%;
+    margin-left: 0;
   }
 
   .create-post-button {

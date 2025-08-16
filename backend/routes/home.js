@@ -26,13 +26,18 @@ const upload = multer({ storage: storage });
 router.get("/", fetchUser, async (req, res) => {
 
   try {
-    const posts = await Post.find(); // Fetch all posts from the database
+    const posts = await Post.find().populate("author","name userName profilePicture"); 
     res.json(posts );
   }catch (error) {
     console.error("Error:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+// router.post('//followOrUnfollow', async(req,res)=>{
+//   const follower = req.user.id;
+//   const toBeFollowed = req.paramas.id
+// })
 
 // Long Polling Route for Results
 router.get("/results", async (req, res) => {
