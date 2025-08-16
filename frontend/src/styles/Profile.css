@@ -9,6 +9,16 @@
   
   transition: margin-left 0.3s ease; /* Ensure content is stacked vertically */
 }
+/* Profile posts wrapper */
+.profile-posts {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* center posts horizontally */
+  width: 100%;
+  margin: 0 auto;
+}
+
 
 /* Profile div - Profile image and details section */
 .profile-div {
@@ -114,8 +124,7 @@
   .profile-details {
     align-items: center;
     text-align: center;
-  }
-  
+  }  
 }
 
 @media screen and (max-width: 768px) {

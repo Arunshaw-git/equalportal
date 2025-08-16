@@ -118,7 +118,8 @@ const Profile = () => {
         <div className="profile-line"></div>
 
         {/* User's Posts Section */}
-        <ul className="post-list">
+        
+        <ul className="profile-posts">
           {posts.length > 0 ? (
             posts.map((post, index) => (
               <li key={post._id} className="post-item">
