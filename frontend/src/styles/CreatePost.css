@@ -49,8 +49,8 @@ input[type="text"],
 textarea {
   width: 100%;
   padding: 12px;
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgb(255, 255, 255);
+  border: 1px solid rgba(55, 55, 55, 0.3);
   border-radius: 8px;
   font-size: 1rem;
   color: #000000;
@@ -68,8 +68,8 @@ select{
     width: 100%;
     padding: 12px;
     margin: 10px 0;
-    background: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgb(255, 255, 255);
+    border: 1px solid rgba(37, 37, 37, 0.3);
     border-radius: 8px;
     font-size: 1rem;
     color: #000000;
@@ -83,18 +83,18 @@ input[type="file"] {
   padding: 10px;
   border-radius: 8px;
   width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgb(45, 43, 43);
   font-size: 1rem;
   cursor: pointer;
   margin-top: 12px;
 }
 input {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgb(255, 255, 255);
   color: #000000;
   padding: 10px;
   border-radius: 8px;
   width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(47, 47, 47, 0.3);
   font-size: 1rem;
   cursor: pointer;
   margin-top: 12px;

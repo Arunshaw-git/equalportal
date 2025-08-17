@@ -37,7 +37,9 @@
 .create-post-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 30px;
+  
+  background-color: transparent;
+  box-shadow: none !important;
 }
 
 /* Create Post Button */
@@ -48,9 +50,10 @@
   padding: 15px 30px;
   font-size: 18px;
   font-weight: bold;
-  border-radius: 25px;
+  border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
+  
 }
 
 .create-post-button:hover {
@@ -70,7 +73,7 @@
 }
 
 .post-item {
-  background: rgba(255, 255, 255, 0.15); 
+  background: rgb(255, 255, 255); 
   backdrop-filter: blur(8px); 
   padding: 15px;
   margin: 10px 0;
@@ -79,6 +82,7 @@
   border-radius: 0px;
   max-width: 80%;
   min-width: 80%;
+  border-radius: 10px;
 }
 
 .post-item:hover {
@@ -160,7 +164,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent navbar */
+  background-color: rgb(255, 255, 255); /* Semi-transparent navbar */
   backdrop-filter: blur(8px);
   
 }
@@ -214,7 +218,7 @@
   }
 
   .create-post-button {
-    padding: 12px 25px;
+    padding: 12px 30px;
     font-size: 16px;
   }
 

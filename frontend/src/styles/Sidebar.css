@@ -122,15 +122,43 @@
 /* Mobile responsiveness: For very small screens (e.g., mobile devices) */
 @media (max-width: 640px) {
   .sidebar {
-    transform: translateX(-100%); /* Sidebar hidden off-screen by default */
+    position: fixed;
+    top: auto;             /* Reset top */
+    bottom: 0;             /* Stick to bottom */
+    left: 0;
+    width: 100%;           /* Full width */
+    height: 60px;          /* Adjust as needed */
+    display: flex;         
+    justify-content: space-around; 
+    align-items: center;
+    background-color: #fff;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
+    z-index: 1000;
+    padding: 0;            /* Remove vertical padding if needed */
+    border-right: none;    /* Remove side border */
+    flex-direction: row;   
   }
-
+  .sidebar-content{
+    width:100%;
+  }
   .sidebar.open {
     transform: translateX(0); /* Sidebar comes into view when 'open' class is applied */
   }
+  .nav-menu {
+    display: flex;       /* Flex for nav items */
+    flex-direction: row; /* Horizontal row */
+    width: 100%;         /* Take full width */
+    justify-content: space-evenly;
+    overflow: hidden;    /* Prevent scrolling */
+  }
 
+  .nav-item {
+    flex-direction: column; /* If you want icon on top, text below (optional) */
+    padding: 0;            /* Remove extra padding */
+  }
   .homepage-container {
     margin-left: 18px;
+    
     
   }
 }

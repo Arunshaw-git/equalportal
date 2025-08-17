@@ -150,9 +150,9 @@ const Homepage = () => {
             onClick={() => navigate("/create")}
             className="create-post-button"
           >
-            + Create New Post
-          </button>
+          + Create Post</button>
         </div>
+
         {error && <p style={{ color: "red" }}>{error}</p>}
 
         <ul className="post-list">

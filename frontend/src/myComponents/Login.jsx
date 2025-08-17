@@ -79,6 +79,7 @@ const Login = () => {
               required
             />
           </div>
+          <p className='profile-line'></p>
           <button type="submit" className='button'>
           {isLoading ? "Logining..." : "Login"}
           </button>

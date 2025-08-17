@@ -26,6 +26,8 @@
 /* Mobile responsiveness: For very small screens */
 @media (max-width: 640px) {
   .footer {
-    margin-left: 0; /* Remove left margin on mobile */
+    margin-left: 0;
+    margin-top: 35px;
+    bottom:55px;
   }
 }
