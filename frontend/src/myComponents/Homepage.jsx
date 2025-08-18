@@ -6,14 +6,16 @@ import "../styles/Homepage.css";
 import Logout from "./Logout";
 import "../styles/ProfileBtn.css";
 import Sidebar from "./Sidebar";
+import Comments from "./Comments";
+import { usePosts } from '../contexts/PostsContext';
 
 const Homepage = () => {
-  const [posts, setPosts] = useState([]);
-  const [error, setError] = useState(null);
+  const { posts, setPosts, loading, error,setError, fetchPosts } = usePosts();
   // const [results, setResults] = useState([]);
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_URL;
   const currentUserId = localStorage.getItem("userId");
+  const [showComments, setShowComments] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -47,41 +49,6 @@ const Homepage = () => {
       console.error("Error voting:", error);
     }
   };
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("Token not provided while fetching posts");
-        navigate("/login"); // Redirect to login page if no token is found
-        return; // Prevent fetching posts without a token
-      }
-
-      try {
-        const response = await fetch(`${apiUrl}/`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Use token from localStorage
-          },
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json(); // Attempt to parse the response as JSON
-          throw new Error(errorData.error || "Failed to fetch posts");
-        }
-
-        const data = await response.json();
-        console.log(data);
-        setPosts(data); // Set posts into state
-      } catch (error) {
-        setError(error.message);
-        console.error("Fetch error:", error); // Log any errors encountered during fetch
-      }
-    };
-
-    fetchPosts();
-  }, [apiUrl, navigate]);
 
   // useEffect(() => {
   //   let isMounted = true; // To prevent memory leaks
@@ -124,19 +91,14 @@ const Homepage = () => {
   //     isMounted = false; // Cleanup function
   //   };
   // }, [apiUrl]);
-
+if(loading) return (<p>Loading..</p>)
   return (
     <>
       <nav className="navbar">
         <div className="logo-container"></div>
 
         <div className="nav-buttons">
-          <button
-            className="profile-button"
-            onClick={() => navigate("/profile")}
-          >
-            Profile
-          </button>
+          
           <Logout />
         </div>
       </nav>
@@ -250,8 +212,9 @@ const Homepage = () => {
                     />
                     {post.downvotes?.length || 0}
                   </button>
+                  
                 </div>
-                <p>Post id:{post._id}</p>
+                
               </li>
             ))
           ) : (

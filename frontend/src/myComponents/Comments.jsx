@@ -2,13 +2,10 @@ import React from 'react'
 
 const Comments = () => {
 
-
-
-
   return (
     <>
-        <div>
-        
+        <div className='comments-section'>
+          
 
 
 

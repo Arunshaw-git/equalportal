@@ -8,4 +8,4 @@ const commentSchema = new mongoose.Schema({
     downvotes:[{type:mongoose.Schema.Types.ObjectId, ref:"User"}],
 },{timestamps:true})
 
-module.exports = mongoose.model("Comment", commentSchema)
+module.exports = mongoose.model("Comments", commentSchema)

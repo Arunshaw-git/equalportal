@@ -4,9 +4,9 @@ const fetchUser = require("../middleware/fetchUser");
 const Post = require("../models/Post");
 const multer = require("multer");
 const { PythonShell } = require("python-shell");
-
+const Comments = require("../models/Comments"); 
 let latestResults = null; // Store the latest results from Python script
-let waitingClients = [];  // Store waiting responses for long polling
+let waitingClients = []; // Store waiting responses for long polling
 
 //chatgpt
 // Set up multer for file uploads
@@ -20,15 +20,20 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-
-
 // Route to get all posts
 router.get("/", fetchUser, async (req, res) => {
-
   try {
-    const posts = await Post.find().populate("author","name userName profilePicture"); 
-    res.json(posts );
-  }catch (error) {
+    const posts = await Post.find()
+      .populate("author", "name userName profilePicture")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "author",
+          select: "name userName profilePicture",
+        },
+      });
+    res.json(posts);
+  } catch (error) {
     console.error("Error:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -48,7 +53,7 @@ router.get("/results", async (req, res) => {
 
     // Timeout to prevent infinite waiting
     setTimeout(() => {
-      waitingClients = waitingClients.filter(r => r !== res);
+      waitingClients = waitingClients.filter((r) => r !== res);
       res.json([]); // Send empty array if no results yet
     }, 30000); // 30 seconds timeout
   }
@@ -69,13 +74,13 @@ router.get("/results", async (req, res) => {
 //     waitingClients = []; // Clear stored requests
 //   } catch (error) {
 //     console.error("Python script error:", error.message);
-    
+
 //     // Respond to waiting clients with an error
 //     waitingClients.forEach(res => res.status(500).json({ error: "Failed to fetch results" }));
 //     waitingClients = []; // Clear stored request
 //   }
 // }
-   
+
 // Run the Python script periodically
 //setInterval(runPythonScript, 300000); // Every 5 mins
 

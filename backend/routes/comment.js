@@ -1,5 +1,5 @@
 const express = require("express");
-const Comment = require("../models/Comment");
+const Comments = require("../models/Comments");
 const User = require("../models/User");
 const fetchUser = require("../middleware/fetchUser");
 const router = express.Router();
@@ -8,14 +8,14 @@ const router = express.Router();
 router.post('/comment', fetchUser, async(req,res)=>{
     try {
         const {postId, comment} = req.user.body;
-        const  newComment = new Comment({
+        const  newComment = new Comments({
             text: text,
             author: req.user.id,
             post: postId,
             upvotes:[],
             downvotes:[],
         }) 
-        const savedComment = await newCommment.save()
+        const savedComment = await newComment.save()
         await User.findByIdAndDelete(req.user.id,{$push: {comments: savedComment._id}}, {new:true})
         res.status(200).json(savedComment)
 
