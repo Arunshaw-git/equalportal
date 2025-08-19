@@ -4,7 +4,7 @@ const fetchUser = require("../middleware/fetchUser");
 const Post = require("../models/Post");
 const multer = require("multer");
 const { PythonShell } = require("python-shell");
-const Comments = require("../models/Comments"); 
+const Comments = require("../models/Comments");
 let latestResults = null; // Store the latest results from Python script
 let waitingClients = []; // Store waiting responses for long polling
 
@@ -27,12 +27,11 @@ router.get("/", fetchUser, async (req, res) => {
       .populate("author", "name userName profilePicture")
       .populate({
         path: "comments",
-        populate: {
-          path: "author",
-          select: "name userName profilePicture",
-        },
+        populate: { path: "author", select: "name userName profilePicture" },
       });
+
     res.json(posts);
+    console.log(posts);
   } catch (error) {
     console.error("Error:", error.message);
     res.status(500).json({ error: "Internal Server Error" });

@@ -3,19 +3,58 @@ import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import "../styles/Homepage.css";
+import "../styles/Comments.css";
 import Logout from "./Logout";
 import "../styles/ProfileBtn.css";
 import Sidebar from "./Sidebar";
 import Comments from "./Comments";
-import { usePosts } from '../contexts/PostsContext';
+import { usePosts } from "../contexts/PostsContext";
 
 const Homepage = () => {
-  const { posts, setPosts, loading, error,setError, fetchPosts } = usePosts();
+  const { posts, setPosts, loading, error, setError, fetchPosts } = usePosts();
   // const [results, setResults] = useState([]);
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_URL;
   const currentUserId = localStorage.getItem("userId");
-  const [showComments, setShowComments] = useState(false);
+  const [activePost, setActivePost] = useState(null); // post whose comments are open
+  const [newComment, setComment] = useState("");
+
+  const handleSubmitComment = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+      const res = await fetch(`${apiUrl}/${activePost._id}/comment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ text: newComment }),
+      });
+      if (!res.ok) throw new Error("Failed to send comment");
+
+      const commentData = await res.json();
+
+      setPosts(
+        posts.map((post) =>
+          post._id === activePost._id
+            ? { ...post, comments: [...(post.comments || []), commentData] }
+            : post
+        )
+      );
+      setActivePost((prev) => ({
+        ...prev,
+        comments: [...(prev.comments || []), commentData],
+      }));
+      setComment("");
+    } catch (err) {
+      console.error("Error sending comment:", error);
+      setError("Failed to send comment");
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -91,14 +130,13 @@ const Homepage = () => {
   //     isMounted = false; // Cleanup function
   //   };
   // }, [apiUrl]);
-if(loading) return (<p>Loading..</p>)
+  if (loading) return <p>Loading..</p>;
   return (
     <>
       <nav className="navbar">
         <div className="logo-container"></div>
 
         <div className="nav-buttons">
-          
           <Logout />
         </div>
       </nav>
@@ -112,7 +150,8 @@ if(loading) return (<p>Loading..</p>)
             onClick={() => navigate("/create")}
             className="create-post-button"
           >
-          + Create Post</button>
+            + Create Post
+          </button>
         </div>
 
         {error && <p style={{ color: "red" }}>{error}</p>}
@@ -120,7 +159,11 @@ if(loading) return (<p>Loading..</p>)
         <ul className="post-list">
           {posts.length > 0 ? (
             posts.map((post, index) => (
-              <li key={post._id} className="post-item">
+              <li
+                key={post._id}
+                className="post-item"
+                openComments={() => setActivePost(post)}
+              >
                 <div className="post-author">
                   {post.author ? (
                     <>
@@ -212,9 +255,15 @@ if(loading) return (<p>Loading..</p>)
                     />
                     {post.downvotes?.length || 0}
                   </button>
-                  
+
+                  <button
+                    onClick={() => {
+                      setActivePost(post);
+                    }}
+                  >
+                    Comment
+                  </button>
                 </div>
-                
               </li>
             ))
           ) : (
@@ -222,6 +271,40 @@ if(loading) return (<p>Loading..</p>)
           )}
         </ul>
       </div>
+      {activePost && (
+        <div className="comments-modal-overlay">
+          <div className="comments-modal">
+            <button
+              className="close-comments"
+              onClick={() => setActivePost(null)}
+            >
+              ✕
+            </button>
+
+            <div className="comments-content">
+              <Comments comments={activePost.comments} />
+            </div>
+            <div className="comment-field">
+              <input
+                type="text"
+                value={newComment}
+                onChange={(e) => setComment(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSubmitComment();
+                }}
+                maxLength={150}
+                placeholder="write your comment.."
+              />
+              <button
+                onClick={handleSubmitComment}
+                disabled={!newComment?.trim()}
+              >
+                send
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

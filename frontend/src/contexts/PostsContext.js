@@ -15,8 +15,7 @@ export const PostsProvider = ({ children }) => {
       setLoading(true);
       const token = localStorage.getItem("token");
       if (!token) {
-        console.error("Token not provided while fetching posts");
-        navigate("/login"); // Redirect to login page if no token is found
+        console.error("Token not provided while fetching posts context");
         return; // Prevent fetching posts without a token
       }
       try {
