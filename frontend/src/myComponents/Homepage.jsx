@@ -11,7 +11,7 @@ import Comments from "./Comments";
 import { usePosts } from "../contexts/PostsContext";
 
 const Homepage = () => {
-  const { posts, setPosts, loading, error, setError, fetchPosts } = usePosts();
+  const { posts, setPosts, loading, error, setError } = usePosts();
   // const [results, setResults] = useState([]);
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_URL;
