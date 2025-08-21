@@ -19,7 +19,7 @@ const Comments = ({ comments, currentUserId }) => {
       }
     })
     const data = response.json();
-    comments.filter((c)=> c._id===commentId ? data : null )
+    // comments.filter((c)=> c._id===commentId ? data : null )
 
   }
 
@@ -30,6 +30,8 @@ const Comments = ({ comments, currentUserId }) => {
           comments.map((c) => (
             <div key={c._id} className="comment-item">
               <img
+
+                alt="pfp"
                 src={c.author?.profilePicture}
                 className="comment-profilePicture"
               />
