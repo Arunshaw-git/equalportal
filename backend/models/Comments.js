@@ -8,4 +8,12 @@ const commentSchema = new mongoose.Schema({
     downvotes:[{type:mongoose.Schema.Types.ObjectId, ref:"User"}],
 },{timestamps:true})
 
+commentSchema.pre('save', function(next) {
+    // If user is in both arrays, remove from the other one
+    const common = this.upvotes.filter(userId => this.downvotes.includes(userId));
+    if (common.length > 0) {
+        this.downvotes = this.downvotes.filter(userId => !common.includes(userId));
+    }
+    next();
+});
 module.exports = mongoose.model("Comments", commentSchema)

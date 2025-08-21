@@ -39,12 +39,13 @@ router.post("/upvotes/:id", fetchUser, async (req, res) => {
 // Downvote endpoint
 router.post("/downvotes/:id", fetchUser, async (req, res) => {
     try {
+        const userId = req.user.id;
+        
         const post = await Post.findById(req.params.id);
         if (!post) {
             return res.status(404).json({ error: "Post not found" });
         }
 
-        const userId = req.user.id;
         const upvoteIndex = post.upvotes.indexOf(userId);
         const downvoteIndex = post.downvotes.indexOf(userId);
 
