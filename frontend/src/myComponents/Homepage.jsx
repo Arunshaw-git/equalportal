@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowUp,
+  faArrowDown,
+  faComment,
+} from "@fortawesome/free-solid-svg-icons";
 import "../styles/Homepage.css";
 import "../styles/Comments.css";
 import Logout from "./Logout";
@@ -18,7 +22,21 @@ const Homepage = () => {
   const currentUserId = localStorage.getItem("userId");
   const [activePost, setActivePost] = useState(null); // post whose comments are open
   const [newComment, setComment] = useState("");
-
+  
+  //stop scrolling of homepage when modal is open
+  useEffect(() => {
+    if (activePost) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  
+    // Cleanup in case component unmounts
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [activePost]);
+  
   const handleSubmitComment = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -82,54 +100,23 @@ const Homepage = () => {
 
       if (res.status === 200) {
         const data = await res.json();
-        setPosts(posts.map((post) => (post._id === postId ? data : post)));
+        setPosts(
+          posts.map((post) =>
+            post._id === postId
+              ? {
+                  ...post,
+                  upvotes: data.upvotes,
+                  downvotes: data.downvotes,
+                }
+              : post
+          )
+        );
       }
     } catch (error) {
       console.error("Error voting:", error);
     }
   };
 
-  // useEffect(() => {
-  //   let isMounted = true; // To prevent memory leaks
-
-  //   const fetchResults = async () => {
-  //     const token = localStorage.getItem("token"); // Move this inside the function
-  //     if (!token) return;
-
-  //     try {
-  //       const response = await fetch(`${apiUrl}/results`, {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-
-  //       console.log("Response Status:", response.status);
-  //       console.log("Response Headers:", response.headers);
-
-  //       if (!response.ok) throw new Error("Failed to fetch results");
-
-  //       const data = await response.json();
-  //       console.log("Fetched results:", data);
-  //       setResults(data); // Update results in state
-
-  //       //start another request
-  //       if (isMounted) {
-  //         setResults(data);
-  //         setTimeout(fetchResults, 5000); // Retry every 5s
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching results:", error);
-  //       if (isMounted) setTimeout(fetchResults, 5000);
-  //     }
-  //   };
-
-  //   fetchResults();
-  //   return () => {
-  //     isMounted = false; // Cleanup function
-  //   };
-  // }, [apiUrl]);
   if (loading) return <p>Loading..</p>;
   return (
     <>
@@ -187,26 +174,6 @@ const Homepage = () => {
                 <h2>{post.title}</h2>
                 <p className="description">{post.desc}</p>
 
-                {/* Display results if available, otherwise "No links found" */}
-                {/* <p>
-                  {results.length === 0 ||
-                  !results[index] ||
-                  results[index] === ""
-                    ? "No Links found"
-                    : "Related Link:"}
-                </p>
-                {results.length > 0 && results[index] && (
-                  <p>
-                    <a
-                      href={results[index]}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {results[index]}
-                    </a>
-                  </p>
-                )} */}
-
                 {post.media ? (
                   <img
                     src={`${post.media}`}
@@ -217,11 +184,11 @@ const Homepage = () => {
 
                 <p>{new Date(post.createdAt).toLocaleString()}</p>
 
-                <div className="vote-buttons">
+                <div className="buttons-container">
                   {/* upvote button */}
                   <button
                     onClick={() => handleVote(post._id, "upvote")}
-                    className={`vote-button ${
+                    className={`action-button upvote ${
                       post.upvotes?.includes(currentUserId) ? "active" : ""
                     }`}
                     disabled={!currentUserId}
@@ -240,7 +207,7 @@ const Homepage = () => {
                   {/* Downvote Button */}
                   <button
                     onClick={() => handleVote(post._id, "downvote")}
-                    className={`vote-button ${
+                    className={` action-button downvote ${
                       post.downvotes?.includes(currentUserId) ? "active" : ""
                     }`}
                     disabled={!currentUserId}
@@ -255,13 +222,14 @@ const Homepage = () => {
                     />
                     {post.downvotes?.length || 0}
                   </button>
-
                   <button
+                    className="action-button "
                     onClick={() => {
                       setActivePost(post);
                     }}
                   >
-                    Comment
+                    <FontAwesomeIcon icon={faComment} />{" "}
+                    {post.comments?.length || 0}
                   </button>
                 </div>
               </li>
@@ -282,7 +250,7 @@ const Homepage = () => {
             </button>
 
             <div className="comments-content">
-              <Comments comments={activePost.comments} />
+              <Comments comments={activePost.comments} currentUserId={currentUserId}/>
             </div>
             <div className="comment-field">
               <input
@@ -292,7 +260,7 @@ const Homepage = () => {
                 onKeyDown={(e) => {
                   if (e.key === "Enter") handleSubmitComment();
                 }}
-                maxLength={150}
+                maxLength={300}
                 placeholder="write your comment.."
               />
               <button
