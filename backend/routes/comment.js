@@ -59,4 +59,37 @@ router.post("/comment/upvotes/:commentId",fetchUser,async (req,res)=>{
 
 })
 
+router.post("/comment/downvotes/:commentId", fetchUser, async (req,res)=>{
+  const currentUserId = req.user.id;
+  const {commentId} = req.params;
+  console.log('in downvote',commentId)
+  try{
+    const comment = await Comments.findById(commentId)
+    if (!comment) return res.status(404).json({ error: "Comment not found" });
+
+    const userUpvoteIdx = comment.upvotes.indexOf(currentUserId);
+    const userDownvoteIdx = comment.downvotes.indexOf(currentUserId);
+
+    if(userDownvoteIdx !== -1){
+      comment.downvotes.splice(userDownvoteIdx,1)
+    }
+    else{
+      if(userUpvoteIdx !== -1){
+        comment.upvotes.splice(userUpvoteIdx,1)
+      }
+      comment.downvotes.push(currentUserId 
+      )
+    }
+    await comment.save()
+    res.json(comment)
+
+
+  }catch(err){
+    res.status(500).json("Internal server error during comment voting ")
+  }
+
+
+
+})
+
 module.exports = router;

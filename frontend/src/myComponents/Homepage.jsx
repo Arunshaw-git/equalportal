@@ -22,7 +22,7 @@ const Homepage = () => {
   const currentUserId = localStorage.getItem("userId");
   const [activePost, setActivePost] = useState(null); // post whose comments are open
   const [newComment, setComment] = useState("");
-  
+
   //stop scrolling of homepage when modal is open
   useEffect(() => {
     if (activePost) {
@@ -30,13 +30,13 @@ const Homepage = () => {
     } else {
       document.body.style.overflow = "auto";
     }
-  
+
     // Cleanup in case component unmounts
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [activePost]);
-  
+
   const handleSubmitComment = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -63,6 +63,7 @@ const Homepage = () => {
             : post
         )
       );
+      
       setActivePost((prev) => ({
         ...prev,
         comments: [...(prev.comments || []), commentData],
@@ -250,7 +251,13 @@ const Homepage = () => {
             </button>
 
             <div className="comments-content">
-              <Comments comments={activePost.comments} currentUserId={currentUserId}/>
+              <Comments
+                comments={activePost.comments}
+                setPosts={setPosts}
+                currentUserId={currentUserId}
+                activePost={activePost}
+                setActivePost={setActivePost}
+              />
             </div>
             <div className="comment-field">
               <input

@@ -102,7 +102,7 @@
   margin-top: 5px;
 }
 
-.comment-vote-button {
+.comment-action-button {
   background: none;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -130,9 +130,9 @@
 }
 
 .comment-upvote.active {
-  color: #03d438cc;
+  background-color: #03d438cc;
 }
 
 .comment-downvote.active {
-  color: #7193FF;
+  background-color: #7193FF;
 }
