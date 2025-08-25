@@ -1,7 +1,7 @@
 import React from "react";
 import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import { useNavigate } from "react-router-dom";
 const Comments = ({
   comments,
   currentUserId,
@@ -10,7 +10,7 @@ const Comments = ({
   setActivePost,
 }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
-
+  const navigate = useNavigate();
   const handleCommentVote = async (commentId, voteType) => {
     const token = localStorage.getItem("token");
     if (!token) {
