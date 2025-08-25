@@ -1,5 +1,4 @@
 import { useState, createContext, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 const PostsContext = createContext();
 
@@ -44,7 +43,7 @@ export const PostsProvider = ({ children }) => {
       }
     };
     fetchPosts();
-  }, [apiUrl, navigate]);
+  }, [apiUrl]);
 
   return (
     <PostsContext.Provider
