@@ -14,7 +14,6 @@ const FollowButton = ({ userId, currentUserId, isFollowing, onFollowChange, setU
     }
 
     setLoading(true);
-
     try {
       const response = await fetch(`${apiUrl}/follow/${userId}`, {
         method: "POST",

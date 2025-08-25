@@ -17,7 +17,7 @@ export const PostsProvider = ({ children }) => {
       
       if (!token) {
         console.error("Token not provided while fetching posts context");
-        navigate("/login")
+        
         return; // Prevent fetching posts without a token
       }
       
