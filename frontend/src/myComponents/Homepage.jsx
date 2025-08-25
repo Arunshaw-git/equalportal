@@ -8,7 +8,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "../styles/Homepage.css";
 import "../styles/Comments.css";
-import Logout from "./Logout";
 import "../styles/ProfileBtn.css";
 import Sidebar from "./Sidebar";
 import Comments from "./Comments";

@@ -133,11 +133,11 @@ const Profile = () => {
         console.log("data in the posts' profile", userPosts);
         setPosts(userPosts);
       } catch (e) {
-        console.log("Profile Error:", e);
+        console.log(" Error while fetching data in profile:", e);
       }
     };
     fetchProfile();
-  }, [apiUrl, navigate, userIdToFetch]);
+  }, [apiUrl, navigate, userIdToFetch, currentUserId]);
 
   const handleFollowChange =(newStatus) => {
     setIsFollowing(newStatus); // Update follow status when button is clicked
