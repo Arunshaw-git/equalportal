@@ -13,7 +13,11 @@ const Comments = ({
 
   const handleCommentVote = async (commentId, voteType) => {
     const token = localStorage.getItem("token");
-
+    if (!token) {
+      console.error("Token not provided ");
+      navigate("/login")
+      return; // Prevent fetching posts without a token
+    }
     try {
       const response = await fetch(
         `${apiUrl}/comment/${voteType}s/${commentId}`,
@@ -89,7 +93,7 @@ const Comments = ({
                 <div className="comment-buttons">
                   <button
                     className={`comment-action-button comment-upvote ${
-                      c.upvotes.includes(currentUserId) ? "active" : ""
+                      c.upvotes?.includes(currentUserId) ? "active" : ""
                     }`}
                     onClick={() => handleCommentVote(c._id, "upvote")}
                   >
@@ -106,7 +110,7 @@ const Comments = ({
 
                   <button
                     className={`comment-action-button comment-downvote ${
-                      c.downvotes.includes(currentUserId) ? "active" : ""
+                      c.downvotes?.includes(currentUserId) ? "active" : ""
                     }`}
                     onClick={() => handleCommentVote(c._id, "downvote")}
                   >

@@ -1,11 +1,10 @@
 /* Overlay covers the entire screen */
 .comments-modal-overlay {
   position: fixed;
-  top: 0;
+  top: 14px;
   left: 0;
   width: 100vw; /* full screen width */
-  height: 100vh; /* full screen height */
-  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent */
+  height: 99vh; /* full screen height */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,6 +19,7 @@
   background: #fff;
   border-radius: 8px;
   padding: 10px;
+  border: 1px rgb(224, 222, 222) solid;
   position: relative;
 }
 

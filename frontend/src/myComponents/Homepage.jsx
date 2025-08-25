@@ -22,7 +22,7 @@ const Homepage = () => {
   const currentUserId = localStorage.getItem("userId");
   const [activePost, setActivePost] = useState(null); // post whose comments are open
   const [newComment, setComment] = useState("");
-
+  
   //stop scrolling of homepage when modal is open
   useEffect(() => {
     if (activePost) {
@@ -124,9 +124,6 @@ const Homepage = () => {
       <nav className="navbar">
         <div className="logo-container"></div>
 
-        <div className="nav-buttons">
-          <Logout />
-        </div>
       </nav>
       <Sidebar />
       <div className="homepage-container">

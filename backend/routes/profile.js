@@ -25,13 +25,23 @@ router.get("/posts/:id", fetchUser, async (req, res) => {
   const id = req.params.id;
 
   try {
-    // Find the user by ID and populate the 'posts' field with full post data
-    const user = await User.findById(id).select("posts").populate("posts"); // Populate the 'posts' field with full post documents
+    
+    const user = await User.findById(id).select("posts").populate(
+      {
+        path: "posts",          // populate posts array
+        populate: {
+          path: "comments",     // populate comments inside each post
+          populate: {
+            path: "author",     // populate author inside comments
+            select: "name profilePicture" // only select name and profilePicture
+          }
+        }
+      }
+    ); 
 
     if (!user) return res.status(404).json("User not found");
 
     res.json(user.posts);
-    console.log("posts",user.posts) // Return the populated posts array
   } catch (error) {
     console.error(error);
     res.status(500).json("An error occurred");

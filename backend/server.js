@@ -16,6 +16,7 @@ const posts_scrape = require("./routes/posts_scrape");
 const profile = require("./routes/profile");
 const votes = require("./routes/votes");
 const comment = require("./routes/comment");
+const follow = require("./routes/follow");
 const app = express()
 const port = process.env.PORT || 5001;
 
@@ -30,6 +31,10 @@ const allowedOrigins = [
   'null'  // Allow for file:// URL access (if testing locally without server)
 
 ];
+app.use((req,res,next)=>{
+  console.log( `Method: ${req.method} URL: ${req.originalUrl}`);
+  next();
+});
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -63,7 +68,7 @@ app.use("/", posts_scrape);
 app.use("/", profile);
 app.use("/", votes);
 app.use("/", comment);
-
+app.use("/", follow);
 // Call both connection functions from db
 connectToDB();
 

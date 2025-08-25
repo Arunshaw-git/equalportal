@@ -1,4 +1,4 @@
-/* frontend/src/styles/Sidebar.css */
+
 .sidebar {
   position: fixed;
   left: 0;
@@ -101,7 +101,7 @@
   }
 
   .homepage-container {
-    margin-left: 60px; /* Adjust the margin for collapsed sidebar */
+    margin-left: 60px; 
   }
  
   .nav-text {
@@ -109,7 +109,7 @@
   }
 
   .nav-item {
-    justify-content: center; /* Center items when collapsed */
+    justify-content: center; 
     padding: 12px 0;
   }
 
@@ -119,14 +119,14 @@
   }
 }
 
-/* Mobile responsiveness: For very small screens (e.g., mobile devices) */
+/* Mobile responsiveness */
 @media (max-width: 640px) {
   .sidebar {
     position: fixed;
-    top: auto;             /* Reset top */
+    top: auto;             
     bottom: 0;             /* Stick to bottom */
     left: 0;
-    width: 100%;           /* Full width */
+    width: 100%;           
     height: 60px;          /* Adjust as needed */
     display: flex;         
     justify-content: space-around; 
@@ -134,31 +134,33 @@
     background-color: #fff;
     box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
     z-index: 1000;
-    padding: 0;            /* Remove vertical padding if needed */
-    border-right: none;    /* Remove side border */
+    padding: 0;            
+    border-right: none;
     flex-direction: row;   
   }
   .sidebar-content{
     width:100%;
   }
   .sidebar.open {
-    transform: translateX(0); /* Sidebar comes into view when 'open' class is applied */
+    transform: translateX(0); 
   }
   .nav-menu {
-    display: flex;       /* Flex for nav items */
-    flex-direction: row; /* Horizontal row */
-    width: 100%;         /* Take full width */
+    display: flex;       
+    flex-direction: row;   
+      width: 100%;         
     justify-content: space-evenly;
     overflow: hidden;    /* Prevent scrolling */
   }
 
   .nav-item {
-    flex-direction: column; /* If you want icon on top, text below (optional) */
-    padding: 0;            /* Remove extra padding */
+    flex-direction: column;
+    padding: 0;            
+  }
+  .nav-item.active {
+    padding:5px;
+    background-color: rgb(231, 226, 221);  
   }
   .homepage-container {
     margin-left: 18px;
-    
-    
   }
 }

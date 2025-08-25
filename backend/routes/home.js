@@ -31,32 +31,25 @@ router.get("/", fetchUser, async (req, res) => {
       });
 
     res.json(posts);
-    console.log(posts);
   } catch (error) {
     console.error("Error:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-// router.post('//followOrUnfollow', async(req,res)=>{
-//   const follower = req.user.id;
-//   const toBeFollowed = req.paramas.id
-// })
+// router.get("/results", async (req, res) => {
+//   if (latestResults) {
+//     res.json(latestResults); // Send results immediately if ready
+//   } else {
+//     waitingClients.push(res); // Store the response to be sent later
 
-// Long Polling Route for Results
-router.get("/results", async (req, res) => {
-  if (latestResults) {
-    res.json(latestResults); // Send results immediately if ready
-  } else {
-    waitingClients.push(res); // Store the response to be sent later
-
-    // Timeout to prevent infinite waiting
-    setTimeout(() => {
-      waitingClients = waitingClients.filter((r) => r !== res);
-      res.json([]); // Send empty array if no results yet
-    }, 30000); // 30 seconds timeout
-  }
-});
+//     // Timeout to prevent infinite waiting
+//     setTimeout(() => {
+//       waitingClients = waitingClients.filter((r) => r !== res);
+//       res.json([]); // Send empty array if no results yet
+//     }, 30000); // 30 seconds timeout
+//   }
+// });
 
 // Function to Run Python Script
 // async function runPythonScript() {
