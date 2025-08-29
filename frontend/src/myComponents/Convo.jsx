@@ -59,7 +59,7 @@ const Convo = () => {
     return () => {
       socket.off("receiveMessage"); // Clean up when component unmounts
     };
-  }, [user1, user2]);
+  }, [user1, user2,navigate]);
 
   // Send message to the server via Socket.IO
   const sendMessage = () => {
