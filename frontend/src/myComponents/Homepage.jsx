@@ -56,7 +56,7 @@ const Homepage = () => {
       const commentData = await res.json();
 
       setPosts(
-        posts.map((post) =>
+        (posts || []).map((post) =>
           post._id === activePost._id
             ? { ...post, comments: [...(post.comments || []), commentData] }
             : post

@@ -7,6 +7,7 @@ const cloudinary = require("./config/cloudinary");
 const path = require("path");
 const { Server } = require("socket.io");
 const http = require("http"); // Import http module for the server
+const jwt = require("jsonwebtoken");
 
 const connectToDB = require("./db");
 const createRoutes = require("./routes/create");
@@ -93,6 +94,18 @@ app.use("/message", message);
 connectToDB();
 
 let onlineUsers = new Map();
+io.use((socket, next) => {
+  const token = socket.handshake.auth.token; // token from client
+  if (!token) return next(new Error("Authentication error"));
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    socket.userId = decoded.user.id; // attach userId to socket
+    next();
+  } catch (err) {
+    next(new Error("Token invalid"));
+  }
+});
 
 io.on("connection", (socket) => {
   console.log("User Connected:", socket.id);
@@ -104,12 +117,9 @@ io.on("connection", (socket) => {
 
   socket.on("sendMessage", async ({ sender, receiver, text }) => {
     try {
+      const sender = socket.userId;
       // Create message in the database
-      const message = new Message({
-        sender: sender,
-        receiver: receiver,
-        text,
-      });
+      const message = new Message({ sender, receiver, text });
       await message.save();
 
       // Find or create the conversation

@@ -3,7 +3,10 @@ import io from "socket.io-client";
 import { useNavigate, useParams } from "react-router-dom";
 
 const apiUrl = process.env.REACT_APP_API_URL;
-const socket = io(apiUrl || "http://localhost:5001"); // Backend URL
+const token = localStorage.getItem("token"); // your JWT
+const socket = io(apiUrl || "http://localhost:5001",auth: {
+  token, // send the token during connection
+}); // Backend URL
 
 const Convo = () => {
   const { user1, user2 } = useParams(); // Get user1 and user2 from URL
@@ -67,7 +70,6 @@ const Convo = () => {
 
     // Send message through Socket.IO to the server
     socket.emit("sendMessage", {
-      sender: user1,
       receiver: user2,
       text,
     });
