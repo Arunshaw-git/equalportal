@@ -164,7 +164,6 @@ button[type="submit"]:disabled {
 
 /* Button loading state */
 button[type="submit"]:disabled:after {
-  content: " Creating Post...";
   display: inline-block;
   margin-left: 10px;
 }

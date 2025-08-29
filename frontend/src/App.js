@@ -6,6 +6,7 @@ import CreatePost from "./myComponents/CreatePost";
 import Footer from "./myComponents/Footer";
 import CreateUser from "./myComponents/CreateUser";
 import Profile from "./myComponents/Profile";
+import Convo from "./myComponents/Convo";
 import { PostsProvider } from "./contexts/PostsContext";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
 
             <Route path="/login" element={<Login />} />
             <Route path="/create" element={<CreatePost />} />
+            <Route path="/:user1/:user2" element={<Convo/>}></Route>
           </Routes>
           <Footer />
         </div>

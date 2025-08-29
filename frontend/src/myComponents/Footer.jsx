@@ -7,7 +7,7 @@ const Footer =()=>{
       <div className="footer-content">
         <h3>About Us</h3>
         <p>
-          At Equal Portal, we amplify voices against injustice. Share your stories to raise awareness and foster change in our communities. Together, let's shine a light on the realities of injustice and inspire action.
+          i mistakenly made a social media website or something, idk.
         </p>
       </div>
     </footer>

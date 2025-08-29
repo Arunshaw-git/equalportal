@@ -28,6 +28,7 @@ const Profile = () => {
 
   const [isFollowing, setIsFollowing] = useState(false);
 
+ 
   const handleSubmitComment = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -139,7 +140,7 @@ const Profile = () => {
     fetchProfile();
   }, [apiUrl, navigate, userIdToFetch, currentUserId]);
 
-  const handleFollowChange =(newStatus) => {
+  const handleFollowChange = (newStatus) => {
     setIsFollowing(newStatus); // Update follow status when button is clicked
   };
 
@@ -167,10 +168,16 @@ const Profile = () => {
                   currentUserId={currentUserId}
                   isFollowing={isFollowing}
                   onFollowChange={handleFollowChange}
-                  setUser = {setUser}
+                  setUser={setUser}
                 />
               )}
-              <button className="message-btn">Message</button>
+              <Link to={`/${currentUserId}/${user._id}`}>
+                <button
+                className="message-btn"
+              >
+                Message
+              </button>
+              </Link>
             </div>
             <div className="followers-following">
               <p>Followers: {user.followers?.length || 0}</p>
