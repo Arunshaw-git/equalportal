@@ -21,7 +21,7 @@ const Convo = () => {
       try {
         const res = await fetch(
           `${
-            process.env.REACT_APP_API_URL || "http://localhost:5001"
+            process.env.REACT_APP_API_URL 
           }/message/${user1}/${user2}`,
           {
             headers: {
