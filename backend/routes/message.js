@@ -27,7 +27,7 @@ router.post("sendMessage", fetchUser, async(req,res)=>{
             text
         });
         await message.save();
-
+        console.log("Message saved:",message)
         convo.messages.push(message._id);
         await convo.save();
         
@@ -47,7 +47,7 @@ router.get("/:user1/:user2", fetchUser, async (req,res)=>{
         }).populate("messages");
 
         if(!convo){
-            return res.status(404).json({message:"Conversation not found"})
+            return res.status(404).json({message:[]})
         }
         console.log("Convo:",convo)
         res.status(200).json(convo);

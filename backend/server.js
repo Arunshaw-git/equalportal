@@ -8,6 +8,7 @@ const path = require("path");
 const { Server } = require("socket.io");
 const http = require("http"); // Import http module for the server
 const jwt = require("jsonwebtoken");
+const JWT_SECRET = "equalport_secert_code"
 
 const connectToDB = require("./db");
 const createRoutes = require("./routes/create");
@@ -70,16 +71,17 @@ app.use(
     methods: ["GET", "POST", "DELETE", "PUT"], // Allowed HTTP methods
   })
 );
+
 const io = new Server(server, {
   cors: {
     origin: allowedOrigins,
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST","PUT"],
     credentials: true,
   },
   pingTimeout: 60000, // 1 minute
   pingInterval: 25000,
 });
-// Route handling
+
 // Route handling with base URL prefixes
 app.use("/create", createRoutes);
 app.use("/auth", authRoutes);
@@ -95,11 +97,11 @@ connectToDB();
 
 let onlineUsers = new Map();
 io.use((socket, next) => {
-  const token = socket.handshake.auth.token; // token from client
+  const token = socket.handshake.auth?.token; // token from client
   if (!token) return next(new Error("Authentication error"));
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     socket.userId = decoded.user.id; // attach userId to socket
     next();
   } catch (err) {
@@ -115,7 +117,7 @@ io.on("connection", (socket) => {
     console.log("Online Users:", userId);
   });
 
-  socket.on("sendMessage", async ({ sender, receiver, text }) => {
+  socket.on("sendMessage", async ({  receiver, text }) => {
     try {
       const sender = socket.userId;
       // Create message in the database

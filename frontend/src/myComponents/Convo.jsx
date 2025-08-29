@@ -2,90 +2,101 @@ import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import { useNavigate, useParams } from "react-router-dom";
 
-const apiUrl = process.env.REACT_APP_API_URL;
-const token = localStorage.getItem("token"); // your JWT
-const socket = io(apiUrl || "http://localhost:5001",{
-  auth: {
-    token, // send the token during connection
-  },
-});
-
 const Convo = () => {
   const { user1, user2 } = useParams(); // Get user1 and user2 from URL
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
-  const navigate = useNavigate()
-  // Fetch existing conversation messages on component mount
-  useEffect(() => {
-    const fetchConversation = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        navigate("/login");
-        return;
-      }
-      try {
-        const response = await fetch(`${apiUrl}/message/${user1}/${user2}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await response.json();
+  const navigate = useNavigate();
+  const [socket, setSocket] = useState(null);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    // Fetch old messages
+    const fetchConversation = async () => {
+      try {
+        const res = await fetch(
+          `${
+            process.env.REACT_APP_API_URL || "http://localhost:5001"
+          }/message/${user1}/${user2}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        const data = await res.json();
         if (data && Array.isArray(data.messages)) {
           setMessages(data.messages);
+        } else if (data.messages === undefined && Array.isArray(data.message)) {
+          // fallback if backend returns differently
+          setMessages(data.message);
         } else {
-          setMessages([]); // If no messages or incorrect format, set as empty array
+          setMessages([]);
         }
-
-        setMessages(data.messages);
-      } catch (error) {
-        console.error("Error fetching conversation:", error);
+      } catch (err) {
+        console.error("Error fetching messages:", err);
         setMessages([]);
       }
     };
 
     fetchConversation();
 
-    // Join the conversation when the component mounts
-    socket.emit("join", user1);
+    // Initialize socket
+    const newSocket = io(
+      process.env.REACT_APP_API_URL || "http://localhost:5001",
+      {
+        auth: { token },
+        transports: ["websocket"], // force websocket
+      }
+    );
 
-    // Listen for new incoming messages
-    socket.on("receiveMessage", (message) => {
+    setSocket(newSocket);
+
+    newSocket.on("connect", () => {
+      console.log("Socket connected:", newSocket.id);
+      newSocket.emit("join", user1);
+    });
+
+    newSocket.on("connect_error", (err) => {
+      console.error("Socket connection error:", err.message);
+    });
+
+    newSocket.on("receiveMessage", (message) => {
+      // Only add messages relevant to this conversation
       if (
         (message.sender === user2 && message.receiver === user1) ||
         (message.sender === user1 && message.receiver === user2)
       ) {
-        setMessages((prevMessages) => [...prevMessages, message]);
+        setMessages((prev) => [...prev, message]);
       }
     });
 
     return () => {
-      socket.off("receiveMessage"); // Clean up when component unmounts
+      newSocket.disconnect();
     };
-  }, [user1, user2,navigate]);
+  }, [user1, user2, navigate]);
 
-  // Send message to the server via Socket.IO
   const sendMessage = () => {
-    if (text.trim() === "") return;
+    if (!text.trim() || !socket) return;
 
-    // Send message through Socket.IO to the server
-    socket.emit("sendMessage", {
-      receiver: user2,
-      text,
-    });
+    const msgObj = { receiver: user2, text };
 
-    // Optimistic update: immediately add the message to UI
-    setMessages((prevMessages) => {
-      // Ensure that prevMessages is an array
-      return Array.isArray(prevMessages)
-        ? [
-            ...prevMessages,
-            { sender: user1, receiver: user2, text, isRead: false },
-          ]
-        : [{ sender: user1, receiver: user2, text, isRead: false }];
-    });
+    // Send message via socket
+    socket.emit("sendMessage", msgObj);
+
+    // Optimistic update
+    setMessages((prev) => [
+      ...prev,
+      { sender: user1, receiver: user2, text, isRead: false },
+    ]);
+
     setText("");
   };
 
