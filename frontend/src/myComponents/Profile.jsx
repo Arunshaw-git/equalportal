@@ -174,6 +174,7 @@ const Profile = () => {
               <Link to={`/${currentUserId}/${user._id}`}>
                 <button
                 className="message-btn"
+                disabled={user._id === currentUserId}
               >
                 Message
               </button>

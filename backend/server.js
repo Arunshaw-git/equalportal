@@ -14,7 +14,6 @@ const connectToDB = require("./db");
 const createRoutes = require("./routes/create");
 const authRoutes = require("./routes/auth");
 const homeRoutes = require("./routes/home");
-const posts_scrape = require("./routes/posts_scrape");
 const profile = require("./routes/profile");
 const votes = require("./routes/votes");
 const comment = require("./routes/comment");
@@ -86,7 +85,6 @@ const io = new Server(server, {
 app.use("/create", createRoutes);
 app.use("/auth", authRoutes);
 app.use("/", homeRoutes);
-app.use("/", posts_scrape);
 app.use("/", profile);
 app.use("/", votes);
 app.use("/", comment);

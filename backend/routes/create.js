@@ -4,6 +4,10 @@ const fetchUser = require("../middleware/fetchUser");
 const cloudinary = require("../config/cloudinary");
 const Post = require("../models/Post");
 const User = require("../models/User");
+const {spawn} = require("child_process")
+const path = require("path");
+
+const scriptPath = path.resolve(__dirname, "../tools/newsOrNot.py");
 
 router.post('/', fetchUser,  async (req, res) => {
   try {
@@ -30,6 +34,30 @@ router.post('/', fetchUser,  async (req, res) => {
     );
 
     res.json(savedPost); // Respond with the created post
+
+    const pythonProcess = spawn("python", [
+      scriptPath,
+      desc
+    ]);
+
+    pythonProcess.stdout.on("data", async (data) => {
+      try {
+        const output = data.toString().trim(); // e.g. "True,0.95"
+        const [label, confidence] = output.split(",");
+        await Post.findByIdAndUpdate(savedPost._id, {
+          newsOrNot: label === "True",
+          confidence: parseFloat(confidence)
+        });
+      } catch (err) {
+        console.error("Error updating post prediction:", err);
+      }
+    });
+
+    pythonProcess.stderr.on("data", (err) => {
+      console.error("Python error:", err.toString());
+    });
+
+
 
   } catch (error) {
     console.error(error.message);

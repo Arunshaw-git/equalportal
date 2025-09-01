@@ -169,6 +169,7 @@ const Homepage = () => {
                 </div>
                 <p className="profile-line"></p>
                 <h2>{post.title}</h2>
+                <p>{`News or not : ${post.newsOrNot}` }</p>
                 <p className="description">{post.desc}</p>
 
                 {post.media ? (
