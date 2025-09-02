@@ -122,7 +122,6 @@ const Profile = () => {
           // Check if the current user is following this profile user
           setIsFollowing(data.followers?.includes(currentUserId) || false);
         }
-        console.log("isfollowing: ",isFollowing)
         const postsResponse = await fetch(`${apiUrl}/posts/${userIdToFetch}`, {
           method: "GET",
           headers: {
