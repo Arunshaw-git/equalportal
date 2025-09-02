@@ -4,15 +4,15 @@ import { useNavigate } from "react-router-dom";
 const FollowButton = ({ userId, currentUserId, isFollowing, onFollowChange, setUser }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [followStatus, setFollowStatus] = useState(isFollowing);
   const apiUrl = process.env.REACT_APP_API_URL;
-  
+
   const handleFollow = async () => {
     if (!currentUserId) {
       navigate("/login"); // Redirect to login if not logged in
       return;
     }
 
+    
     setLoading(true);
     try {
       const response = await fetch(`${apiUrl}/follow/${userId}`, {
@@ -27,11 +27,10 @@ const FollowButton = ({ userId, currentUserId, isFollowing, onFollowChange, setU
         throw new Error("Failed to follow/unfollow");
       }
 
-      // Assuming the server responds with the updated follow status
       const data = await response.json();
-      setFollowStatus(data.isFollowing); 
       setUser(data.user)
-      if (onFollowChange) onFollowChange(data.isFollowing); 
+      if (onFollowChange) onFollowChange(data.isFollowing);
+      console.log(data.isFollowing) 
       
     } catch (error) {
       console.error("Error during follow/unfollow:", error);
@@ -44,9 +43,9 @@ const FollowButton = ({ userId, currentUserId, isFollowing, onFollowChange, setU
     <button
       onClick={handleFollow}
       disabled={loading}
-      className={`follow-btn ${followStatus ? "following" : "not-following"}`}
+      className={`follow-btn ${isFollowing ? "following" : "not-following"}`}
     >
-      {loading ? "Loading..." : followStatus ? "Unfollow" : "Follow"}
+      {loading ? "Loading..." : isFollowing ? "Unfollow" : "Follow"}
     </button>
   );
 };

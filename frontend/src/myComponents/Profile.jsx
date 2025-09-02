@@ -122,7 +122,7 @@ const Profile = () => {
           // Check if the current user is following this profile user
           setIsFollowing(data.followers?.includes(currentUserId) || false);
         }
-
+        console.log("isfollowing: ",isFollowing)
         const postsResponse = await fetch(`${apiUrl}/posts/${userIdToFetch}`, {
           method: "GET",
           headers: {
@@ -174,7 +174,7 @@ const Profile = () => {
               <Link to={`/${currentUserId}/${user._id}`}>
                 <button
                 className="message-btn"
-                disabled={user._id === currentUserId}
+                disabled={!user || user._id === currentUserId}
               >
                 Message
               </button>

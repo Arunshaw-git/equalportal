@@ -29,7 +29,7 @@ router.post("/follow/:toBeFollowed", fetchUser, async (req, res) => {
     console.log("Follower:", user)
     await user.save();
     await toBeFollowedUser.save();
-    res.status(200).json({user:toBeFollowedUser, isFollowing: toBeFollowedUserIdx !== -1});
+    res.status(200).json({user:toBeFollowedUser, isFollowing: toBeFollowedUserIdx == -1});
   } catch (error) {
     console.log("Error while Following the user:", error);
     res.status(500).json("Error while following", error);
