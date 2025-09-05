@@ -57,7 +57,7 @@ function CreatePost() {
     formData.append("title", title);
     formData.append("desc", desc);
 
-    //upload media to cloudinaryu first
+    //upload media to cloudinary first
     if (media) {
       const mediaFormData = new FormData();
       mediaFormData.append("file", media); // The 'media' file being uploaded

@@ -1,5 +1,5 @@
 import { useState, createContext, useContext, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 const PostsContext = createContext();
 
 export const PostsProvider = ({ children }) => {
@@ -7,7 +7,7 @@ export const PostsProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
@@ -27,9 +27,9 @@ export const PostsProvider = ({ children }) => {
             Authorization: `Bearer ${token}`,
           },
         });
-        if (!response.ok) {
-          const errorData = await response.json(); // Attempt to parse the response as JSON
-          throw new Error(errorData.error || "Failed to fetch posts");
+        if (response.status === 401 ) { 
+          localStorage.removeItem("token"); 
+          navigate("/login"); // redirect to login
         }
 
         const data = await response.json();
@@ -39,11 +39,11 @@ export const PostsProvider = ({ children }) => {
       } catch (error) {
         setError(error);
         setLoading(false);
-        console.error("Internal sever error ", error);
+        console.error("Errow while fetching posts :", error);
       }
     };
     fetchPosts();
-  }, [apiUrl]);
+  }, [apiUrl, navigate]);
 
   return (
     <PostsContext.Provider

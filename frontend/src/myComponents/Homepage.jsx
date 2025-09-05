@@ -169,7 +169,7 @@ const Homepage = () => {
                 </div>
                 <p className="profile-line"></p>
                 <h2>{post.title}</h2>
-                <p>{`News or not : ${post.newsOrNot}` }</p>
+                <p style={{color:post.newsOrNot === true ? "green" : "red"}}  >{post.newsOrNot? "News" : "Not a News" } according to LogisticRegression Model</p>
                 <p className="description">{post.desc}</p>
 
                 {post.media ? (

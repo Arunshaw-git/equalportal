@@ -12,6 +12,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Comments from "./Comments";
 import FollowBtn from "./FollowBtn";
+import {  useProfileUser } from "../contexts/ProfileUser";
+
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -19,7 +21,8 @@ const Profile = () => {
   const currentUserId = localStorage.getItem("userId");
   const userIdToFetch = id || currentUserId;
 
-  const [user, setUser] = useState({});
+  const {profileUser, setProfileUser} = useProfileUser();
+
   const [posts, setPosts] = useState([]);
   const apiUrl = process.env.REACT_APP_API_URL;
   const [activePost, setActivePost] = useState(null);
@@ -115,7 +118,7 @@ const Profile = () => {
 
         if (!response.ok) throw new Error("Failed to fetch user's profile");
         const data = await response.json();
-        setUser(data);
+        setProfileUser(data);
         console.log("user data:", data);
 
         if (userIdToFetch !== currentUserId) {
@@ -137,7 +140,7 @@ const Profile = () => {
       }
     };
     fetchProfile();
-  }, [apiUrl, navigate, userIdToFetch, currentUserId]);
+  }, [apiUrl, navigate, userIdToFetch, currentUserId,setProfileUser]);
 
   const handleFollowChange = (newStatus) => {
     setIsFollowing(newStatus); // Update follow status when button is clicked
@@ -156,36 +159,38 @@ const Profile = () => {
         {/* Profile section with user details and buttons */}
         <div className="profile-div">
           <div className="profile-image">
-            <img src={user.profilePicture} alt="Profile" />
+            <img src={profileUser.profilePicture} alt="Profile" />
           </div>
           <div className="profile-details">
-            <h1>{user.name}</h1>
+            <h1>{profileUser.name}</h1>
             <div className="profile-actions">
               {userIdToFetch !== currentUserId && (
                 <FollowBtn
-                  userId={user._id}
+                  userId={profileUser._id}
                   currentUserId={currentUserId}
                   isFollowing={isFollowing}
                   onFollowChange={handleFollowChange}
-                  setUser={setUser}
+                  setUser={setProfileUser}
                 />
               )}
-              <Link to={`/${currentUserId}/${user._id}`}>
+
+              <Link to={`/${currentUserId}/${profileUser._id}`} >
                 <button
                 className="message-btn"
-                disabled={!user || user._id === currentUserId}
+                disabled={!profileUser?._id || profileUser._id === currentUserId}
               >
                 Message
               </button>
               </Link>
+
             </div>
             <div className="followers-following">
-              <p>Followers: {user.followers?.length || 0}</p>
-              <p>Following: {user.following?.length || 0}</p>
+              <p>Followers: {profileUser.followers?.length || 0}</p>
+              <p>Following: {profileUser.following?.length || 0}</p>
             </div>
             <p>
               Profile created on:{" "}
-              {new Date(user.createdAt).toLocaleDateString()}
+              {new Date(profileUser.createdAt).toLocaleDateString()}
             </p>
           </div>
         </div>

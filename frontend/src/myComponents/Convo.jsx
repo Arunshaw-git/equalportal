@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import { useNavigate, useParams } from "react-router-dom";
+import { useProfileUser } from "../contexts/ProfileUser";
 
 const Convo = () => {
   const { user1, user2 } = useParams(); // Get user1 and user2 from URL
@@ -8,6 +9,7 @@ const Convo = () => {
   const [text, setText] = useState("");
   const navigate = useNavigate();
   const [socket, setSocket] = useState(null);
+  const { profileUser,setProfileUser } = useProfileUser();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -16,13 +18,33 @@ const Convo = () => {
       return;
     }
 
+    if (!profileUser || Object.keys(profileUser).length === 0) {
+      const fetchProfile = async () => {
+        try {
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/profile/${user2}`, {
+            method: "GET",
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+  
+          if (!response.ok) throw new Error("Failed to fetch user's profile");
+          const data = await response.json();
+          setProfileUser(data);
+          console.log("user data:", data);
+        } catch (error) {
+          console.error("Error fetching user's profile:", error);
+        }
+      };
+  
+      fetchProfile();
+    }
     // Fetch old messages
     const fetchConversation = async () => {
       try {
         const res = await fetch(
-          `${
-            process.env.REACT_APP_API_URL 
-          }/message/${user1}/${user2}`,
+          `${process.env.REACT_APP_API_URL}/message/${user1}/${user2}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -46,7 +68,7 @@ const Convo = () => {
       }
     };
 
-    fetchConversation();
+    fetchConversation();  
 
     // Initialize socket
     const newSocket = io(
@@ -81,7 +103,7 @@ const Convo = () => {
     return () => {
       newSocket.disconnect();
     };
-  }, [user1, user2, navigate]);
+  }, [user1, user2, navigate, setProfileUser, profileUser]);
 
   const sendMessage = () => {
     if (!text.trim() || !socket) return;
@@ -101,48 +123,56 @@ const Convo = () => {
   };
 
   return (
-    <div style={{ width: "400px", border: "1px solid #ccc", padding: "10px" }}>
-      <div style={{ maxHeight: "400px", overflowY: "auto" }}>
-        {Array.isArray(messages) && messages.length > 0 ? (
-          messages.map((msg, index) => (
-            <div
-              key={index}
-              style={{
-                textAlign: msg.sender === user1 ? "right" : "left",
-                margin: "5px 0",
-              }}
-            >
-              <span
+    <div div className="homepage-container">
+      <div
+        style={{ width: "400px", border: "1px solid #ccc", padding: "10px" }}
+      >
+        <div className="profile-image">
+          <img src={profileUser?.profilePicture} alt="Profile" />
+          <p>{profileUser?.name}</p>
+        </div>
+        <div style={{ maxHeight: "400px", overflowY: "auto" }}>
+          {Array.isArray(messages) && messages.length > 0 ? (
+            messages.map((msg, index) => (
+              <div
+                key={index}
                 style={{
-                  background: msg.sender === user1 ? "#daf8cb" : "#f1f1f1",
-                  padding: "5px 10px",
-                  borderRadius: "10px",
-                  display: "inline-block",
+                  textAlign: msg.sender === user1 ? "right" : "left",
+                  margin: "5px 0",
                 }}
               >
-                {msg.text}
-              </span>
-            </div>
-          ))
-        ) : (
-          <div> No messages</div>
-        )}
-      </div>
+                <span
+                  style={{
+                    background: msg.sender === user1 ? "#daf8cb" : "#f1f1f1",
+                    padding: "5px 10px",
+                    borderRadius: "10px",
+                    display: "inline-block",
+                  }}
+                >
+                  {msg.text}
+                </span>
+              </div>
+            ))
+          ) : (
+            <div> No messages</div>
+          )}
+        </div>
 
-      <div>
-        <input
-          type="text"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Type a message..."
-          style={{ width: "70%" }}
-        />
-        <button
-          onClick={sendMessage}
-          style={{ width: "25%", marginLeft: "5%" }}
-        >
-          Send
-        </button>
+        <div>
+          <input
+            type="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder="Type a message..."
+            style={{ width: "70%" }}
+          />
+          <button
+            onClick={sendMessage}
+            style={{ width: "25%", marginLeft: "5%" }}
+          >
+            Send
+          </button>
+        </div>
       </div>
     </div>
   );

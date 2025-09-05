@@ -8,24 +8,27 @@ import CreateUser from "./myComponents/CreateUser";
 import Profile from "./myComponents/Profile";
 import Convo from "./myComponents/Convo";
 import { PostsProvider } from "./contexts/PostsContext";
+import { UserProvider } from "./contexts/ProfileUser";
 
 function App() {
   return (
     <Router>
-      <PostsProvider>
-        <div className="app-container">
-          <Routes>
-            <Route path="/createuser" element={<CreateUser />} />
-            <Route path="/" element={<Homepage />} />
-            <Route path="/profile/:id?" element={<Profile />} />
+      <UserProvider>
+        <PostsProvider>
+          <div className="app-container">
+            <Routes>
+              <Route path="/createuser" element={<CreateUser />} />
+              <Route path="/" element={<Homepage />} />
+              <Route path="/profile/:id?" element={<Profile />} />
 
-            <Route path="/login" element={<Login />} />
-            <Route path="/create" element={<CreatePost />} />
-            <Route path="/:user1/:user2" element={<Convo/>}></Route>
-          </Routes>
-          <Footer />
-        </div>
-      </PostsProvider>
+              <Route path="/login" element={<Login />} />
+              <Route path="/create" element={<CreatePost />} />
+              <Route path="/:user1/:user2" element={<Convo />}></Route>
+            </Routes>
+            <Footer />
+          </div>
+        </PostsProvider>
+      </UserProvider>
     </Router>
   );
 }
