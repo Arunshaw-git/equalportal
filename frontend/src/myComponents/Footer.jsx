@@ -7,7 +7,7 @@ const Footer =()=>{
       <div className="footer-content">
         <h3>About Us</h3>
         <p>
-          i mistakenly made a social media website or something, idk.
+          A place to share injustices and crime.
         </p>
       </div>
     </footer>

@@ -197,7 +197,7 @@ function CreatePost() {
           {error && <div className="error-message">{error}</div>}
 
           {/* Submit Button */}
-          <button type="submit" disabled={isLoading} className="button">
+          <button type="submit" disabled={isLoading} className="submit-button">
             {isLoading ? "Creating Post..." : "Create Post"}
           </button>
         </form>

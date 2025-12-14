@@ -1,0 +1,84 @@
+.safe-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
+  opacity: 1;
+}
+
+.safe-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1050;
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  pointer-events: auto;
+}
+
+.safe-modal.fade {
+  transition: opacity 0.15s linear;
+  opacity: 0;
+}
+
+.safe-modal.fade.show {
+  opacity: 1;
+}
+
+.safe-modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 0;
+}
+
+.safe-modal-content {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.safe-modal-header,
+.safe-modal-footer {
+  padding: 1rem 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.safe-modal-footer {
+  border-top: 1px solid #dee2e6;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.safe-modal-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.safe-modal-body {
+  padding: 1rem;
+}
+
+.safe-btn {
+  padding: 0.4rem 0.9rem;
+  border-radius: 0.25rem;
+  border: none;
+  cursor: pointer;
+}
+
+.safe-btn-primary {
+  background: #0d6efd;
+  color: white;
+}
+
+.safe-btn-secondary {
+  background: #6c757d;
+  color: white;
+}

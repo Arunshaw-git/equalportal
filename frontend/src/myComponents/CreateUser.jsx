@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SafeModal from "./OtpModal";
+import "../styles/OtpModal.css";
 
 const CreateUser = () => {
   const [formData, setFormData] = useState({
@@ -9,12 +11,15 @@ const CreateUser = () => {
     userName: "",
     gender: "",
   });
+
+  const [otp, setOtp] = useState("");
   const [media, setMedia] = useState(null); // State for media file
   const [preview, setPreview] = useState(null); // For previewing the media
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -53,9 +58,39 @@ const CreateUser = () => {
     });
   };
 
+  const HandleSendOtp = async () => {
+    console.log("Sending OTP to:", formData.email);
+    setShowModal(true);
+
+    const otpRes = await fetch(`${apiUrl}/auth/sendOtp`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: formData.email }),
+    });
+    if (!otpRes.ok) {
+      const otpdata = await otpRes.json();
+      setErrors({ email: otpdata.error || "Failed to send OTP" });
+      return;
+    }
+    console.log("OTP sent successfully", otpRes);
+  };
+
+  const handleVerifyOtp = async () => {
+    const otpRes = await fetch(`${apiUrl}/auth/verifyOtp`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: formData.email, otp: otp }),
+    });
+
+    if (!otpRes.ok) {
+      const otpdata = await otpRes.json();
+      setErrors({ otp: otpdata.error || "OTP verification failed" });
+      return;
+    }
+    handleSubmit();
+  };
   //when form is submitted
   const handleSubmit = async (e) => {
-    e.preventDefault();
     setErrors({});
     setIsLoading(true);
 
@@ -113,7 +148,7 @@ const CreateUser = () => {
         throw new Error(data.error || "An error occurred");
       }
       localStorage.setItem("token", data.token);
-      localStorage.setItem("userId", data.user?.id || '');
+      localStorage.setItem("userId", data.user?.id || "");
       setIsLoading(false);
       setFormData({
         name: "",
@@ -124,6 +159,8 @@ const CreateUser = () => {
       });
       clearMedia(); // Clear media preview
       navigate("/"); // Redirect after successful form submission
+
+      setShowModal(false); // Close the OTP modal
     } catch (error) {
       setIsLoading(false);
       setErrors({ global: error.message }); // Set global error if the request fails
@@ -132,13 +169,13 @@ const CreateUser = () => {
 
   return (
     <>
-    <nav className="navbar">
-         <div className="logo-container"></div>
-       </nav>
+      <nav className="navbar">
+        <div className="logo-container"></div>
+      </nav>
       <div className="create-post-container">
         <div className="form-container">
           <h2>Create a New User</h2>
-          <form onSubmit={handleSubmit}>
+          <form>
             <input
               type="text"
               name="name"
@@ -218,12 +255,28 @@ const CreateUser = () => {
               {errors.file && <div className="error-text">{errors.file}</div>}
             </div>
 
-            <button type="submit" disabled={isLoading}>
+            <button
+              className="submit-button"
+              type="button"
+              data-toggle="modal"
+              data-target="#modalCenter"
+              onClick={HandleSendOtp}
+              disabled={isLoading}
+            >
               {isLoading ? "Creating..." : "Create Account"}
             </button>
           </form>
         </div>
       </div>
+
+      {/* Modal for OTP input */}
+      <SafeModal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        onSubmit={handleVerifyOtp}
+        otp={otp}
+        setOtp={setOtp}
+      />
     </>
   );
 };

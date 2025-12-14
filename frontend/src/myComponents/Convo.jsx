@@ -9,7 +9,7 @@ const Convo = () => {
   const [text, setText] = useState("");
   const navigate = useNavigate();
   const [socket, setSocket] = useState(null);
-  const { profileUser,setProfileUser } = useProfileUser();
+  const { profileUser, setProfileUser } = useProfileUser();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -21,14 +21,17 @@ const Convo = () => {
     if (!profileUser || Object.keys(profileUser).length === 0) {
       const fetchProfile = async () => {
         try {
-          const response = await fetch(`${process.env.REACT_APP_API_URL}/profile/${user2}`, {
-            method: "GET",
-            headers: {
-              "content-type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          });
-  
+          const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/profile/${user2}`,
+            {
+              method: "GET",
+              headers: {
+                "content-type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
           if (!response.ok) throw new Error("Failed to fetch user's profile");
           const data = await response.json();
           setProfileUser(data);
@@ -37,7 +40,7 @@ const Convo = () => {
           console.error("Error fetching user's profile:", error);
         }
       };
-  
+
       fetchProfile();
     }
     // Fetch old messages
@@ -68,7 +71,7 @@ const Convo = () => {
       }
     };
 
-    fetchConversation();  
+    fetchConversation();
 
     // Initialize socket
     const newSocket = io(
@@ -122,37 +125,69 @@ const Convo = () => {
     setText("");
   };
 
+  const groupMessagesByDate = (messages) => {
+    const groups = {};
+
+    messages.forEach((msg) => {
+      // Format the date as YYYY-MM-DD
+      const date = new Date(msg.createdAt).toLocaleDateString();
+      if (!groups[date]) groups[date] = [];
+      groups[date].push(msg);
+    });
+
+    return groups;
+  };
+
   return (
     <div div className="homepage-container">
       <div
         style={{ width: "400px", border: "1px solid #ccc", padding: "10px" }}
       >
-        <div className="profile-image">
+        <div className="profile-image" style={{display: "flex", alignItems: "center" }}>
           <img src={profileUser?.profilePicture} alt="Profile" />
-          <p>{profileUser?.name}</p>
+          <p style={{ paddingLeft: "10px", fontSize: "20px", fontWeight: "bold" }}>{profileUser?.name}</p>
         </div>
         <div style={{ maxHeight: "400px", overflowY: "auto" }}>
           {Array.isArray(messages) && messages.length > 0 ? (
-            messages.map((msg, index) => (
-              <div
-                key={index}
-                style={{
-                  textAlign: msg.sender === user1 ? "right" : "left",
-                  margin: "5px 0",
-                }}
-              >
-                <span
-                  style={{
-                    background: msg.sender === user1 ? "#daf8cb" : "#f1f1f1",
-                    padding: "5px 10px",
-                    borderRadius: "10px",
-                    display: "inline-block",
-                  }}
-                >
-                  {msg.text}
-                </span>
-              </div>
-            ))
+            Object.entries(groupMessagesByDate(messages)).map(
+              ([date, msgs]) => (
+                <div key={date}>
+                  {/* Date Header */}
+                  <div
+                    style={{
+                      textAlign: "center",
+                      margin: "10px 0",
+                      color: "#666",
+                    }}
+                  >
+                    {date}
+                  </div>
+
+                  {/* Messages of that day */}
+                  {msgs.map((msg, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        textAlign: msg.sender === user1 ? "right" : "left",
+                        margin: "5px 0",
+                      }}
+                    >
+                      <span
+                        style={{
+                          background:
+                            msg.sender === user1 ? "#daf8cb" : "#f1f1f1",
+                          padding: "5px 10px",
+                          borderRadius: "10px",
+                          display: "inline-block",
+                        }}
+                      >
+                        {msg.text}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )
+            )
           ) : (
             <div> No messages</div>
           )}

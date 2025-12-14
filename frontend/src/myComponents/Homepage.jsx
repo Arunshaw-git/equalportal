@@ -29,7 +29,6 @@ const Homepage = () => {
     } else {
       document.body.style.overflow = "auto";
     }
-
     // Cleanup in case component unmounts
     return () => {
       document.body.style.overflow = "auto";
@@ -169,7 +168,7 @@ const Homepage = () => {
                 </div>
                 <p className="profile-line"></p>
                 <h2>{post.title}</h2>
-                <p style={{color:post.newsOrNot === true ? "green" : "red"}}  >{post.newsOrNot? "News" : "Not a News" } according to LogisticRegression Model</p>
+                <p style={{color:post.newsOrNot === true ? "green" : "red"}}  >{post.newsOrNot? "News" : "Not a News" } according to ML Model</p>
                 <p className="description">{post.desc}</p>
 
                 {post.media ? (

@@ -31,7 +31,7 @@ const Login = () => {
       });
 
       const data = await response.json();
-      console.log('Login response:', data); // Add this line
+      console.log('Login response:', data); 
 
       if (!response.ok) {
         throw new Error(data.error || 'Login failed');
@@ -80,7 +80,7 @@ const Login = () => {
             />
           </div>
           <p className='profile-line'></p>
-          <button type="submit" className='button'>
+          <button type="submit" className='submit-button' disabled={isLoading}>
           {isLoading ? "Logining..." : "Login"}
           </button>
           <button  className="signUp" onClick={handleSignUp}>

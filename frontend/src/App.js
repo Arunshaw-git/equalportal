@@ -9,6 +9,9 @@ import Profile from "./myComponents/Profile";
 import Convo from "./myComponents/Convo";
 import { PostsProvider } from "./contexts/PostsContext";
 import { UserProvider } from "./contexts/ProfileUser";
+// import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/js/bootstrap.bundle.min.js";
+
 
 function App() {
   return (
@@ -20,7 +23,6 @@ function App() {
               <Route path="/createuser" element={<CreateUser />} />
               <Route path="/" element={<Homepage />} />
               <Route path="/profile/:id?" element={<Profile />} />
-
               <Route path="/login" element={<Login />} />
               <Route path="/create" element={<CreatePost />} />
               <Route path="/:user1/:user2" element={<Convo />}></Route>

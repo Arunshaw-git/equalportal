@@ -1,5 +1,6 @@
 import { useState, createContext, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 const PostsContext = createContext();
 
 export const PostsProvider = ({ children }) => {
@@ -8,14 +9,16 @@ export const PostsProvider = ({ children }) => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
   useEffect(() => {
+
     const fetchPosts = async () => {
+      
       setLoading(true);
       const token = localStorage.getItem("token");
       
       if (!token) {
         console.error("Token not provided while fetching posts context");
-        
         return; // Prevent fetching posts without a token
       }
       
@@ -33,7 +36,9 @@ export const PostsProvider = ({ children }) => {
         }
 
         const data = await response.json();
+
         console.log(data);
+
         setPosts(data);
         setLoading(false);
       } catch (error) {
@@ -59,4 +64,5 @@ export const PostsProvider = ({ children }) => {
     </PostsContext.Provider>
   );
 };
+
 export const usePosts = () => useContext(PostsContext);
