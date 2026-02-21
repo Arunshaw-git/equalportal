@@ -37,10 +37,23 @@ if (!fs.existsSync(uploadsDir)) {
 const server = http.createServer(app);
 
 const allowedOrigins = [
-  "http://localhost:3000", // Local development frontend
-  "https://equalportal.netlify.app", // Deployed frontend URL
-  "null", // Allow for file:// URL access (if testing locally without server)
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  "https://equalportal.netlify.app",
 ];
+
+const envAllowedOrigins = (process.env.CORS_ORIGINS || process.env.CLIENT_URL || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const isOriginAllowed = (origin) => {
+  if (!origin || origin === "null") return true;
+  if (allowedOrigins.includes(origin) || envAllowedOrigins.includes(origin)) return true;
+  if (/^https:\/\/[a-z0-9-]+\.netlify\.app$/i.test(origin)) return true;
+  if (/^https:\/\/[a-z0-9-]+--[a-z0-9-]+\.netlify\.app$/i.test(origin)) return true;
+  return false;
+};
 
 // Security middleware
 app.use(helmet());
@@ -64,10 +77,10 @@ app.use((req, res, next) => {
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (isOriginAllowed(origin)) {
         callback(null, true);
       } else {
-        callback(new Error("Not allowed by CORS"));
+        callback(new Error(`Not allowed by CORS: ${origin}`));
       }
     },
     credentials: true,
@@ -77,7 +90,13 @@ app.use(
 
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      if (isOriginAllowed(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`Not allowed by Socket CORS: ${origin}`));
+      }
+    },
     methods: ["GET", "POST", "PUT", "PATCH"],
     credentials: true,
   },
@@ -85,19 +104,24 @@ const io = new Server(server, {
   pingInterval: 25000,
 });
 
-// Route handling with base URL prefixes
-app.use("/create", createRoutes);
-app.use("/auth", authRoutes);
-app.use("/", homeRoutes);
-app.use("/", profile);
-app.use("/", votes);
-app.use("/", comment);
-app.use("/", follow);
-app.use("/message", message);
-app.use("/", reactions);
-app.use("/", notifications);
-app.use("/", searchRoutes);
-app.use("/", settingsRoutes);
+const registerRoutes = (prefix = "") => {
+  app.use(`${prefix}/create`, createRoutes);
+  app.use(`${prefix}/auth`, authRoutes);
+  app.use(`${prefix}/`, homeRoutes);
+  app.use(`${prefix}/`, profile);
+  app.use(`${prefix}/`, votes);
+  app.use(`${prefix}/`, comment);
+  app.use(`${prefix}/`, follow);
+  app.use(`${prefix}/message`, message);
+  app.use(`${prefix}/`, reactions);
+  app.use(`${prefix}/`, notifications);
+  app.use(`${prefix}/`, searchRoutes);
+  app.use(`${prefix}/`, settingsRoutes);
+};
+
+// Support both direct and /api-prefixed routes in production
+registerRoutes("");
+registerRoutes("/api");
 
 connectToDB();
 

@@ -161,23 +161,39 @@ router.post(
 );
 
 router.post("/sendOtp", async (req, res) => {
-  const { email } = req.body;
+  const rawEmail = req.body?.email;
+  const email = String(rawEmail || "").trim().toLowerCase();
+
   if (!email) {
     return res.status(400).json({ error: "Email is required" });
   }
 
+  const smtpUser = process.env.EMAIL;
+  const smtpPass = process.env.EMAIL_PASS || process.env.EMAIL_APP_PASSWORD;
+  if (!smtpUser || !smtpPass) {
+    return res.status(500).json({
+      success: false,
+      error: "Email service is not configured on server",
+    });
+  }
+
   otpData[email] = generateOTP();
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
     auth: {
-      user: process.env.EMAIL,
-      pass: process.env.EMAIL_PASS,
+      user: smtpUser,
+      pass: smtpPass,
     },
   });
 
   try {
     await transporter.sendMail({
-      from: `"Equal portal Auth" <${process.env.EMAIL}>`,
+      from: `"Equal portal Auth" <${smtpUser}>`,
       to: email,
       subject: "Your OTP Code",
       text: `Use this OTP to complete your account creation: ${otpData[email]}`,
@@ -186,12 +202,17 @@ router.post("/sendOtp", async (req, res) => {
     res.json({ success: true });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, error: "Failed to send OTP" });
+    const authError =
+      err?.code === "EAUTH"
+        ? "Gmail authentication failed. Use an App Password in EMAIL_PASS."
+        : "Failed to send OTP";
+    res.status(500).json({ success: false, error: authError });
   }
 });
 
 router.post("/verifyOtp", async (req, res) => {
-  const { email, otp } = req.body;
+  const email = String(req.body?.email || "").trim().toLowerCase();
+  const otp = String(req.body?.otp || "").trim();
 
   if (otpData[email] && otpData[email] === otp) {
     delete otpData[email];

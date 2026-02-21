@@ -33,6 +33,16 @@ const CreateUser = () => {
     return fallback;
   };
 
+  const fetchWithTimeout = async (url, options, timeoutMs = 15000) => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      return await fetch(url, { ...options, signal: controller.signal });
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  };
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -147,6 +157,11 @@ const CreateUser = () => {
   };
 
   const HandleSendOtp = async () => {
+    if (!apiUrl) {
+      setErrors({ global: "API URL missing. Set REACT_APP_API_URL in Netlify environment." });
+      return;
+    }
+
     if (!formData.email.trim()) {
       setErrors({ email: "Email is required to receive OTP." });
       return;
@@ -155,7 +170,7 @@ const CreateUser = () => {
     try {
       setIsLoading(true);
       setErrors((prev) => ({ ...prev, otp: null }));
-      const otpRes = await fetch(`${apiUrl}/auth/sendOtp`, {
+      const otpRes = await fetchWithTimeout(`${apiUrl}/auth/sendOtp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: formData.email.trim() }),
@@ -169,7 +184,11 @@ const CreateUser = () => {
 
       setShowModal(true);
     } catch (error) {
-      setErrors({ email: error.message || "Failed to send OTP." });
+      const message =
+        error?.name === "AbortError"
+          ? "OTP request timed out. Check backend URL/CORS and try again."
+          : error.message || "Failed to send OTP.";
+      setErrors({ email: message });
     } finally {
       setIsLoading(false);
     }
