@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SafeModal from "./OtpModal";
 import "../styles/SignUp.css";
 
 const CreateUser = () => {
@@ -13,12 +12,10 @@ const CreateUser = () => {
     gender: "",
   });
 
-  const [otp, setOtp] = useState("");
   const [media, setMedia] = useState(null);
   const [preview, setPreview] = useState(null);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
 
   const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
@@ -31,16 +28,6 @@ const CreateUser = () => {
       if (firstError?.msg) return firstError.msg;
     }
     return fallback;
-  };
-
-  const fetchWithTimeout = async (url, options, timeoutMs = 15000) => {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-    try {
-      return await fetch(url, { ...options, signal: controller.signal });
-    } finally {
-      clearTimeout(timeoutId);
-    }
   };
 
   const handleFileChange = (e) => {
@@ -147,7 +134,6 @@ const CreateUser = () => {
         gender: "",
       });
       clearMedia();
-      setShowModal(false);
       navigate("/");
     } catch (error) {
       setErrors({ global: error.message });
@@ -156,70 +142,9 @@ const CreateUser = () => {
     }
   };
 
-  const HandleSendOtp = async () => {
-    if (!apiUrl) {
-      setErrors({ global: "API URL missing. Set REACT_APP_API_URL in Netlify environment." });
-      return;
-    }
-
-    if (!formData.email.trim()) {
-      setErrors({ email: "Email is required to receive OTP." });
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-      setErrors((prev) => ({ ...prev, otp: null }));
-      const otpRes = await fetchWithTimeout(`${apiUrl}/auth/sendOtp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email.trim() }),
-      });
-
-      if (!otpRes.ok) {
-        const otpData = await otpRes.json().catch(() => ({}));
-        setErrors({ email: otpData.error || "Failed to send OTP." });
-        return;
-      }
-
-      setShowModal(true);
-    } catch (error) {
-      const message =
-        error?.name === "AbortError"
-          ? "OTP request timed out. Check backend URL/CORS and try again."
-          : error.message || "Failed to send OTP.";
-      setErrors({ email: message });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleVerifyOtp = async () => {
-    try {
-      setIsLoading(true);
-      const otpRes = await fetch(`${apiUrl}/auth/verifyOtp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email.trim(), otp }),
-      });
-
-      if (!otpRes.ok) {
-        const otpData = await otpRes.json().catch(() => ({}));
-        setErrors({ otp: otpData.error || "OTP verification failed" });
-        return;
-      }
-
-      await createAccount();
-    } catch (error) {
-      setErrors({ otp: error.message || "OTP verification failed" });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const handleStartSignup = async (e) => {
     e.preventDefault();
-    await HandleSendOtp();
+    await createAccount();
   };
 
   const handleGoBack = () => {
@@ -351,21 +276,12 @@ const CreateUser = () => {
               </div>
 
               <button type="submit" disabled={isLoading} className="signup-submit-btn">
-                {isLoading ? "Sending OTP..." : "Create Account"}
+                {isLoading ? "Creating Account..." : "Create Account"}
               </button>
-              {errors.otp && <div className="error-text">{errors.otp}</div>}
             </form>
           </section>
         </div>
       </div>
-
-      <SafeModal
-        show={showModal}
-        onClose={() => setShowModal(false)}
-        onSubmit={handleVerifyOtp}
-        otp={otp}
-        setOtp={setOtp}
-      />
     </>
   );
 };
