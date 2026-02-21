@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/CreatePost.css";
+import "../styles/Homepage.css";
 import Logout from "./Logout";
 
 function CreatePost() {
@@ -12,6 +13,14 @@ function CreatePost() {
   const [isLoading, setIsLoading] = useState(false);
   const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+      return;
+    }
+    navigate("/");
+  };
 
   //uploaded image handling
   const handleFileChange = (e) => {
@@ -129,79 +138,110 @@ function CreatePost() {
 
   return (
     <>
-      <nav className="navbar">
+      <nav className="homepage-navbar">
         <Link to="/">
           <div className="logo-container"></div>
         </Link>
-        <Logout />
+        <div className="home-nav-actions">
+          <span className="home-status-pill">Create</span>
+          <Logout />
+        </div>
       </nav>
 
-      <div className="create-post-container">
-        <form
-          onSubmit={handleSubmit}
-          className="form"
-          encType="multipart/form-data"
-        >
-          <h1 className="header">Create a Post</h1>
-
-          <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter post title"
-              required
-              maxLength={100}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="description">Description</label>
-            <textarea
-              id="description"
-              value={desc}
-              onChange={(e) => setDesc(e.target.value)}
-              placeholder="Enter post description"
-              maxLength={500}
-              rows={4}
-            />
-          </div>
-
-          {/* Media Upload */}
-          <div className="form-group">
-            <label htmlFor="media">Media (Optional)</label>
-            <input
-              type="file"
-              id="fileInput"
-              onChange={handleFileChange}
-              name="media"
-              accept="image/jpeg,image/png,image/gif"
-            />
-            {/* Media Preview */}
-            {preview && (
-              <div className="media-preview">
-                <img src={preview} alt="Preview" className="preview-image" />
-                <button
-                  type="button"
-                  onClick={clearMedia}
-                  className="clear-media-btn"
-                >
-                  Remove Image
-                </button>
-              </div>
-            )}
-          </div>
-          {/* Error Display */}
-          {error && <div className="error-message">{error}</div>}
-
-          {/* Submit Button */}
-          <button type="submit" disabled={isLoading} className="button">
-            {isLoading ? "Creating Post..." : "Create Post"}
+      <main className="create-post-page">
+        <div className="create-post-topbar">
+          <button type="button" className="create-post-back-btn" onClick={handleGoBack}>
+            &lt; Back
           </button>
-        </form>
-      </div>
+        </div>
+
+        <div className="create-post-shell">
+          <section className="create-post-intro">
+            <p className="create-post-kicker">Publishing Studio</p>
+            <h1>Create a post that people can trust and share.</h1>
+            <p>
+              Add a clear title, explain your message, and include supporting media.
+              Quality posts get better engagement and stronger community feedback.
+            </p>
+            <ul className="create-post-tips">
+              <li>Use a specific title so readers understand your post quickly.</li>
+              <li>Keep your description factual and easy to verify.</li>
+              <li>Upload a relevant image to improve clarity and reach.</li>
+            </ul>
+          </section>
+
+          <section className="create-post-card">
+            <form
+              onSubmit={handleSubmit}
+              className="create-post-form"
+              encType="multipart/form-data"
+            >
+              <div className="create-post-head">
+                <h2>Create Post</h2>
+                <span className="create-post-status">{isLoading ? "Publishing..." : "Ready"}</span>
+              </div>
+
+              <div className="create-post-group">
+                <label htmlFor="title">Title</label>
+                <input
+                  type="text"
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Write a clear post title"
+                  required
+                  maxLength={100}
+                />
+                <p className="create-post-meta">{title.length}/100</p>
+              </div>
+
+              <div className="create-post-group">
+                <label htmlFor="description">Description</label>
+                <textarea
+                  id="description"
+                  value={desc}
+                  onChange={(e) => setDesc(e.target.value)}
+                  placeholder="Add context, details, and key facts"
+                  maxLength={500}
+                  rows={6}
+                />
+                <p className="create-post-meta">{desc.length}/500</p>
+              </div>
+
+              <div className="create-post-group">
+                <label htmlFor="fileInput">Media (Optional)</label>
+                <input
+                  type="file"
+                  id="fileInput"
+                  onChange={handleFileChange}
+                  name="media"
+                  accept="image/jpeg,image/png,image/gif"
+                />
+                <p className="create-post-meta">JPG, PNG, GIF up to 5MB</p>
+
+                {preview && (
+                  <div className="create-post-preview">
+                    <img src={preview} alt="Preview" className="create-post-preview-image" />
+                    <button
+                      type="button"
+                      onClick={clearMedia}
+                      className="create-post-remove-btn"
+                    >
+                      Remove Image
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {error && <div className="create-post-error">{error}</div>}
+
+              <button type="submit" disabled={isLoading} className="create-post-submit">
+                {isLoading ? "Creating Post..." : "Publish Post"}
+              </button>
+            </form>
+          </section>
+        </div>
+      </main>
     </>
   );
 }

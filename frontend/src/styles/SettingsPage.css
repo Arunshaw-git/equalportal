@@ -1,0 +1,261 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+.feature-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+  padding: 0.4rem 1rem 0.4rem 0.8rem;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #d9e2ec;
+  backdrop-filter: blur(8px);
+}
+
+.feature-logo {
+  background-image: url("./EqualPortal4.png");
+  width: 120px;
+  height: 56px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.feature-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.feature-pill {
+  font: 600 0.78rem/1 "Space Grotesk", sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #075985;
+  border-radius: 999px;
+  border: 1px solid #bae6fd;
+  background: #e0f2fe;
+  padding: 0.42rem 0.66rem;
+}
+
+.settings-page {
+  margin-top: 78px;
+  margin-left: 252px;
+  min-height: calc(100vh - 78px);
+  padding: 1.4rem 1.2rem 2rem;
+  box-sizing: border-box;
+  font-family: "Space Grotesk", sans-serif;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(20, 184, 166, 0.16), transparent 34%),
+    radial-gradient(circle at 90% 8%, rgba(244, 114, 182, 0.14), transparent 30%),
+    linear-gradient(160deg, #f5fbff, #f8f5ff);
+}
+
+.settings-hero {
+  border-radius: 22px;
+  border: 1px solid #d8e5f3;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 1.3rem 1.4rem;
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+}
+
+.settings-hero h1 {
+  margin: 0;
+  color: #0f172a;
+  font: 700 2rem/1.1 "Space Grotesk", sans-serif;
+}
+
+.settings-hero p {
+  margin: 0.65rem 0 0;
+  color: #334155;
+  font: 500 1.04rem/1.6 "Space Grotesk", sans-serif;
+}
+
+.settings-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.95rem;
+}
+
+.settings-card {
+  border-radius: 20px;
+  border: 1px solid #dbe7f4;
+  background: #ffffff;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+  padding: 1rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.settings-card-wide {
+  grid-column: span 2;
+}
+
+.settings-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.settings-head h2 {
+  margin: 0;
+  color: #0f172a;
+  font: 700 1.12rem/1.2 "Space Grotesk", sans-serif;
+}
+
+.settings-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.settings-form-grid label,
+.settings-card label {
+  color: #1e293b;
+  font: 600 0.88rem/1.2 "Space Grotesk", sans-serif;
+  display: grid;
+  gap: 0.38rem;
+}
+
+.settings-page input,
+.settings-page select {
+  border: 1px solid #d2dce9;
+  border-radius: 11px;
+  background: #f8fbff;
+  color: #0f172a;
+  padding: 0.68rem 0.74rem;
+  font: 500 0.93rem/1.2 "Space Grotesk", sans-serif;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.settings-page input:focus,
+.settings-page select:focus {
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.18);
+}
+
+.settings-page input[readonly] {
+  background: #eef2f7;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+.settings-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.56rem;
+  font: 600 0.93rem/1.2 "Space Grotesk", sans-serif;
+  color: #1e293b;
+}
+
+.settings-toggle input[type="checkbox"] {
+  accent-color: #0ea5e9;
+  width: 1rem;
+  height: 1rem;
+}
+
+.settings-save-btn {
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(130deg, #0ea5e9, #2563eb);
+  color: #fff;
+  padding: 0.55rem 0.78rem;
+  font: 700 0.83rem/1 "Space Grotesk", sans-serif;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.28);
+}
+
+.settings-save-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.settings-save-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.settings-message {
+  margin: 0;
+  color: #065f46;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 10px;
+  padding: 0.5rem 0.6rem;
+  font: 600 0.84rem/1.3 "Space Grotesk", sans-serif;
+}
+
+.settings-error {
+  margin-top: 0.9rem;
+  color: #b42318;
+  background: #fef3f2;
+  border: 1px solid #fecdd3;
+  border-radius: 11px;
+  padding: 0.6rem 0.75rem;
+  font: 600 0.9rem/1.3 "Space Grotesk", sans-serif;
+}
+
+.settings-loading {
+  margin: 110px 0 0 0;
+  text-align: center;
+  color: #334155;
+  font: 600 1rem/1.3 "Space Grotesk", sans-serif;
+}
+
+.security-form {
+  align-items: end;
+}
+
+.security-form .settings-save-btn {
+  height: 42px;
+}
+
+html[data-compact="true"] .settings-grid {
+  gap: 0.62rem;
+}
+
+html[data-compact="true"] .settings-card {
+  padding: 0.8rem;
+}
+
+html.reduce-motion .settings-page *,
+html.reduce-motion .feature-navbar * {
+  transition: none !important;
+  animation: none !important;
+}
+
+@media (max-width: 1024px) {
+  .settings-page {
+    margin-left: 96px;
+  }
+
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-card-wide {
+    grid-column: span 1;
+  }
+
+  .settings-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .settings-page {
+    margin-left: 0;
+    padding: 0.9rem 0.7rem 5.2rem;
+  }
+
+  .feature-pill {
+    display: none;
+  }
+}

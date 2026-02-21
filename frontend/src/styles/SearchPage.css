@@ -1,0 +1,228 @@
+.search-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+  padding: 0.4rem 1rem 0.4rem 0.8rem;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #d9e2ec;
+  backdrop-filter: blur(8px);
+}
+
+.search-logo {
+  background-image: url("./EqualPortal4.png");
+  width: 120px;
+  height: 56px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.search-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.search-pill {
+  font: 600 0.78rem/1 "Space Grotesk", sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #075985;
+  border-radius: 999px;
+  border: 1px solid #bae6fd;
+  background: #e0f2fe;
+  padding: 0.42rem 0.66rem;
+}
+
+.search-page {
+  margin-top: 78px;
+  margin-left: 252px;
+  min-height: calc(100vh - 78px);
+  padding: 1.6rem 1.3rem 2.2rem;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(14, 165, 233, 0.12), transparent 35%),
+    radial-gradient(circle at 88% 4%, rgba(255, 107, 53, 0.14), transparent 30%),
+    #f4f7fb;
+}
+
+.search-card {
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  padding: 1.4rem;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+}
+
+.search-card h1 {
+  margin: 0;
+  color: #0f172a;
+  font: 700 1.5rem/1.2 "Space Grotesk", sans-serif;
+}
+
+.search-card p {
+  margin: 0.7rem 0 0;
+  color: #475569;
+  font: 500 0.98rem/1.5 "Space Grotesk", sans-serif;
+}
+
+.search-input-wrap {
+  margin-top: 1rem;
+}
+
+.search-input-wrap input {
+  width: 100%;
+  border: 1px solid #d8e1eb;
+  border-radius: 12px;
+  background: #f8fafc;
+  color: #0f172a;
+  font: 600 0.94rem/1.2 "Space Grotesk", sans-serif;
+  padding: 0.72rem 0.85rem;
+  box-sizing: border-box;
+}
+
+.search-tabs {
+  margin-top: 0.85rem;
+  display: inline-flex;
+  gap: 0.45rem;
+}
+
+.search-tabs button {
+  border: 1px solid #d8e1eb;
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 999px;
+  padding: 0.34rem 0.7rem;
+  cursor: pointer;
+  font: 700 0.78rem/1 "Space Grotesk", sans-serif;
+}
+
+.search-tabs button.active {
+  background: #0ea5e9;
+  border-color: #0ea5e9;
+  color: #ffffff;
+}
+
+.search-state {
+  margin-top: 0.8rem;
+  color: #475569;
+  font: 600 0.92rem/1.3 "Space Grotesk", sans-serif;
+}
+
+.search-error {
+  margin-top: 0.8rem;
+  color: #b42318;
+  border: 1px solid #fecdca;
+  background: #fff2f0;
+  padding: 0.55rem 0.72rem;
+  border-radius: 10px;
+  font: 600 0.9rem/1.3 "Space Grotesk", sans-serif;
+}
+
+.search-results {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.95rem;
+}
+
+.search-block {
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  padding: 1rem;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+}
+
+.search-block h2 {
+  margin: 0;
+  color: #0f172a;
+  font: 700 1.05rem/1.2 "Space Grotesk", sans-serif;
+}
+
+.result-grid {
+  margin-top: 0.8rem;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.result-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background: #ffffff;
+  padding: 0.85rem;
+}
+
+.result-card h3 {
+  margin: 0;
+  color: #0f172a;
+  font: 700 0.95rem/1.25 "Space Grotesk", sans-serif;
+}
+
+.result-card p {
+  margin: 0.45rem 0 0;
+  color: #475569;
+  font: 500 0.85rem/1.45 "Space Grotesk", sans-serif;
+}
+
+.result-card a {
+  margin-top: 0.65rem;
+  display: inline-block;
+  text-decoration: none;
+  color: #0c4a6e;
+  font: 700 0.8rem/1 "Space Grotesk", sans-serif;
+}
+
+.user-card {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.user-card img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #dbe4ee;
+}
+
+.post-meta {
+  margin-top: 0.55rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  color: #64748b;
+  font: 600 0.74rem/1.2 "Space Grotesk", sans-serif;
+}
+
+@media (max-width: 1024px) {
+  .search-page {
+    margin-left: 96px;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-page {
+    margin-left: 0;
+    padding: 0.9rem 0.7rem 5.2rem;
+  }
+
+  .search-pill {
+    display: none;
+  }
+
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .user-card {
+    grid-template-columns: 56px 1fr;
+  }
+}

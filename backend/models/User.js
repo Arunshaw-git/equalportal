@@ -16,6 +16,12 @@ const UserSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    phoneNumber: {
+        type: String,
+        required: false,
+        unique: true,
+        sparse: true
+    },
     password:{
         type:String,
         required:true
@@ -33,6 +39,23 @@ const UserSchema = new mongoose.Schema({
     followers:[{type:mongoose.Schema.Types.ObjectId, ref:"User"}],
     following:[{type:mongoose.Schema.Types.ObjectId, ref:"User"}],
     posts:[{type:mongoose.Schema.Types.ObjectId, ref:"Post"}],
+    settings: {
+        privacy: {
+            privateProfile: { type: Boolean, default: false },
+            showEmail: { type: Boolean, default: false },
+            showPhone: { type: Boolean, default: false }
+        },
+        notifications: {
+            inApp: { type: Boolean, default: true },
+            email: { type: Boolean, default: true },
+            mentions: { type: Boolean, default: true }
+        },
+        preferences: {
+            compactMode: { type: Boolean, default: false },
+            reduceMotion: { type: Boolean, default: false },
+            contentLanguage: { type: String, default: "English" }
+        }
+    },
    
     
 },{timestamps:true})

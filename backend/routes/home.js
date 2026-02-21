@@ -24,7 +24,7 @@ const upload = multer({ storage: storage });
 router.get("/", fetchUser, async (req, res) => {
   try {
     const posts = await Post.find()
-      .populate("author", "name userName profilePicture")
+      .populate("author", "name userName profilePicture followers")
       .populate({
         path: "comments",
         populate: { path: "author", select: "name userName profilePicture" },

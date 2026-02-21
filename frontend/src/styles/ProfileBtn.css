@@ -1,10 +1,25 @@
 
 .profile-button {
-  background-color: #4CAF50; /* Green */
-  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(130deg, #ef4444, #dc2626);
+  border: 1px solid rgba(127, 29, 29, 0.35);
   color: white;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 25px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 12px;
   cursor: pointer;
+  box-shadow: 0 10px 20px rgba(220, 38, 38, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profile-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 24px rgba(220, 38, 38, 0.35);
+}
+
+.profile-button span {
+  line-height: 1;
 }

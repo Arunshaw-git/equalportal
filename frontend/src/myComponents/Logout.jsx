@@ -1,5 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import "../styles/ProfileBtn.css";
 
 const Logout = () => {
     const navigate = useNavigate();
@@ -15,7 +18,10 @@ const Logout = () => {
     };
 
     return (
-        <button style={{backgroundColor:"red"}} onClick={handleLogout} className="profile-button" >Logout</button>
+        <button onClick={handleLogout} className="profile-button" >
+            <FontAwesomeIcon icon={faRightFromBracket} />
+            <span>Logout</span>
+        </button>
     );
 };
 

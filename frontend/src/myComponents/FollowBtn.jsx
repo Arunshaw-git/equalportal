@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const FollowButton = ({ userId, currentUserId, isFollowing, onFollowChange, setUser }) => {
+const FollowButton = ({
+  userId,
+  currentUserId,
+  isFollowing,
+  onFollowChange,
+  setUser,
+  className = "",
+}) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:5001";
 
   const handleFollow = async () => {
     if (!currentUserId) {
@@ -28,7 +35,7 @@ const FollowButton = ({ userId, currentUserId, isFollowing, onFollowChange, setU
       }
 
       const data = await response.json();
-      setUser(data.user)
+      if (setUser) setUser(data.user);
       if (onFollowChange) onFollowChange(data.isFollowing);
       console.log(data.isFollowing) 
       
@@ -43,7 +50,7 @@ const FollowButton = ({ userId, currentUserId, isFollowing, onFollowChange, setU
     <button
       onClick={handleFollow}
       disabled={loading}
-      className={`follow-btn ${isFollowing ? "following" : "not-following"}`}
+      className={`follow-btn ${isFollowing ? "following" : "not-following"} ${className}`}
     >
       {loading ? "Loading..." : isFollowing ? "Unfollow" : "Follow"}
     </button>

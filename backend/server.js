@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "../.env" });
+require("dotenv").config({ path: "./.env" });
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
@@ -19,6 +19,10 @@ const votes = require("./routes/votes");
 const comment = require("./routes/comment");
 const follow = require("./routes/follow");
 const message = require("./routes/message");
+const reactions = require("./routes/reactions");
+const notifications = require("./routes/notifications");
+const searchRoutes = require("./routes/search");
+const settingsRoutes = require("./routes/settings");
 
 const Message = require("./models/Message"); // Import your Message model
 const Convo = require("./models/Conversation");
@@ -67,14 +71,14 @@ app.use(
       }
     },
     credentials: true,
-    methods: ["GET", "POST", "DELETE", "PUT"], // Allowed HTTP methods
+    methods: ["GET", "POST", "DELETE", "PUT", "PATCH"], // Allowed HTTP methods
   })
 );
 
 const io = new Server(server, {
   cors: {
     origin: allowedOrigins,
-    methods: ["GET", "POST","PUT"],
+    methods: ["GET", "POST", "PUT", "PATCH"],
     credentials: true,
   },
   pingTimeout: 60000, // 1 minute
@@ -90,6 +94,10 @@ app.use("/", votes);
 app.use("/", comment);
 app.use("/", follow);
 app.use("/message", message);
+app.use("/", reactions);
+app.use("/", notifications);
+app.use("/", searchRoutes);
+app.use("/", settingsRoutes);
 
 connectToDB();
 

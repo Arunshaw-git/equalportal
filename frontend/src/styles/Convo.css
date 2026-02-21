@@ -1,0 +1,201 @@
+.convo-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+  padding: 0.4rem 1rem 0.4rem 0.8rem;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #d9e2ec;
+  backdrop-filter: blur(8px);
+}
+
+.convo-logo {
+  background-image: url("./EqualPortal4.png");
+  width: 120px;
+  height: 56px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.convo-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.convo-pill {
+  font: 600 0.78rem/1 "Space Grotesk", sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #075985;
+  border-radius: 999px;
+  border: 1px solid #bae6fd;
+  background: #e0f2fe;
+  padding: 0.42rem 0.66rem;
+}
+
+.convo-page {
+  margin-top: 78px;
+  margin-left: 252px;
+  min-height: calc(100vh - 78px);
+  padding: 1.6rem 1.3rem 2.2rem;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(14, 165, 233, 0.12), transparent 35%),
+    radial-gradient(circle at 88% 4%, rgba(255, 107, 53, 0.14), transparent 30%),
+    #f4f7fb;
+}
+
+.convo-card {
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+  padding: 1rem;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: calc(100vh - 130px);
+}
+
+.convo-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.75rem;
+}
+
+.convo-head img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #dbe4ee;
+}
+
+.convo-head h1 {
+  margin: 0;
+  color: #0f172a;
+  font: 700 1.2rem/1.2 "Space Grotesk", sans-serif;
+}
+
+.convo-head p {
+  margin: 0.3rem 0 0;
+  color: #0ea5e9;
+  font: 700 0.82rem/1 "Space Grotesk", sans-serif;
+}
+
+.convo-messages {
+  overflow-y: auto;
+  padding: 0.9rem 0.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.convo-message-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.convo-message-row--me {
+  justify-content: flex-end;
+}
+
+.convo-message {
+  max-width: min(70%, 560px);
+  border-radius: 14px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 0.55rem 0.68rem;
+}
+
+.convo-message--me {
+  background: #dbeafe;
+  border-color: #bfdbfe;
+}
+
+.convo-message p {
+  margin: 0;
+  color: #0f172a;
+  font: 500 0.9rem/1.45 "Space Grotesk", sans-serif;
+}
+
+.convo-message span {
+  margin-top: 0.25rem;
+  display: block;
+  text-align: right;
+  color: #64748b;
+  font: 600 0.7rem/1 "Space Grotesk", sans-serif;
+}
+
+.convo-empty {
+  margin: 0.2rem 0 0;
+  color: #64748b;
+  font: 600 0.9rem/1.3 "Space Grotesk", sans-serif;
+}
+
+.convo-compose {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 0.75rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.6rem;
+}
+
+.convo-compose input {
+  border: 1px solid #d8e1eb;
+  border-radius: 12px;
+  background: #f8fafc;
+  color: #0f172a;
+  padding: 0.7rem 0.8rem;
+  font: 600 0.9rem/1.2 "Space Grotesk", sans-serif;
+}
+
+.convo-compose button {
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  color: #ffffff;
+  padding: 0.68rem 1rem;
+  font: 700 0.86rem/1 "Space Grotesk", sans-serif;
+  cursor: pointer;
+}
+
+.convo-compose button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+@media (max-width: 1024px) {
+  .convo-page {
+    margin-left: 96px;
+  }
+}
+
+@media (max-width: 768px) {
+  .convo-page {
+    margin-left: 0;
+    padding: 0.9rem 0.7rem 5.2rem;
+  }
+
+  .convo-pill {
+    display: none;
+  }
+
+  .convo-card {
+    height: calc(100vh - 170px);
+    padding: 0.8rem;
+  }
+
+  .convo-message {
+    max-width: 86%;
+  }
+}

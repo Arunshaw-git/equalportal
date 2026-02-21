@@ -1,0 +1,90 @@
+.feature-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+  padding: 0.4rem 1rem 0.4rem 0.8rem;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #d9e2ec;
+  backdrop-filter: blur(8px);
+}
+
+.feature-logo {
+  background-image: url("./EqualPortal4.png");
+  width: 120px;
+  height: 56px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.feature-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.feature-pill {
+  font: 600 0.78rem/1 "Space Grotesk", sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #075985;
+  border-radius: 999px;
+  border: 1px solid #bae6fd;
+  background: #e0f2fe;
+  padding: 0.42rem 0.66rem;
+}
+
+.feature-page {
+  margin-top: 78px;
+  margin-left: 252px;
+  min-height: calc(100vh - 78px);
+  padding: 1.6rem 1.3rem 2.2rem;
+  box-sizing: border-box;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(14, 165, 233, 0.12), transparent 35%),
+    radial-gradient(circle at 88% 4%, rgba(255, 107, 53, 0.14), transparent 30%),
+    #f4f7fb;
+}
+
+.feature-card {
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  padding: 1.4rem;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+}
+
+.feature-card h1 {
+  margin: 0;
+  color: #0f172a;
+  font: 700 1.5rem/1.2 "Space Grotesk", sans-serif;
+}
+
+.feature-card p {
+  margin: 0.75rem 0 0;
+  color: #475569;
+  font: 500 1rem/1.6 "Space Grotesk", sans-serif;
+}
+
+@media (max-width: 1024px) {
+  .feature-page {
+    margin-left: 96px;
+  }
+}
+
+@media (max-width: 768px) {
+  .feature-page {
+    margin-left: 0;
+    padding: 0.9rem 0.7rem 5.2rem;
+  }
+
+  .feature-pill {
+    display: none;
+  }
+}

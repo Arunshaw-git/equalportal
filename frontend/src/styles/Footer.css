@@ -1,33 +1,116 @@
 .footer {
-  background-color: #f0f0f0;
-  padding: 2px;
-  margin: 0;
-  text-align: center;
-  position: relative;
-  bottom: 0;
-}
-.footer-content {
-  max-width: 800px; /* Limit the width for better readability */
-  margin: auto; /* Center the content */
-}
-.footer h3 {
-  margin-bottom: 5px;
+  margin-top: auto;
+  margin-left: 252px;
+  width: calc(100% - 252px);
+  border-top: 1px solid #d6e2ee;
+  background:
+    radial-gradient(circle at 9% 4%, rgba(56, 189, 248, 0.2), transparent 34%),
+    radial-gradient(circle at 93% 90%, rgba(14, 165, 233, 0.14), transparent 28%),
+    linear-gradient(115deg, #f7fbff, #ffffff);
+  transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
-.footer p {
-  margin: 5px 0;
+.footer--full {
+  margin-left: 0;
+  width: 100%;
 }
+
+.footer-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.25rem 1.2rem 1.1rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.9rem 1.2rem;
+  align-items: center;
+}
+
+.footer-kicker {
+  margin: 0;
+  display: inline-flex;
+  border-radius: 999px;
+  border: 1px solid #bae6fd;
+  background: #e0f2fe;
+  color: #075985;
+  padding: 0.32rem 0.62rem;
+  font: 700 0.71rem/1 "Space Grotesk", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.footer-brand h3 {
+  margin: 0.52rem 0 0;
+  color: #0f172a;
+  font: 700 1.05rem/1.25 "Space Grotesk", sans-serif;
+  max-width: 36ch;
+}
+
+.footer-brand p {
+  margin: 0.42rem 0 0;
+  color: #475569;
+  font: 500 0.89rem/1.5 "Space Grotesk", sans-serif;
+}
+
+.footer-links {
+  display: flex;
+  gap: 0.64rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.footer-back-btn,
+.footer-links a {
+  appearance: none;
+  text-decoration: none;
+  border: 1px solid #cfdbe8;
+  border-radius: 999px;
+  color: #0f172a;
+  padding: 0.42rem 0.74rem;
+  font: 600 0.8rem/1 "Space Grotesk", sans-serif;
+  background: linear-gradient(180deg, #ffffff, #f8fbff);
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.footer-back-btn {
+  border-color: #7dd3fc;
+  background: #e0f2fe;
+  color: #0c4a6e;
+}
+
+.footer-back-btn:hover,
+.footer-links a:hover {
+  transform: translateY(-1px);
+  background: #ecfeff;
+  border-color: #67e8f9;
+}
+
+.footer-note {
+  margin: 0;
+  grid-column: 1 / -1;
+  color: #64748b;
+  font: 500 0.78rem/1.2 "Space Grotesk", sans-serif;
+}
+
 @media (max-width: 1024px) {
   .footer {
-    margin-left: 60px; /* Adjust the margin for collapsed sidebar */
+    margin-left: 96px;
+    width: calc(100% - 96px);
   }
 }
 
-/* Mobile responsiveness: For very small screens */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .footer {
     margin-left: 0;
-    margin-top: 35px;
-    bottom:55px;
+    width: 100%;
+  }
+
+  .footer-shell {
+    grid-template-columns: 1fr;
+    padding: 0.85rem 0.75rem 4.5rem;
+  }
+
+  .footer-links {
+    justify-content: flex-start;
   }
 }

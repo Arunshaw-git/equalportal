@@ -1,0 +1,202 @@
+.messages-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+  padding: 0.4rem 1rem 0.4rem 0.8rem;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #d9e2ec;
+  backdrop-filter: blur(8px);
+}
+
+.messages-logo {
+  background-image: url("./EqualPortal4.png");
+  width: 120px;
+  height: 56px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.messages-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.messages-pill {
+  font: 600 0.78rem/1 "Space Grotesk", sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #075985;
+  border-radius: 999px;
+  border: 1px solid #bae6fd;
+  background: #e0f2fe;
+  padding: 0.42rem 0.66rem;
+}
+
+.messages-page {
+  margin-top: 78px;
+  margin-left: 252px;
+  min-height: calc(100vh - 78px);
+  padding: 1.6rem 1.3rem 2.2rem;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(14, 165, 233, 0.12), transparent 35%),
+    radial-gradient(circle at 88% 4%, rgba(255, 107, 53, 0.14), transparent 30%),
+    #f4f7fb;
+}
+
+.messages-card {
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  padding: 1.2rem;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+}
+
+.messages-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.messages-head h1 {
+  margin: 0;
+  color: #0f172a;
+  font: 700 1.5rem/1.2 "Space Grotesk", sans-serif;
+}
+
+.messages-head p {
+  margin: 0.65rem 0 0;
+  color: #475569;
+  font: 500 0.98rem/1.45 "Space Grotesk", sans-serif;
+}
+
+.messages-head button {
+  border: 1px solid #d8e1eb;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0f172a;
+  padding: 0.48rem 0.7rem;
+  cursor: pointer;
+  font: 700 0.8rem/1 "Space Grotesk", sans-serif;
+}
+
+.messages-head button:hover {
+  background: #eef2f7;
+}
+
+.messages-state {
+  margin-top: 0.9rem;
+  color: #475569;
+  font: 600 0.92rem/1.3 "Space Grotesk", sans-serif;
+}
+
+.messages-error {
+  margin-top: 0.9rem;
+  color: #b42318;
+  border: 1px solid #fecdca;
+  background: #fff2f0;
+  padding: 0.62rem 0.8rem;
+  border-radius: 10px;
+  font: 600 0.9rem/1.3 "Space Grotesk", sans-serif;
+}
+
+.conversation-list {
+  margin-top: 0.95rem;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.conversation-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background: #ffffff;
+  padding: 0.8rem;
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.conversation-item img {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #dbe4ee;
+}
+
+.conversation-meta h3 {
+  margin: 0;
+  color: #0f172a;
+  font: 700 1rem/1.2 "Space Grotesk", sans-serif;
+}
+
+.conversation-meta p {
+  margin: 0.3rem 0 0;
+  color: #0ea5e9;
+  font: 700 0.82rem/1 "Space Grotesk", sans-serif;
+}
+
+.conversation-meta span {
+  margin-top: 0.42rem;
+  display: block;
+  color: #64748b;
+  font: 500 0.84rem/1.4 "Space Grotesk", sans-serif;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.conversation-item a,
+.conversation-item button {
+  border: 1px solid #d8e1eb;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0f172a;
+  padding: 0.45rem 0.7rem;
+  text-decoration: none;
+  cursor: pointer;
+  font: 700 0.78rem/1 "Space Grotesk", sans-serif;
+}
+
+.conversation-item a:hover {
+  background: #eef2f7;
+}
+
+.conversation-item button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+@media (max-width: 1024px) {
+  .messages-page {
+    margin-left: 96px;
+  }
+}
+
+@media (max-width: 768px) {
+  .messages-page {
+    margin-left: 0;
+    padding: 0.9rem 0.7rem 5.2rem;
+  }
+
+  .messages-pill {
+    display: none;
+  }
+
+  .messages-head {
+    flex-direction: column;
+  }
+
+  .conversation-item {
+    grid-template-columns: 58px 1fr;
+  }
+}

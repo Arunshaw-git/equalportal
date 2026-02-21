@@ -6,6 +6,13 @@ const commentSchema = new mongoose.Schema({
     author:{type:mongoose.Schema.Types.ObjectId, ref:"User", required:true},
     upvotes:[{type:mongoose.Schema.Types.ObjectId, ref:"User"}],
     downvotes:[{type:mongoose.Schema.Types.ObjectId, ref:"User"}],
+    reactionCounts: {
+        like: { type: Number, default: 0 },
+        sad: { type: Number, default: 0 },
+        smile: { type: Number, default: 0 },
+        angry: { type: Number, default: 0 },
+        wow: { type: Number, default: 0 },
+    },
 },{timestamps:true})
 
 commentSchema.pre('save', function(next) {
@@ -17,3 +24,4 @@ commentSchema.pre('save', function(next) {
     next();
 });
 module.exports = mongoose.model("Comments", commentSchema)
+

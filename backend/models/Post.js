@@ -8,6 +8,13 @@ const PostSchema = new mongoose.Schema({
     upvotes:[{type:mongoose.Schema.Types.ObjectId, ref:"User" }],
     downvotes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     comments:[{type:mongoose.Schema.Types.ObjectId,ref:"Comments"}],
+    reactionCounts: {
+        like: { type: Number, default: 0 },
+        sad: { type: Number, default: 0 },
+        smile: { type: Number, default: 0 },
+        angry: { type: Number, default: 0 },
+        wow: { type: Number, default: 0 },
+    },
     newsOrNot: {type:Boolean, default:null },
     confidence: { type: Number, default: null },
 },{timestamps:true});
@@ -21,3 +28,4 @@ PostSchema.pre('save', function(next) {
     next();
 });
 module.exports = mongoose.model("Post", PostSchema) 
+

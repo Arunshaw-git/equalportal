@@ -1,16 +1,33 @@
 const express = require("express");
 const Comments = require("../models/Comments");
 const Post = require("../models/Post");
+const User = require("../models/User");
+const Notification = require("../models/Notification");
 const fetchUser = require("../middleware/fetchUser");
 const router = express.Router();
+
+const extractMentions = (text = "") => {
+  const mentions = text.match(/@([a-zA-Z0-9_]+)/g) || [];
+  return [...new Set(mentions.map((mention) => mention.slice(1).toLowerCase()))];
+};
+
+const isObjectIdEqual = (a, b) => String(a) === String(b);
+const escapeRegExp = (value = "") => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 router.post("/:postId/comment", fetchUser, async (req, res) => {
   try {
     const { postId } = req.params;
     const { text } = req.body;
+    const currentUserId = req.user.id;
+
+    const post = await Post.findById(postId).select("author");
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
     const newComment = new Comments({
       text,
-      author: req.user.id,
+      author: currentUserId,
       post: postId,
       upvotes: [],
       downvotes: [],
@@ -23,7 +40,51 @@ router.post("/:postId/comment", fetchUser, async (req, res) => {
       { new: true }
     );
 
-    const populatedComment = await Comments.findById(savedComment._id).populate("author")
+    const notificationsToCreate = [];
+
+    if (!isObjectIdEqual(post.author, currentUserId)) {
+      notificationsToCreate.push({
+        userId: post.author,
+        actorId: currentUserId,
+        type: "comment",
+        entityType: "post",
+        entityId: postId,
+        meta: { commentPreview: (text || "").slice(0, 120) },
+      });
+    }
+
+    const mentionedUserNames = extractMentions(text);
+    if (mentionedUserNames.length > 0) {
+      const mentionedUsers = await User.find({
+        $or: mentionedUserNames.map((name) => ({
+          userName: { $regex: `^${escapeRegExp(name)}$`, $options: "i" },
+        })),
+      }).select("_id");
+
+      const notifiedSet = new Set(
+        notificationsToCreate.map((n) => String(n.userId))
+      );
+
+      for (const user of mentionedUsers) {
+        if (isObjectIdEqual(user._id, currentUserId)) continue;
+        if (notifiedSet.has(String(user._id))) continue;
+
+        notificationsToCreate.push({
+          userId: user._id,
+          actorId: currentUserId,
+          type: "mention",
+          entityType: "comment",
+          entityId: savedComment._id,
+          meta: { commentPreview: (text || "").slice(0, 120) },
+        });
+      }
+    }
+
+    if (notificationsToCreate.length > 0) {
+      await Notification.insertMany(notificationsToCreate);
+    }
+
+    const populatedComment = await Comments.findById(savedComment._id).populate("author");
 
     res.status(200).json(populatedComment);
   } catch (error) {

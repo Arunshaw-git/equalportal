@@ -1,0 +1,306 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+.signup-page {
+  --bg-navy: #0a1833;
+  --bg-midnight: #101f3f;
+  --panel-ink: #071530;
+  --teal: #34d399;
+  --blue: #3b82f6;
+  --warm: #f59e0b;
+  --text-light: #e2e8f0;
+  --text-dark: #0f172a;
+  --muted-dark: #334155;
+  --line: #d1d5db;
+
+  min-height: 100vh;
+  padding: clamp(0.9rem, 1.6vw, 1.5rem);
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  font-family: "Space Grotesk", sans-serif;
+  background:
+    radial-gradient(circle at 8% 16%, rgba(52, 211, 153, 0.25), transparent 28%),
+    radial-gradient(circle at 87% 20%, rgba(245, 158, 11, 0.22), transparent 31%),
+    linear-gradient(140deg, var(--bg-navy), var(--bg-midnight));
+}
+
+.signup-shell {
+  width: min(1180px, 100%);
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: 1.3rem;
+  align-items: stretch;
+}
+
+.signup-top-bar {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.signup-back-btn {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(10, 24, 51, 0.5);
+  color: #f8fafc;
+  border-radius: 999px;
+  padding: 0.52rem 0.9rem;
+  font: 600 0.9rem/1 "Space Grotesk", sans-serif;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.signup-back-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(15, 33, 64, 0.72);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.signup-brand-panel,
+.signup-card {
+  border-radius: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(8px);
+}
+
+.signup-brand-panel {
+  position: relative;
+  overflow: hidden;
+  color: #f8fafc;
+  padding: clamp(1.5rem, 2.5vw, 2.4rem);
+  background: linear-gradient(170deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.03));
+}
+
+.signup-brand-panel::after {
+  content: "";
+  position: absolute;
+  right: -92px;
+  bottom: -88px;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.28), rgba(59, 130, 246, 0));
+  pointer-events: none;
+}
+
+.signup-kicker {
+  margin: 0;
+  display: inline-flex;
+  padding: 0.42rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  color: #f8fafc;
+  background: rgba(15, 23, 42, 0.28);
+  font: 700 0.75rem/1 "Space Grotesk", sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.signup-brand-panel h1 {
+  margin: 1rem 0 0;
+  max-width: 14ch;
+  color: #f8fafc;
+  font: 700 clamp(2rem, 4.4vw, 3rem) / 1.1 "Space Grotesk", sans-serif;
+}
+
+.signup-subtitle {
+  margin: 0.95rem 0 0;
+  color: var(--text-light);
+  font: 500 1.01rem/1.65 "Space Grotesk", sans-serif;
+  max-width: 46ch;
+}
+
+.signup-points {
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.72rem;
+}
+
+.signup-points li {
+  position: relative;
+  padding-left: 1.35rem;
+  color: #edf3fb;
+  font: 500 0.97rem/1.45 "Space Grotesk", sans-serif;
+}
+
+.signup-points li::before {
+  content: "";
+  width: 0.54rem;
+  height: 0.54rem;
+  border-radius: 50%;
+  background: linear-gradient(130deg, var(--teal), var(--warm));
+  position: absolute;
+  left: 0;
+  top: 0.4rem;
+}
+
+.signup-alt-link {
+  margin-top: 1.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  background: rgba(15, 23, 42, 0.28);
+  color: #f8fafc;
+  border-radius: 13px;
+  padding: 0.76rem 0.95rem;
+  font: 600 0.93rem/1 "Space Grotesk", sans-serif;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.signup-alt-link:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.signup-card {
+  background: rgba(255, 255, 255, 0.97);
+  border-color: rgba(15, 23, 42, 0.07);
+  box-shadow:
+    0 28px 52px rgba(2, 6, 23, 0.36),
+    0 2px 0 rgba(255, 255, 255, 0.8) inset;
+  padding: clamp(1.2rem, 2vw, 1.55rem);
+}
+
+.signup-card h2 {
+  margin: 0;
+  color: var(--text-dark);
+  font: 700 clamp(1.55rem, 2.8vw, 1.9rem) / 1.1 "Space Grotesk", sans-serif;
+}
+
+.signup-form {
+  margin-top: 0.95rem;
+  display: grid;
+  gap: 0.52rem;
+}
+
+.signup-form label {
+  margin-top: 0.22rem;
+  color: #1f2937;
+  font: 700 0.88rem/1.1 "Space Grotesk", sans-serif;
+  letter-spacing: 0.01em;
+}
+
+.signup-form input,
+.signup-form select {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #f8fafc;
+  color: var(--text-dark);
+  padding: 0.77rem 0.82rem;
+  font: 500 0.93rem/1.2 "Space Grotesk", sans-serif;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.signup-form input:focus,
+.signup-form select:focus {
+  border-color: var(--blue);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.signup-upload-group {
+  margin-top: 0.35rem;
+}
+
+.media-preview {
+  margin-top: 0.78rem;
+  display: grid;
+  gap: 0.58rem;
+}
+
+.preview-image {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+
+.clear-media-btn {
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text-dark);
+  border-radius: 10px;
+  padding: 0.6rem 0.74rem;
+  font: 600 0.86rem/1 "Space Grotesk", sans-serif;
+  cursor: pointer;
+}
+
+.clear-media-btn:hover {
+  background: #f1f5f9;
+}
+
+.signup-submit-btn {
+  margin-top: 0.68rem;
+  border: none;
+  border-radius: 12px;
+  width: 100%;
+  padding: 0.85rem 0.95rem;
+  color: #fff;
+  background: linear-gradient(130deg, var(--blue), #2563eb);
+  box-shadow: 0 12px 24px rgba(59, 130, 246, 0.35);
+  font: 700 0.97rem/1 "Space Grotesk", sans-serif;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.signup-submit-btn:hover:not(:disabled) {
+  transform: translateY(-1px) scale(1.005);
+  box-shadow: 0 14px 24px rgba(37, 99, 235, 0.4);
+}
+
+.signup-submit-btn:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+
+.error-text {
+  color: #b42318;
+  background: #fef3f2;
+  border: 1px solid #fecdd3;
+  border-radius: 9px;
+  padding: 0.47rem 0.62rem;
+  font: 600 0.84rem/1.2 "Space Grotesk", sans-serif;
+}
+
+@media (max-width: 920px) {
+  .signup-shell {
+    grid-template-columns: 1fr;
+    gap: 0.95rem;
+  }
+
+  .signup-brand-panel {
+    order: 2;
+  }
+
+  .signup-card {
+    order: 3;
+  }
+
+  .signup-top-bar {
+    order: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .signup-page {
+    padding: 0.65rem;
+  }
+
+  .signup-back-btn {
+    font-size: 0.84rem;
+    padding: 0.48rem 0.8rem;
+  }
+
+  .signup-brand-panel {
+    padding: 1.15rem 0.95rem;
+  }
+
+  .signup-card {
+    padding: 1rem 0.8rem;
+  }
+}

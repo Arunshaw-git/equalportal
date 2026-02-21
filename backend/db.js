@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '../.env' }); // Load environment variables
+require('dotenv').config({ path: './.env' }); // Load environment variables
 const mongoose = require('mongoose');
 
 // Separate connections for users and posts
