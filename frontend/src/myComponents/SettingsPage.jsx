@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Logout from "./Logout";
@@ -82,6 +82,40 @@ const SettingsPage = () => {
     setMessages((prev) => ({ ...prev, [section]: message }));
   };
 
+  const buildEndpointCandidates = useCallback((endpoint) => {
+    const normalizedEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+    const base = String(apiUrl || "").trim().replace(/\/+$/, "");
+    if (!base) return [];
+
+    const withoutApi = base.replace(/\/api$/i, "");
+    const withApi = `${withoutApi}/api`;
+
+    return Array.from(
+      new Set([`${withoutApi}${normalizedEndpoint}`, `${withApi}${normalizedEndpoint}`])
+    );
+  }, [apiUrl]);
+
+  const requestWithFallback = useCallback(async (endpoint, options) => {
+    const candidates = buildEndpointCandidates(endpoint);
+    if (candidates.length === 0) {
+      throw new Error("API URL missing. Set REACT_APP_API_URL in frontend/.env.");
+    }
+
+    let lastResponse = null;
+    for (const url of candidates) {
+      try {
+        const response = await fetch(url, options);
+        if (response.ok) return response;
+        lastResponse = response;
+      } catch {
+        // Try next candidate URL
+      }
+    }
+
+    if (lastResponse) return lastResponse;
+    throw new Error("Unable to reach backend API");
+  }, [buildEndpointCandidates]);
+
   useEffect(() => {
     document.documentElement.dataset.compact = preferences.compactMode ? "true" : "false";
     if (preferences.reduceMotion) {
@@ -110,8 +144,11 @@ const SettingsPage = () => {
         const text = await response.text();
         if (
           text.includes("Cannot GET /settings") ||
+          text.includes("Cannot GET /api/settings") ||
           text.includes("Cannot PATCH /settings") ||
-          text.includes("Cannot PATCH /settings/")
+          text.includes("Cannot PATCH /settings/") ||
+          text.includes("Cannot PATCH /api/settings") ||
+          text.includes("Cannot PATCH /api/settings/")
         ) {
           return "Settings API is not available on backend. Restart backend server.";
         }
@@ -138,7 +175,7 @@ const SettingsPage = () => {
       }
 
       try {
-        const response = await fetch(`${apiUrl}/settings`, {
+        const response = await requestWithFallback("/settings", {
           method: "GET",
           headers,
         });
@@ -147,7 +184,7 @@ const SettingsPage = () => {
           const message = await extractError(response, "Unable to load settings");
 
           if (message.includes("Settings API is not available")) {
-            const profileResponse = await fetch(`${apiUrl}/profile`, {
+            const profileResponse = await requestWithFallback("/profile", {
               method: "GET",
               headers,
             });
@@ -203,7 +240,7 @@ const SettingsPage = () => {
     };
 
     fetchSettings();
-  }, [apiUrl, navigate]);
+  }, [apiUrl, navigate, requestWithFallback]);
 
   const saveSection = async (section, endpoint, payload, successMessage) => {
     const headers = authHeaders();
@@ -216,7 +253,7 @@ const SettingsPage = () => {
     updateMessage(section, "");
 
     try {
-      const response = await fetch(`${apiUrl}${endpoint}`, {
+      const response = await requestWithFallback(endpoint, {
         method: "PATCH",
         headers,
         body: JSON.stringify(payload),
