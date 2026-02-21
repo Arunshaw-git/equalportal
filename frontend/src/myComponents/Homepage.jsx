@@ -140,7 +140,6 @@ const Homepage = () => {
     } else {
       document.body.style.overflow = "auto";
     }
-
     return () => {
       document.body.style.overflow = "auto";
     };
@@ -229,7 +228,7 @@ const Homepage = () => {
     };
 
     fetchReactionsForPosts();
-  }, [apiUrl, postIdsKey, safePosts]);
+  }, [apiUrl, postIdsKey]);
 
   const handleVote = async (postId, voteType) => {
     try {
@@ -632,7 +631,6 @@ const Homepage = () => {
                     <p>Unknown author</p>
                   )}
                 </div>
-
                 <h3 className="post-title">{post.title}</h3>
                 <p className="description">{post.desc}</p>
 

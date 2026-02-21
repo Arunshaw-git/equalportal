@@ -7,7 +7,7 @@ import Logout from "./Logout";
 import "../styles/Convo.css";
 
 const Convo = () => {
-  const { user1, user2 } = useParams(); // Get user1 and user2 from URL
+  const { user1, user2 } = useParams();
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const navigate = useNavigate();
@@ -42,36 +42,31 @@ const Convo = () => {
               Authorization: `Bearer ${token}`,
             },
           });
-  
+
           if (!response.ok) throw new Error("Failed to fetch user's profile");
           const data = await response.json();
           setProfileUser(data);
-          console.log("user data:", data);
         } catch (error) {
           console.error("Error fetching user's profile:", error);
         }
       };
-  
+
       fetchProfile();
     }
-    // Fetch old messages
+
     const fetchConversation = async () => {
       try {
-        const res = await fetch(
-          `${process.env.REACT_APP_API_URL}/message/${user1}/${user2}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/message/${user1}/${user2}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
 
         const data = await res.json();
         if (data && Array.isArray(data.messages)) {
           setMessages(data.messages);
         } else if (data.messages === undefined && Array.isArray(data.message)) {
-          // fallback if backend returns differently
           setMessages(data.message);
         } else {
           setMessages([]);
@@ -82,21 +77,16 @@ const Convo = () => {
       }
     };
 
-    fetchConversation();  
+    fetchConversation();
 
-    // Initialize socket
-    const newSocket = io(
-      process.env.REACT_APP_API_URL || "http://localhost:5001",
-      {
-        auth: { token },
-        transports: ["websocket"], // force websocket
-      }
-    );
+    const newSocket = io(process.env.REACT_APP_API_URL || "http://localhost:5001", {
+      auth: { token },
+      transports: ["websocket"],
+    });
 
     setSocket(newSocket);
 
     newSocket.on("connect", () => {
-      console.log("Socket connected:", newSocket.id);
       newSocket.emit("join", currentUserId);
     });
 
@@ -105,7 +95,6 @@ const Convo = () => {
     });
 
     newSocket.on("receiveMessage", (message) => {
-      // Only add messages relevant to this conversation
       const senderId = normalizeId(message?.sender);
       const receiverId = normalizeId(message?.receiver);
       const meId = normalizeId(currentUserId);
@@ -157,7 +146,7 @@ const Convo = () => {
     return () => {
       newSocket.disconnect();
     };
-  }, [user1, user2, navigate, setProfileUser]);
+  }, [user1, user2, navigate, profileUser, setProfileUser]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -167,11 +156,8 @@ const Convo = () => {
     if (!text.trim() || !socket) return;
 
     const msgObj = { receiver: user2, text };
-
-    // Send message via socket
     socket.emit("sendMessage", msgObj);
 
-    // Optimistic update
     setMessages((prev) => [
       ...prev,
       {
@@ -225,10 +211,7 @@ const Convo = () => {
               messages.map((msg, index) => {
                 const isMe = normalizeId(msg.sender) === normalizeId(user1);
                 return (
-                  <div
-                    key={index}
-                    className={`convo-message-row ${isMe ? "convo-message-row--me" : ""}`}
-                  >
+                  <div key={index} className={`convo-message-row ${isMe ? "convo-message-row--me" : ""}`}>
                     <div className={`convo-message ${isMe ? "convo-message--me" : ""}`}>
                       <p>{msg.text}</p>
                       <span>{formatMessageTime(msg.createdAt)}</span>

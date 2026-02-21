@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SafeModal from "./OtpModal";
 import "../styles/SignUp.css";
 
 const CreateUser = () => {
@@ -11,10 +12,14 @@ const CreateUser = () => {
     userName: "",
     gender: "",
   });
-  const [media, setMedia] = useState(null); // State for media file
-  const [preview, setPreview] = useState(null); // For previewing the media
+
+  const [otp, setOtp] = useState("");
+  const [media, setMedia] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
   const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
 
@@ -30,28 +35,26 @@ const CreateUser = () => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
+    if (!file) return;
 
-    if (file) {
-      // Basic file validation
-      const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
-      const maxSize = 3 * 1024 * 1024; // 5MB
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+    const maxSize = 3 * 1024 * 1024;
 
-      if (!allowedTypes.includes(file.type)) {
-        setErrors({ file: "Invalid file type. Please upload JPEG, PNG, or GIF." });
-        return;
-      }
-
-      if (file.size > maxSize) {
-        setErrors({ file: "File is too large. Maximum size is 3MB." });
-        return;
-      }
-      // Set media file and create preview
-      setMedia(file);
-      setPreview(URL.createObjectURL(file));
-      setErrors((prev) => ({ ...prev, file: null }));
+    if (!allowedTypes.includes(file.type)) {
+      setErrors({ file: "Invalid file type. Please upload JPEG, PNG, or GIF." });
+      return;
     }
+
+    if (file.size > maxSize) {
+      setErrors({ file: "File is too large. Maximum size is 3MB." });
+      return;
+    }
+
+    setMedia(file);
+    setPreview(URL.createObjectURL(file));
+    setErrors((prev) => ({ ...prev, file: null }));
   };
-  // Clear selected file
+
   const clearMedia = () => {
     setMedia(null);
     setPreview(null);
@@ -59,15 +62,10 @@ const CreateUser = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  //when form is submitted
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const createAccount = async () => {
     setErrors({});
 
     if (!apiUrl) {
@@ -85,31 +83,23 @@ const CreateUser = () => {
       gender: formData.gender,
     };
 
-    // Upload media if provided
     if (media) {
       const mediaFormData = new FormData();
-      mediaFormData.append("file", media); // The 'media' file being uploaded
-      mediaFormData.append("upload_preset", "equalportal"); // Cloudinary upload preset
+      mediaFormData.append("file", media);
+      mediaFormData.append("upload_preset", "equalportal");
       mediaFormData.append("cloud_name", "djnkm0nfh");
 
       try {
-        const cloudinaryResponse = await fetch(
-          "https://api.cloudinary.com/v1_1/djnkm0nfh/image/upload",
-          {
-            method: "POST",
-            body: mediaFormData,
-          }
-        );
+        const cloudinaryResponse = await fetch("https://api.cloudinary.com/v1_1/djnkm0nfh/image/upload", {
+          method: "POST",
+          body: mediaFormData,
+        });
 
         const cloudinaryResult = await cloudinaryResponse.json();
         if (!cloudinaryResponse.ok) {
-          throw new Error(
-            cloudinaryResult.message || "Failed to upload media."
-          );
+          throw new Error(cloudinaryResult.message || "Failed to upload media.");
         }
-
-        const mediaUrl = cloudinaryResult.secure_url;
-        payload.profilePicture = mediaUrl;
+        payload.profilePicture = cloudinaryResult.secure_url;
       } catch (error) {
         setIsLoading(false);
         setErrors({ file: error.message });
@@ -117,7 +107,6 @@ const CreateUser = () => {
       }
     }
 
-    // Submit form data to backend
     try {
       const response = await fetch(`${apiUrl}/auth/createuser`, {
         method: "POST",
@@ -135,9 +124,10 @@ const CreateUser = () => {
       if (!response.ok) {
         throw new Error(getErrorMessage(data));
       }
+
       localStorage.setItem("token", data.token);
-      localStorage.setItem("userId", data.user?.id || '');
-      setIsLoading(false);
+      localStorage.setItem("userId", data.user?.id || "");
+
       setFormData({
         name: "",
         email: "",
@@ -146,12 +136,71 @@ const CreateUser = () => {
         userName: "",
         gender: "",
       });
-      clearMedia(); // Clear media preview
-      navigate("/"); // Redirect after successful form submission
+      clearMedia();
+      setShowModal(false);
+      navigate("/");
     } catch (error) {
+      setErrors({ global: error.message });
+    } finally {
       setIsLoading(false);
-      setErrors({ global: error.message }); // Set global error if the request fails
     }
+  };
+
+  const HandleSendOtp = async () => {
+    if (!formData.email.trim()) {
+      setErrors({ email: "Email is required to receive OTP." });
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setErrors((prev) => ({ ...prev, otp: null }));
+      const otpRes = await fetch(`${apiUrl}/auth/sendOtp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: formData.email.trim() }),
+      });
+
+      if (!otpRes.ok) {
+        const otpData = await otpRes.json().catch(() => ({}));
+        setErrors({ email: otpData.error || "Failed to send OTP." });
+        return;
+      }
+
+      setShowModal(true);
+    } catch (error) {
+      setErrors({ email: error.message || "Failed to send OTP." });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    try {
+      setIsLoading(true);
+      const otpRes = await fetch(`${apiUrl}/auth/verifyOtp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: formData.email.trim(), otp }),
+      });
+
+      if (!otpRes.ok) {
+        const otpData = await otpRes.json().catch(() => ({}));
+        setErrors({ otp: otpData.error || "OTP verification failed" });
+        return;
+      }
+
+      await createAccount();
+    } catch (error) {
+      setErrors({ otp: error.message || "OTP verification failed" });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleStartSignup = async (e) => {
+    e.preventDefault();
+    await HandleSendOtp();
   };
 
   const handleGoBack = () => {
@@ -176,18 +225,15 @@ const CreateUser = () => {
             <p className="signup-kicker">Equal Portal</p>
             <h1>Create your account.</h1>
             <p className="signup-subtitle">
-              Join the community to post updates, comment on threads, and connect with people who care about the same issues.
+              Join the community to post updates, comment on threads, and connect with people who care about the same
+              issues.
             </p>
             <ul className="signup-points">
               <li>Personal profile with optional avatar</li>
               <li>Post, vote, and discuss in real time</li>
               <li>Secure login with private sessions</li>
             </ul>
-            <button
-              type="button"
-              className="signup-alt-link"
-              onClick={() => navigate("/login")}
-            >
+            <button type="button" className="signup-alt-link" onClick={() => navigate("/login")}>
               Already have an account? Sign in
             </button>
           </section>
@@ -195,7 +241,7 @@ const CreateUser = () => {
           <section className="signup-card">
             <h2>Get started</h2>
             {errors.global && <div className="error-text">{errors.global}</div>}
-            <form onSubmit={handleSubmit} className="signup-form">
+            <form onSubmit={handleStartSignup} className="signup-form">
               <label htmlFor="name">Full Name</label>
               <input
                 id="name"
@@ -243,9 +289,7 @@ const CreateUser = () => {
                 required
                 minLength="6"
               />
-              {errors.password && (
-                <div className="error-text">{errors.password}</div>
-              )}
+              {errors.password && <div className="error-text">{errors.password}</div>}
 
               <label htmlFor="userName">Username</label>
               <input
@@ -259,13 +303,7 @@ const CreateUser = () => {
               />
 
               <label htmlFor="gender">Gender</label>
-              <select
-                id="gender"
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                required
-              >
+              <select id="gender" name="gender" value={formData.gender} onChange={handleChange} required>
                 <option value="">Select Gender</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
@@ -285,11 +323,7 @@ const CreateUser = () => {
                 {preview && (
                   <div className="media-preview">
                     <img src={preview} alt="Preview" className="preview-image" />
-                    <button
-                      type="button"
-                      onClick={clearMedia}
-                      className="clear-media-btn"
-                    >
+                    <button type="button" onClick={clearMedia} className="clear-media-btn">
                       Remove Image
                     </button>
                   </div>
@@ -298,12 +332,21 @@ const CreateUser = () => {
               </div>
 
               <button type="submit" disabled={isLoading} className="signup-submit-btn">
-                {isLoading ? "Creating..." : "Create Account"}
+                {isLoading ? "Sending OTP..." : "Create Account"}
               </button>
+              {errors.otp && <div className="error-text">{errors.otp}</div>}
             </form>
           </section>
         </div>
       </div>
+
+      <SafeModal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        onSubmit={handleVerifyOtp}
+        otp={otp}
+        setOtp={setOtp}
+      />
     </>
   );
 };

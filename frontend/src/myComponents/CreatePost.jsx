@@ -7,7 +7,7 @@ import Logout from "./Logout";
 function CreatePost() {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
-  const [media, setMedia] = useState(null); // State for media file
+  const [media, setMedia] = useState(null);
   const [preview, setPreview] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,14 +22,12 @@ function CreatePost() {
     navigate("/");
   };
 
-  //uploaded image handling
   const handleFileChange = (e) => {
     const file = e.target.files[0];
 
     if (file) {
-      // Basic file validation
       const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
-      const maxSize = 5 * 1024 * 1024; // 5MB
+      const maxSize = 5 * 1024 * 1024;
 
       if (!allowedTypes.includes(file.type)) {
         setError("Invalid file type. Please upload JPEG, PNG, or GIF.");
@@ -41,14 +39,12 @@ function CreatePost() {
         return;
       }
 
-      // Set media file and create preview
       setMedia(file);
       setPreview(URL.createObjectURL(file));
       setError(null);
     }
   };
 
-  // Clear selected file
   const clearMedia = () => {
     setMedia(null);
     setPreview(null);
@@ -62,47 +58,41 @@ function CreatePost() {
       return;
     }
 
-    const formData = new FormData(); // Create FormData object
+    const formData = new FormData();
     formData.append("title", title);
     formData.append("desc", desc);
 
-    //upload media to cloudinary first
     if (media) {
       const mediaFormData = new FormData();
-      mediaFormData.append("file", media); // The 'media' file being uploaded
-      mediaFormData.append("upload_preset", "equalportal"); // Your Cloudinary upload preset
+      mediaFormData.append("file", media);
+      mediaFormData.append("upload_preset", "equalportal");
       mediaFormData.append("cloud_name", "djnkm0nfh");
 
-      const cloudinaryResponse = await fetch(
-        "https://api.cloudinary.com/v1_1/djnkm0nfh/image/upload",
-        {
-          method: "POST",
-          body: mediaFormData,
-        }
-      );
+      const cloudinaryResponse = await fetch("https://api.cloudinary.com/v1_1/djnkm0nfh/image/upload", {
+        method: "POST",
+        body: mediaFormData,
+      });
 
       const cloudinaryResult = await cloudinaryResponse.json();
       if (!cloudinaryResponse.ok) {
-        throw new Error(
-          cloudinaryResult.message || "failed to upload to cloudinary"
-        );
+        throw new Error(cloudinaryResult.message || "failed to upload to cloudinary");
       }
-      //get url from cloudinary
+
       const mediaUrl = cloudinaryResult.secure_url;
       formData.append("media", mediaUrl);
     }
+
     try {
       setIsLoading(true);
       setError(null);
 
-      // Get the token from localStorage
       const token = localStorage.getItem("token");
 
-      // WE NEED TO FIRST COVERT THE FORM DATA INTO JSON FIRST
-      var object = {};
-      //SO FIRST CONVERT THE FORMDATA INTO OBJECT THEN JSON
-      formData.forEach((value, key) => (object[key] = value));
-      var json = JSON.stringify(object);
+      const object = {};
+      formData.forEach((value, key) => {
+        object[key] = value;
+      });
+      const json = JSON.stringify(object);
 
       const response = await fetch(`${apiUrl}/create`, {
         method: "POST",
@@ -110,7 +100,7 @@ function CreatePost() {
           "Content-type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: json, // Send form data with file
+        body: json,
       });
 
       if (!response.ok) {
@@ -118,18 +108,13 @@ function CreatePost() {
         throw new Error(errorData.error || "Failed to create post");
       }
 
-      const data = await response.json();
-      console.log("Post created:", data);
-
-      // Reset form after successful submission
       setTitle("");
       setDesc("");
       clearMedia();
       navigate("/");
-    } catch (error) {
-      console.error("Error creating post:", error);
-      alert(error.message);
-      setError(error.message);
+    } catch (submitError) {
+      console.error("Error creating post:", submitError);
+      setError(submitError.message);
       clearMedia();
     } finally {
       setIsLoading(false);
@@ -160,8 +145,8 @@ function CreatePost() {
             <p className="create-post-kicker">Publishing Studio</p>
             <h1>Create a post that people can trust and share.</h1>
             <p>
-              Add a clear title, explain your message, and include supporting media.
-              Quality posts get better engagement and stronger community feedback.
+              Add a clear title, explain your message, and include supporting media. Quality posts get better
+              engagement and stronger community feedback.
             </p>
             <ul className="create-post-tips">
               <li>Use a specific title so readers understand your post quickly.</li>
@@ -171,11 +156,7 @@ function CreatePost() {
           </section>
 
           <section className="create-post-card">
-            <form
-              onSubmit={handleSubmit}
-              className="create-post-form"
-              encType="multipart/form-data"
-            >
+            <form onSubmit={handleSubmit} className="create-post-form" encType="multipart/form-data">
               <div className="create-post-head">
                 <h2>Create Post</h2>
                 <span className="create-post-status">{isLoading ? "Publishing..." : "Ready"}</span>
@@ -222,11 +203,7 @@ function CreatePost() {
                 {preview && (
                   <div className="create-post-preview">
                     <img src={preview} alt="Preview" className="create-post-preview-image" />
-                    <button
-                      type="button"
-                      onClick={clearMedia}
-                      className="create-post-remove-btn"
-                    >
+                    <button type="button" onClick={clearMedia} className="create-post-remove-btn">
                       Remove Image
                     </button>
                   </div>
