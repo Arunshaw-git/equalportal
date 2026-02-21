@@ -195,12 +195,15 @@ const Homepage = () => {
   useEffect(() => {
     const fetchReactionsForPosts = async () => {
       const token = localStorage.getItem("token");
-      if (!token || safePosts.length === 0) return;
+      if (!token || !postIdsKey) return;
+
+      const postIds = postIdsKey.split(",").filter(Boolean);
+      if (postIds.length === 0) return;
 
       try {
         const reactionsList = await Promise.all(
-          safePosts.map(async (post) => {
-            const response = await fetch(`${apiUrl}/reactions/post/${post._id}`, {
+          postIds.map(async (postId) => {
+            const response = await fetch(`${apiUrl}/reactions/post/${postId}`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -209,11 +212,11 @@ const Homepage = () => {
             });
 
             if (!response.ok) {
-              return { postId: post._id, myReaction: null };
+              return { postId, myReaction: null };
             }
 
             const data = await response.json();
-            return { postId: post._id, myReaction: data.myReaction || null };
+            return { postId, myReaction: data.myReaction || null };
           })
         );
 
@@ -228,7 +231,7 @@ const Homepage = () => {
     };
 
     fetchReactionsForPosts();
-  }, [apiUrl, postIdsKey]);
+  }, [apiUrl, postIdsKey, safePosts]);
 
   const handleVote = async (postId, voteType) => {
     try {
